@@ -676,10 +676,24 @@ namespace TerraTechModManager
                 var modInfo = GetModInfoFromIndex();
                 if (listViewCompactMods.SelectedItems[0].SubItems[2].Text == "Updating...")
                 {
-                    KillDownload = true;
-                    KillDownloadPath = modInfo.FilePath;
+                    if (Downloads[0].Name == modInfo.Name)
+                    {
+                        Log("Killing update process for " + modInfo.Name + "...", Color.DarkRed);
+                        KillDownload = true;
+                        KillDownloadPath = modInfo.FilePath;
+                    }
+                    else
+                    {
+                        Downloads.Remove(AllMods[modInfo.CloudName]);
+                        Directory.Delete(modInfo.FilePath, true);
+                        Log("Cancelled update; Deleted " + modInfo.Name + "...", Color.DarkRed);
+                    }
                 }
-                Log("Deleted " + modInfo.Name + "...", Color.DarkGreen);
+                else
+                {
+                    Directory.Delete(modInfo.FilePath, true);
+                    Log("Deleted " + modInfo.Name + "...", Color.DarkRed);
+                }
                 AllMods.Remove(modInfo.Name);
                 listViewCompactMods.Items.RemoveAt(GetCurrentIndex());
             }
@@ -780,6 +794,7 @@ namespace TerraTechModManager
                 {
                     Directory.Delete(KillDownloadPath, true);
                     KillDownloadPath = "";
+                    Log("Deleted " + param[1] + "...", Color.DarkRed);
                 }
             }
             Download_Internal_2();
