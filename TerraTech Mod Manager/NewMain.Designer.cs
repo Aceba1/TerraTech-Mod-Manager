@@ -293,6 +293,16 @@
             this.buttonLocalModDelete.Visible = false;
             this.buttonLocalModDelete.Click += new System.EventHandler(this.PromptDeleteMod);
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Dock = System.Windows.Forms.DockStyle.Top;
+            label1.Location = new System.Drawing.Point(3, 3);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(116, 13);
+            label1.TabIndex = 1;
+            label1.Text = "There is nothing here...";
+            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -525,16 +535,6 @@
             this.richTextBoxLog.TabIndex = 0;
             this.richTextBoxLog.Text = "";
             // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Dock = System.Windows.Forms.DockStyle.Top;
-            label1.Location = new System.Drawing.Point(3, 3);
-            label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(116, 13);
-            label1.TabIndex = 1;
-            label1.Text = "There is nothing here...";
-            // 
             // NewMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -544,7 +544,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "NewMain";
-            this.Text = "TTMM";
+            this.Text = "TerraTech Mod Manager";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.IsClosing);
             this.Load += new System.EventHandler(this.NewMain_Load);
             panel1.ResumeLayout(false);
@@ -584,11 +584,6 @@
         private System.Windows.Forms.ToolStripMenuItem removePatchToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem configurationToolStripMenuItem;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.ListView listViewCompactMods;
-        private System.Windows.Forms.ColumnHeader columnHeaderName;
-        private System.Windows.Forms.ColumnHeader columnHeaderIDesc;
-        private System.Windows.Forms.ColumnHeader columnHeaderActive;
-        private System.Windows.Forms.ColumnHeader columnHeaderAuthor;
         private System.Windows.Forms.Label labelModSource;
         private System.Windows.Forms.Label labelModIDesc;
         private System.Windows.Forms.Label labelModName;
@@ -600,7 +595,6 @@
         private System.Windows.Forms.ToolStripMenuItem hideLogToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hideTabsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem skipStartToolStripMenuItem;
-        private System.Windows.Forms.ColumnHeader columnHeaderSite;
         private System.Windows.Forms.Label labelModLink;
         private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.ToolStripMenuItem downloadLatestPatcherToolStripMenuItem;
@@ -609,5 +603,11 @@
         private System.Windows.Forms.ToolStripMenuItem githubPageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem terraTechForumPageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem terraTechWikiPageToolStripMenuItem;
+        private System.Windows.Forms.ListView listViewCompactMods;
+        private System.Windows.Forms.ColumnHeader columnHeaderActive;
+        private System.Windows.Forms.ColumnHeader columnHeaderName;
+        private System.Windows.Forms.ColumnHeader columnHeaderIDesc;
+        private System.Windows.Forms.ColumnHeader columnHeaderAuthor;
+        private System.Windows.Forms.ColumnHeader columnHeaderSite;
     }
 }

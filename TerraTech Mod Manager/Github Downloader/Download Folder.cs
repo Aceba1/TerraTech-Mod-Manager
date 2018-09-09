@@ -71,6 +71,11 @@ namespace TerraTechModManager.Downloader
             {
                 foreach (var item in entries)
                 {
+                    if (NewMain.KillDownload)
+                    {
+                        NewMain.KillDownload = false;
+                        throw new Exception("The download was killed, but it did not finish!");
+                    }
                     var localItem = item;
 
                     if (localItem.type == "dir")

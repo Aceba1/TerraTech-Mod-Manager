@@ -33,7 +33,11 @@ namespace TerraTechModManager
         }
 
         List<ModInfo> Downloads = new List<ModInfo>();
+        List<ListViewItem> UpdatingItems = new List<ListViewItem>();
         Task CurrentDownload;
+        public static bool KillDownload = false;
+        public static string KillDownloadPath = "";
+
         bool DownloadsPending
         {
             get => Downloads.Count != 0;
@@ -66,7 +70,6 @@ namespace TerraTechModManager
         }
         public void SaveConfig()
         {
-
             ConfigHandler.SetValue(tabControl1.SelectedIndex, "mmstyle");
             ConfigHandler.SetValue(panelHideTabs.Visible, "hidetabs");
             ConfigHandler.SetValue(splitContainer1.Panel2Collapsed, "hidelog");
@@ -139,6 +142,9 @@ namespace TerraTechModManager
         {
             RunPatcher.RunExe("-u");
         }
+
+        #region Local Mod Handling
+
         private void ClearLocalMods()
         {
             for (int i = listViewCompactMods.Groups[0].Items.Count - 1; i >= 0; i--)
@@ -152,41 +158,6 @@ namespace TerraTechModManager
             new Task(GetLocalMods).Start();
         }
 
-        internal void GetLocalMod_Internal(string path, bool IsDisabled = false)
-        {
-            string modjson = path + @"\mod.json";
-            string ttmmjson = path + @"\ttmm.json";
-            if (File.Exists(modjson))
-            {
-                var json = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(File.ReadAllText(modjson));
-                ModInfo modInfo = null;
-                if (File.Exists(ttmmjson))
-                {
-                    try
-                    {
-                        modInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<ModInfo>(File.ReadAllText(ttmmjson), new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore });
-                    }
-                    catch { }
-                }
-                if (modInfo != null)
-                {
-                    modInfo.State = IsDisabled ? ModInfo.ModState.Disabled : (Convert.ToBoolean(json["Enable"]) ? ModInfo.ModState.Enabled : ModInfo.ModState.Load);
-                }
-                else
-                {
-                    modInfo = new ModInfo()
-                    {
-                        Name = json["DisplayName"] as string,
-                        Author = json["Author"] as string,
-                        State = IsDisabled ? ModInfo.ModState.Disabled : (Convert.ToBoolean(json["Enable"]) ? ModInfo.ModState.Enabled : ModInfo.ModState.Load),
-                        FilePath = path,
-                        InlineDescription = json["Id"] as string
-                    };
-                }
-                AllMods[modInfo.Name] = modInfo;
-                listViewCompactMods.Items.Add(modInfo.GetListViewItem(listViewCompactMods.Groups[0], true));
-            }
-        }
 
         internal void SetLocalModState(string path, ModInfo.ModState State)
         {
@@ -203,6 +174,9 @@ namespace TerraTechModManager
             Directory.Move(path, newPath);
             path = newPath;
         }
+
+
+        #region Get Local Mods
 
         private void GetLocalMods()
         {
@@ -231,11 +205,92 @@ namespace TerraTechModManager
             }
         }
 
+        internal void GetLocalMod_Internal(string path, bool IsDisabled = false)
+        {
+            string modjson = path + @"\mod.json";
+            string ttmmjson = path + @"\ttmm.json";
+            if (File.Exists(modjson))
+            {
+                var json = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(File.ReadAllText(modjson));
+                ModInfo modInfo = null;
+                if (File.Exists(ttmmjson))
+                {
+                    try
+                    {
+                        modInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<ModInfo>(File.ReadAllText(ttmmjson), new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore });
+                    }
+                    catch { }
+                }
+                if (modInfo != null)
+                {
+                    modInfo.State = IsDisabled ? ModInfo.ModState.Disabled : (Convert.ToBoolean(json["Enable"]) ? ModInfo.ModState.Enabled : ModInfo.ModState.Load);
+                    modInfo.FilePath = path;
+                }
+                else
+                {
+                    modInfo = new ModInfo()
+                    {
+                        Name = json["DisplayName"] as string,
+                        Author = json["Author"] as string,
+                        State = IsDisabled ? ModInfo.ModState.Disabled : (Convert.ToBoolean(json["Enable"]) ? ModInfo.ModState.Enabled : ModInfo.ModState.Load),
+                        FilePath = path,
+                        InlineDescription = json["Id"] as string
+                    };
+                }
+
+
+                var item = modInfo.GetListViewItem(listViewCompactMods.Groups[0], true);
+                if (UpdatingItems.Count > 0)
+                {
+                    if (GetModInfoFromIndex(UpdatingItems[0].Index).Site == modInfo.Site)
+                    {
+                        UpdatingItems[0].Remove();
+                        UpdatingItems.RemoveAt(0);
+                    }
+                }
+                AllMods[modInfo.Name] = modInfo;
+                listViewCompactMods.Items.Add(item);
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Github Mod Search
+
         private void GetGitMods()
         {
+            var client = new WebClient();
+            try
+            {                
+                const string ModLink = @"<a href="; // End of search
+                const string ModPoint = @"<article"; // Mod Link
+
+                string site = client.DownloadString(new Uri("https://github.com/topics/ttqmm")); // Search
+                int newmodpos = site.IndexOf(ModPoint); // Get first mod position
+                int modpos = 0; // Current mod position
+                while (newmodpos != -1)
+                {
+                    modpos = newmodpos;
+                    int str = site.IndexOf(ModLink, modpos) + 9;
+                    newmodpos = site.IndexOf(ModPoint, str); // Next mod position
+
+                    string mod = site.Substring(str, site.IndexOf('"', str) - str);
+                    int modnamestart = mod.LastIndexOf('/') + 1;
+                    string modname = mod.Substring(modnamestart); // Get the name of the repo
+
+                    GetGitMod_Internal(client, mod, modname, ref site, str, true);
+                }
+
+            }
+            catch (Exception E)
+            {
+                Log(E.Message, Color.Red);
+            }
+            if (false)
             try
             {
-                var client = new WebClient();
                 string StartingPoint = @"<ul class=""repo-list"">"; // Start of search
                 string EndingPoint = @"<a href="; // End of search
                 string ModPoint = @"href="""; // Mod Link
@@ -255,87 +310,7 @@ namespace TerraTechModManager
                     string modname = mod.Substring(modnamestart); // Get the name of the repo
                     if (modname.StartsWith("TTQMM-")) // If the repo's name starts with "TTQMM-"
                     {
-                        string linkspath = "https://raw.githubusercontent.com" + mod + "/master/LINKS.";
-                        string searchfor = "https://github.com" + mod + "/tree/";
-                        bool flag = false;
-                        string links = "";
-                        try
-                        {
-                            links = client.DownloadString(linkspath + "md");
-                        }
-                        catch
-                        {
-                            try
-                            {
-                                links = client.DownloadString(linkspath + "txt");
-                            }
-                            catch
-                            {
-                                flag = true; // File doesn't exist
-                            }
-                        }
-                        string downloadpath = "";
-                        string[] requiredmods;
-                        if (!flag) // Get links from LINKS.md or LINKS.txt
-                        {
-                            var linkarray = links.Split('\n', '\r');
-                            downloadpath = linkarray[0];
-                            requiredmods = new string[linkarray.Length - 1];
-                            int EmptySpace = -1;
-                            for (int i = 1; i < linkarray.Length; i++)
-                            {
-                                if (linkarray[i] == "")
-                                {
-                                    EmptySpace--;
-                                    continue;
-                                }
-                                requiredmods[i + EmptySpace] = linkarray[i];
-                            }
-                            Array.Resize(ref requiredmods, linkarray.Length + EmptySpace);
-                        }
-                        else // Get link from README.md
-                        {
-                            string readmepath = "https://raw.githubusercontent.com" + mod + "/master/README.md";
-                            string readme = client.DownloadString(readmepath); // Get README.md
-                            int linkget = readme.IndexOf(searchfor);
-                            if (linkget == -1)
-                            {
-                                // The repo does not have a link to the latest build folder; Skipping
-                                continue;
-                            }
-                            downloadpath = DigLink(ref readme, linkget);
-                            requiredmods = new string[0];
-
-                        }
-                        ModInfo modInfo;
-                        if (AllMods.ContainsKey(mod))
-                        {
-                            modInfo = AllMods[mod];
-                        }
-                        else
-                        {
-                            modInfo = new ModInfo()
-                            {
-                                Name = modname,
-                                CloudName = mod,
-                                Author = mod.Substring(1, mod.Length - modname.Length - 2),
-                                FilePath = downloadpath,
-                                Site = "https://github.com" + mod,
-                                RequiredModNames = requiredmods,
-                                State = ModInfo.ModState.Server,
-                            };
-                            AllMods.Add(mod, modInfo);
-                        }
-
-                        int idescpos = site.IndexOf("<p class=", modpos);
-                        idescpos = site.IndexOf(">", idescpos) + 2;
-                        int idescend = site.IndexOf("</p>", idescpos);
-                        string inlinedesc = site.Substring(idescpos, idescend - idescpos).Trim(); // Get inline description
-                        modInfo.InlineDescription = inlinedesc; // INLINE DESCRIPTION
-
-
-                        Log("Found mod in Github: " + mod, Color.LightBlue);
-                        listViewCompactMods.Items.Add(modInfo.GetListViewItem(listViewCompactMods.Groups[1], false));
+                        GetGitMod_Internal(client, mod, modname, ref site, modpos, false);
                     }
                 }
             }
@@ -343,6 +318,95 @@ namespace TerraTechModManager
             {
                 Log(E.Message, Color.Red);
             }
+        }
+        
+        private void GetGitMod_Internal(WebClient client, string mod, string modname, ref string site, int modpos, bool IDescTypeDIV)
+        {
+            string linkspath = "https://raw.githubusercontent.com" + mod + "/master/LINKS.";
+            string searchfor = "https://github.com" + mod + "/tree/";
+
+            bool flag = false;
+            string links = "";
+            try
+            {
+                links = client.DownloadString(linkspath + "md");
+            }
+            catch
+            {
+                try
+                {
+                    links = client.DownloadString(linkspath + "txt");
+                }
+                catch
+                {
+                    flag = true; // File doesn't exist
+                }
+            }
+            string downloadpath = "";
+            string[] requiredmods;
+            if (!flag) // Get links from LINKS.md or LINKS.txt
+            {
+                var linkarray = links.Split('\n', '\r');
+                downloadpath = linkarray[0];
+                requiredmods = new string[linkarray.Length - 1];
+                int EmptySpace = -1;
+                for (int i = 1; i < linkarray.Length; i++)
+                {
+                    if (linkarray[i] == "")
+                    {
+                        EmptySpace--;
+                        continue;
+                    }
+                    requiredmods[i + EmptySpace] = linkarray[i];
+                }
+                Array.Resize(ref requiredmods, linkarray.Length + EmptySpace);
+            }
+            else // Get link from README.md
+            {
+                string readmepath = "https://raw.githubusercontent.com" + mod + "/master/README.md";
+                string readme = client.DownloadString(readmepath); // Get README.md
+                int linkget = readme.IndexOf(searchfor);
+                if (linkget == -1)
+                {
+                    // The repo does not have a link to the latest build folder; Skipping
+                    return;
+                }
+                downloadpath = DigLink(ref readme, linkget);
+                requiredmods = new string[0];
+
+            }
+            ModInfo modInfo;
+            if (AllMods.ContainsKey(mod))
+            {
+                return;
+            }
+            else
+            {
+                modInfo = new ModInfo()
+                {
+                    Name = modname,
+                    CloudName = mod,
+                    Author = mod.Substring(1, mod.Length - modname.Length - 2),
+                    FilePath = downloadpath,
+                    Site = "https://github.com" + mod,
+                    RequiredModNames = requiredmods,
+                    State = ModInfo.ModState.Server,
+                };
+                AllMods.Add(mod, modInfo);
+            }
+
+            // Start getting inline description
+            string ty = IDescTypeDIV ? "div" : "p";
+            int idescpos = site.IndexOf("<"+ty+" class=", modpos);
+            idescpos = site.IndexOf(">", idescpos) + 2;
+            int idescend = site.IndexOf("</"+ty+">", idescpos);
+            string inlinedesc = site.Substring(idescpos, idescend - idescpos).Trim(); // Get inline description
+            modInfo.InlineDescription = inlinedesc; // INLINE DESCRIPTION
+
+
+            Log("Found mod in Github: " + mod, Color.LightBlue);
+            listViewCompactMods.Items.Add(modInfo.GetListViewItem(listViewCompactMods.Groups[1], false));
+
         }
 
         private string DigLink(ref string Source, int SearchPosition)
@@ -402,6 +466,8 @@ namespace TerraTechModManager
             }
             return false;
         }
+
+        #endregion
 
         private void reloadLocalModsToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -556,6 +622,21 @@ namespace TerraTechModManager
                 }
                 SetLocalModState(modInfo.FilePath, newState);
                 Log("Set " + modInfo.Name + " to " + newState.ToString(), Color.DarkSeaGreen);
+                if (newState == ModInfo.ModState.Enabled)
+                    foreach (var modrequired in modInfo.RequiredModNames)
+                    {
+                        if (AllMods.TryGetValue(modrequired.Substring(modrequired.LastIndexOf('/') + 1), out ModInfo value))
+                        {
+                            foreach (ListViewItem item in listViewCompactMods.Items)
+                            {
+                                if (item.SubItems[4].Text == value.Name)
+                                {
+                                    item.Checked = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
             }
             modInfo.State = newState;
         }
@@ -574,25 +655,32 @@ namespace TerraTechModManager
         {
             if (DownloadsPending)
             {
-                var result = MessageBox.Show("There are still downloads processing, are you sure you want to close?", "Close TTMM", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+                var result = MessageBox.Show("There are still downloads processing, are you sure you want to close?\n\nTo avoid possible problems, try to download later", "Close TTMM", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
                 if (result == DialogResult.No)
                 {
                     e.Cancel = true;
                     return;
                 }
             }
+            KillDownload = true;
+            Downloads.Clear();
             SaveConfig();
             KillPatcherEXE();
         }
 
         private void PromptDeleteMod(object sender, EventArgs e)
         {
-            var response = MessageBox.Show("Are you sure you want to delete this mod?\nYou can set it as disabled instead to use later\nDeleting may remove any special data it has created in it's folder!", "Delete Mod", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            var response = MessageBox.Show("Are you sure you want to delete this mod?\nYou can set it as disabled instead to use later and keep completely out of the game\nDeleting may remove any special data it has created in it's folder!", "Delete Mod", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
             if (response == DialogResult.OK)
             {
                 var modInfo = GetModInfoFromIndex();
-                Directory.Delete(modInfo.FilePath, true);
-                AllMods.Remove(modInfo.FilePath);
+                if (listViewCompactMods.SelectedItems[0].SubItems[2].Text == "Updating...")
+                {
+                    KillDownload = true;
+                    KillDownloadPath = modInfo.FilePath;
+                }
+                Log("Deleted " + modInfo.Name + "...", Color.DarkGreen);
+                AllMods.Remove(modInfo.Name);
                 listViewCompactMods.Items.RemoveAt(GetCurrentIndex());
             }
         }
@@ -605,17 +693,52 @@ namespace TerraTechModManager
             if (modInfo.State == ModInfo.ModState.Server)
             {
                 AddModDownload(modInfo);
+                return;
             }
-            else if (modInfo.CloudName != null && modInfo.CloudName.Length > 0 && AllMods.TryGetValue(modInfo.CloudName, out ModInfo cloudModInfo))
+            if (modInfo.CloudName != null && modInfo.CloudName.Length > 0 && AllMods.TryGetValue(modInfo.CloudName, out ModInfo cloudModInfo))
             {
-                AddModDownload(cloudModInfo);
+                if (modInfo.State == ModInfo.ModState.Disabled)
+                {
+                    MessageBox.Show("Can't update a disabled mod!", "Download Mod", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (AddModDownload(cloudModInfo))
+                {
+                    var item = listViewCompactMods.SelectedItems[0];
+                    item.SubItems[2].Text = "Updating...";
+                    UpdatingItems.Add(item);
+                }
             }
         }
 
-        private void AddModDownload(ModInfo ModBeingDownloaded)
+        private bool AddModDownload(ModInfo ModBeingDownloaded, ListViewItem itemToRemove = null)
         {
+            List<ModInfo> neededmods = new List<ModInfo>();
+            foreach (var modname in ModBeingDownloaded.RequiredModNames)
+            {
+                if (AllMods.TryGetValue(modname, out ModInfo modInfo))
+                {
+                    if (!AllMods.ContainsKey(modInfo.Name))
+                    {
+                        var response = MessageBox.Show(modInfo.Name + " is needed for this mod to work.\nDownload as well?", "Download Mod", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                        if (response == DialogResult.Yes)
+                        {
+                            neededmods.Add(modInfo);
+                        }
+                        else if (response == DialogResult.Cancel)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
             Downloads.Add(ModBeingDownloaded);
+            foreach (ModInfo mod in neededmods)
+            {
+                Downloads.Add(mod);
+            }
             CycleDownloads();
+            return true;
         }
 
         private void CycleDownloads()
@@ -631,6 +754,7 @@ namespace TerraTechModManager
         {
             CurrentDownload = new Task(Download_Internal, Parameters);
             CurrentDownload.Start();
+            return;
         }
 
         private void Download_Internal(object Params)
@@ -640,24 +764,29 @@ namespace TerraTechModManager
             try
             {
                 string newFolder = TerraTechModManager.Downloader.DownloadFolder.Download(param[0], param[1], RootFolder + @"\QMods")[0];
+                if (KillDownload)
+                {
+                    KillDownload = false;
+
+                    throw new Exception("Download was killed at end of download!");
+                }
                 File.WriteAllText(RootFolder + @"\QMods\" + newFolder + @"\ttmm.json", JsonConvert.SerializeObject(AllMods[param[1]]));
                 GetLocalMod_Internal(RootFolder + @"\QMods\" + newFolder);
             }
-            catch (Exception e){ Log(e.Message, Color.OrangeRed); }
+            catch (Exception e)
+            {
+                Log(e.Message, Color.OrangeRed);
+                if (KillDownloadPath != "")
+                {
+                    Directory.Delete(KillDownloadPath, true);
+                    KillDownloadPath = "";
+                }
+            }
             Download_Internal_2();
         }
 
         void Download_Internal_2()
         {
-            try
-            {
-                CurrentDownload.Wait(5000);
-                CurrentDownload.Dispose();
-            }
-            catch
-            {
-                Log("Could not dispose task!", Color.Red);
-            }
             CurrentDownload = null;
             Downloads.RemoveAt(0);
             CycleDownloads();

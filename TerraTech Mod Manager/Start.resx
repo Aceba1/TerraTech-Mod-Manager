@@ -121,14 +121,10 @@
     <value>A few things to note:
 
 - This program establishes an internet connection with Github for aquiring mods and the patcher
-
 - If not present when booting, the program will download the patcher from Github
-
 - When booting TTMM, the program will ensure that the modloader (TTQMM) is in the game.
-
 - Downloading mods through TTMM will use the Github Network API
-
-- You are responsible for any damage to software or hardware
+- You are responsible for how this tool is used on your device
 
 If you have any problems, please contact the creator on the TerraTech Forum or Github</value>
   </data>
