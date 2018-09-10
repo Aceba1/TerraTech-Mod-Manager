@@ -180,8 +180,11 @@ namespace TerraTechModManager
 
         private void GetLocalMods()
         {
-
-            foreach (string folder in Directory.GetDirectories(RootFolder + @"\QMods"))
+            if (!Directory.Exists(RootFolder + @"\QMods"))
+            {
+                Directory.CreateDirectory(RootFolder + @"\QMods");
+            }
+            else foreach (string folder in Directory.GetDirectories(RootFolder + @"\QMods"))
             {
                 try
                 {
@@ -192,7 +195,11 @@ namespace TerraTechModManager
                     Log("There was a problem handling a local mod: \n" + E.Message + "\nAt " + folder, Color.Red);
                 }
             }
-            foreach (string folder in Directory.GetDirectories(RootFolder + @"\QMods-Disabled"))
+            if (!Directory.Exists(RootFolder + @"\QMods-Disabled"))
+            {
+                Directory.CreateDirectory(RootFolder + @"\QMods-Disabled");
+            }
+            else foreach (string folder in Directory.GetDirectories(RootFolder + @"\QMods-Disabled"))
             {
                 try
                 {
@@ -622,7 +629,7 @@ namespace TerraTechModManager
                 }
                 SetLocalModState(modInfo.FilePath, newState);
                 Log("Set " + modInfo.Name + " to " + newState.ToString(), Color.DarkSeaGreen);
-                if (newState == ModInfo.ModState.Enabled)
+                if (newState == ModInfo.ModState.Enabled && modInfo.RequiredModNames != null)
                     foreach (var modrequired in modInfo.RequiredModNames)
                     {
                         if (AllMods.TryGetValue(modrequired.Substring(modrequired.LastIndexOf('/') + 1), out ModInfo value))
