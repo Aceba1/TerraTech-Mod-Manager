@@ -74,6 +74,7 @@
             this.terraTechForumPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.terraTechWikiPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
+            this.tTMMDownloadPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             panel1 = new System.Windows.Forms.Panel();
             panel2 = new System.Windows.Forms.Panel();
             panel3 = new System.Windows.Forms.Panel();
@@ -498,7 +499,8 @@
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.githubPageToolStripMenuItem,
             this.terraTechForumPageToolStripMenuItem,
-            this.terraTechWikiPageToolStripMenuItem});
+            this.terraTechWikiPageToolStripMenuItem,
+            this.tTMMDownloadPageToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
@@ -506,21 +508,21 @@
             // githubPageToolStripMenuItem
             // 
             this.githubPageToolStripMenuItem.Name = "githubPageToolStripMenuItem";
-            this.githubPageToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.githubPageToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.githubPageToolStripMenuItem.Text = "Github page";
             this.githubPageToolStripMenuItem.Click += new System.EventHandler(this.githubPageToolStripMenuItem_Click);
             // 
             // terraTechForumPageToolStripMenuItem
             // 
             this.terraTechForumPageToolStripMenuItem.Name = "terraTechForumPageToolStripMenuItem";
-            this.terraTechForumPageToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.terraTechForumPageToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.terraTechForumPageToolStripMenuItem.Text = "TerraTech Forum page";
             this.terraTechForumPageToolStripMenuItem.Click += new System.EventHandler(this.terraTechForumPageToolStripMenuItem_Click);
             // 
             // terraTechWikiPageToolStripMenuItem
             // 
             this.terraTechWikiPageToolStripMenuItem.Name = "terraTechWikiPageToolStripMenuItem";
-            this.terraTechWikiPageToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.terraTechWikiPageToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.terraTechWikiPageToolStripMenuItem.Text = "TerraTech Wiki page";
             this.terraTechWikiPageToolStripMenuItem.Click += new System.EventHandler(this.terraTechWikiPageToolStripMenuItem_Click);
             // 
@@ -534,6 +536,13 @@
             this.richTextBoxLog.Size = new System.Drawing.Size(203, 306);
             this.richTextBoxLog.TabIndex = 0;
             this.richTextBoxLog.Text = "";
+            // 
+            // tTMMDownloadPageToolStripMenuItem
+            // 
+            this.tTMMDownloadPageToolStripMenuItem.Name = "tTMMDownloadPageToolStripMenuItem";
+            this.tTMMDownloadPageToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.tTMMDownloadPageToolStripMenuItem.Text = "TTMM Download Page";
+            this.tTMMDownloadPageToolStripMenuItem.Click += new System.EventHandler(this.tTMMDownloadPageToolStripMenuItem_Click);
             // 
             // NewMain
             // 
@@ -609,5 +618,6 @@
         private System.Windows.Forms.ColumnHeader columnHeaderIDesc;
         private System.Windows.Forms.ColumnHeader columnHeaderAuthor;
         private System.Windows.Forms.ColumnHeader columnHeaderSite;
+        private System.Windows.Forms.ToolStripMenuItem tTMMDownloadPageToolStripMenuItem;
     }
 }

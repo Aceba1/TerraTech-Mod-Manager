@@ -850,6 +850,11 @@ namespace TerraTechModManager
         {
             Process.Start("https://terratech.gamepedia.com/TerraTech_Mod_Manager");
         }
+
+        private void tTMMDownloadPageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://github.com/Aceba1/TerraTech-Mod-Manager/releases");
+        }
     }
 
     public class ModInfo
