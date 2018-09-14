@@ -14,6 +14,9 @@ namespace TerraTechModManager
 {
     public partial class Start : Form
     {
+        public const string Version_Number = "0.4";
+
+
         bool finished = false;
         /// <summary>
         /// Key: skipstart
@@ -29,16 +32,18 @@ namespace TerraTechModManager
             ConfigHandler.LoadConfig();
             ConfigHandler.TryGetValue(ref SkipAtStart, "skipstart");
             ConfigHandler.TryGetValue(ref RootPath, "ttroot");
+            string txt = "Location of TerraTech";
             if (SkipAtStart)
-            BootMain();
+            txt = BootMain();
             InitializeComponent();
+            label2.Text = txt;
             textBoxFolderDirectory.Text = RootPath;
         }
 
         private void OpenMain_Click(object sender, EventArgs e)
         {
             RootPath = textBoxFolderDirectory.Text;
-            BootMain();
+            label2.Text = BootMain();
             if (finished)
                 Close();
         }
@@ -49,7 +54,7 @@ namespace TerraTechModManager
                 Close();
         }
 
-        private void BootMain()
+        private string BootMain()
         {
             string rootpath = RootPath;
             if (Directory.Exists(rootpath))
@@ -85,13 +90,14 @@ namespace TerraTechModManager
                 }
                 if (!finished)
                 {
-                    label2.Text = "Location of TerraTech (Invalid)";
+                    return "Location of TerraTech (Invalid)";
                 }
             }
             else
             {
-                label2.Text = "Location of TerraTech (Nonexistent)";
+                return "Location of TerraTech (Nonexistent)";
             }
+            return "";
         }
 
         void FolderDirectory_DragDrop(object sender, DragEventArgs e)

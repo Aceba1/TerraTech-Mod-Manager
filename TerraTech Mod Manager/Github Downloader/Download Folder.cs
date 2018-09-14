@@ -9,13 +9,63 @@ using Newtonsoft.Json;
 
 namespace TerraTechModManager.Downloader
 {
+    public static class GetUpdate
+    {
+        private static bool isUpdateAvailable = false;
+        //public static bool ModUpdateAvailable(string CloudName)
+        //{
+
+        //}
+        public static bool ProgramUpdateAvailable()
+        {
+            if (isUpdateAvailable)
+            {
+                return true;
+            }
+            var releases = WebClientHandler.DeserializeApiCall<GithubItem[]>("https://api.github.com/repos/Aceba1/TerraTech-Mod-Manager/releases");
+            return releases[0].tag_name == Start.Version_Number;
+            
+        }
+
+        private class GithubItem
+        {
+            public string tag_name;
+            public string name;
+            public string body;
+            public string html_url;
+        }
+    }
+
+    public static class GetUpdateInfo
+    {
+        //https://api.github.com/repos/_owner_/_reponame_/releases [0]
+    }
+
+    public static class GetRepos
+    {
+        public static int Page { get; internal set; }
+
+        public static string eelse;
+
+
+        public class GithubRepo
+        {
+
+        }
+    }
+
+    //https://api.github.com/search/repositories?q=topic:ttqmm
+    //https://api.github.com/search/repositories?q=topic:ttqmm&page:0
+
+
+
     public static class DownloadFolder
     {
         public static string[] Download(string RepositoryPath, string CloudName, string DownloadPath)
         {
             string StartBranch = RepositoryPath.Substring(RepositoryPath.IndexOf("tree/master/") + 11);
             NewMain.inst.Log(GetApiUrl(CloudName, StartBranch), Color.Red);
-            return ProcessListOfEntries(GetGithubEntries(GetApiUrl(CloudName, StartBranch)), DownloadPath, RepositoryPath, CloudName, StartBranch);
+            return ProcessListOfEntries(WebClientHandler.DeserializeApiCall<GithubItem[]>(GetApiUrl(CloudName, StartBranch)), DownloadPath, RepositoryPath, CloudName, StartBranch);
         }
 
         public static string GetApiUrl(string CloudName, string BranchingPath)
@@ -32,36 +82,6 @@ namespace TerraTechModManager.Downloader
                 subpath += @"?ref=master";
             }
             return "https://api.github.com/repos" + CloudName + "/contents" + BranchingPath;
-        }
-
-        private static GithubItem[] GetGithubEntries(string ApiUrl)
-        {
-            Retry:;
-            using (var webClient = new WebClient())
-            {
-                webClient.Headers.Add("user-agent", "ttmm-downloader-client");
-                bool flag = false;
-                if (NewMain.GithubToken != null && NewMain.GithubToken != "" && NewMain.GithubToken != "Github Token")
-                {
-                    webClient.Headers.Add("Authorization", "Token " + NewMain.GithubToken);
-                    flag = true;
-                }
-                try
-                {
-                    string jsonData = webClient.DownloadString(ApiUrl);
-                    return JsonConvert.DeserializeObject<GithubItem[]>(jsonData);
-                }
-                catch
-                {
-                    if (flag)
-                    {
-                        NewMain.GithubToken = "";
-                        NewMain.inst.Log("Github Token does not appear valid; Resetting...", Color.Orange);
-                        goto Retry;
-                    }
-                    throw new Exception("Could not access API! Try again later?");
-                }
-            }
         }
 
         private static string[] ProcessListOfEntries(IEnumerable<GithubItem> entries, string DownloadFolder, string repostiorySubDir, string CloudName, string StartBranch, string CurrentPath = "")
@@ -85,7 +105,7 @@ namespace TerraTechModManager.Downloader
                             System.IO.Directory.CreateDirectory(DownloadFolder + CurrentPath + @"\" + localItem.name);
                         }
                         outFolders.Add(localItem.name);
-                        var subEntries = GetGithubEntries(localItem.url);
+                        var subEntries = WebClientHandler.DeserializeApiCall<GithubItem[]>(localItem.url);
                         if (!subEntries.Any())
                         {
                             continue;
@@ -137,6 +157,37 @@ namespace TerraTechModManager.Downloader
             public string path;
             public long size;
             public string type;
+        }
+    }
+
+    internal static class WebClientHandler
+    {
+        public static T DeserializeApiCall<T>(string ApiUrl)
+        {
+            WebClient webClient = new WebClient();
+        Retry:
+            webClient.Headers.Add("user-agent", "ttmm-downloader-client");
+            bool flag = false;
+            if (NewMain.GithubToken != null && NewMain.GithubToken != "" && NewMain.GithubToken != "Github Token")
+            {
+                webClient.Headers.Add("Authorization", "Token " + NewMain.GithubToken);
+                flag = true;
+            }
+            try
+            {
+                string jsonData = webClient.DownloadString(ApiUrl);
+                return JsonConvert.DeserializeObject<T>(jsonData);
+            }
+            catch
+            {
+                if (flag)
+                {
+                    NewMain.GithubToken = "";
+                    NewMain.inst.Log("Github Token does not appear valid; Resetting...", Color.Orange);
+                    goto Retry;
+                }
+                throw new Exception("Could not access API! Try again later?");
+            }
         }
     }
 }

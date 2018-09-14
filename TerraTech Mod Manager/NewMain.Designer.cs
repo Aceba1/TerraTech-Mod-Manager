@@ -73,8 +73,8 @@
             this.githubPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.terraTechForumPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.terraTechWikiPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             this.tTMMDownloadPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             panel1 = new System.Windows.Forms.Panel();
             panel2 = new System.Windows.Forms.Panel();
             panel3 = new System.Windows.Forms.Panel();
@@ -526,6 +526,13 @@
             this.terraTechWikiPageToolStripMenuItem.Text = "TerraTech Wiki page";
             this.terraTechWikiPageToolStripMenuItem.Click += new System.EventHandler(this.terraTechWikiPageToolStripMenuItem_Click);
             // 
+            // tTMMDownloadPageToolStripMenuItem
+            // 
+            this.tTMMDownloadPageToolStripMenuItem.Name = "tTMMDownloadPageToolStripMenuItem";
+            this.tTMMDownloadPageToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.tTMMDownloadPageToolStripMenuItem.Text = "TTMM Download Page";
+            this.tTMMDownloadPageToolStripMenuItem.Click += new System.EventHandler(this.tTMMDownloadPageToolStripMenuItem_Click);
+            // 
             // richTextBoxLog
             // 
             this.richTextBoxLog.BackColor = System.Drawing.Color.Black;
@@ -536,13 +543,6 @@
             this.richTextBoxLog.Size = new System.Drawing.Size(203, 306);
             this.richTextBoxLog.TabIndex = 0;
             this.richTextBoxLog.Text = "";
-            // 
-            // tTMMDownloadPageToolStripMenuItem
-            // 
-            this.tTMMDownloadPageToolStripMenuItem.Name = "tTMMDownloadPageToolStripMenuItem";
-            this.tTMMDownloadPageToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.tTMMDownloadPageToolStripMenuItem.Text = "TTMM Download Page";
-            this.tTMMDownloadPageToolStripMenuItem.Click += new System.EventHandler(this.tTMMDownloadPageToolStripMenuItem_Click);
             // 
             // NewMain
             // 
