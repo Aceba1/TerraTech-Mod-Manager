@@ -9,25 +9,15 @@ using Newtonsoft.Json;
 
 namespace TerraTechModManager.Downloader
 {
-    public static class GetUpdate
+    public static class GetUpdateInfo
     {
         private static bool isUpdateAvailable = false;
-        //public static bool ModUpdateAvailable(string CloudName)
-        //{
-
-        //}
-        public static bool ProgramUpdateAvailable()
+        public static GithubReleaseItem[] GetReleases(string CloudName)
         {
-            if (isUpdateAvailable)
-            {
-                return true;
-            }
-            var releases = WebClientHandler.DeserializeApiCall<GithubItem[]>("https://api.github.com/repos/Aceba1/TerraTech-Mod-Manager/releases");
-            return releases[0].tag_name == Start.Version_Number;
-            
+            return WebClientHandler.DeserializeApiCall<GithubReleaseItem[]>("https://api.github.com/repos" + CloudName + "/releases");
         }
 
-        private class GithubItem
+        public class GithubReleaseItem
         {
             public string tag_name;
             public string name;
@@ -36,20 +26,25 @@ namespace TerraTechModManager.Downloader
         }
     }
 
-    public static class GetUpdateInfo
-    {
-        //https://api.github.com/repos/_owner_/_reponame_/releases [0]
-    }
-
     public static class GetRepos
     {
         public static int Page { get; internal set; }
-
-        public static string eelse;
-
-
-        public class GithubRepo
+        
+        public static GetFirstPage()
         {
+
+        }
+
+        public class GithubRepos
+        {
+
+            GithubRepoItem[] items;
+        }
+
+        public class GithubRepoItem
+        {
+            public string full_name;
+            public string name;
 
         }
     }

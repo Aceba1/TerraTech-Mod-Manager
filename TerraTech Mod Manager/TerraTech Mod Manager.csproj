@@ -77,7 +77,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Github Downloader\Download Folder.cs" />
+    <Compile Include="Github Downloader\Downloader.cs" />
     <Compile Include="Config\Program.cs" />
     <Compile Include="NewMain.cs">
       <SubType>Form</SubType>

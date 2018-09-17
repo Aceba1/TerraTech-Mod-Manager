@@ -32,6 +32,7 @@
             System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Local", System.Windows.Forms.HorizontalAlignment.Left);
             System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Github", System.Windows.Forms.HorizontalAlignment.Left);
             System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Nexus Mods", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.Panel panel5;
             System.Windows.Forms.Panel panel2;
             System.Windows.Forms.Panel panel3;
             System.Windows.Forms.Label label1;
@@ -42,11 +43,12 @@
             this.columnHeaderIDesc = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderAuthor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderSite = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.checkedListBoxCompactModSources = new System.Windows.Forms.CheckedListBox();
+            this.buttonLoadMoreMods = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.labelModLink = new System.Windows.Forms.Label();
-            this.labelModSource = new System.Windows.Forms.Label();
             this.labelModIDesc = new System.Windows.Forms.Label();
             this.labelModName = new System.Windows.Forms.Label();
+            this.labelModLink = new System.Windows.Forms.Label();
             this.buttonDownloadMod = new System.Windows.Forms.Button();
             this.comboBoxModState = new System.Windows.Forms.ComboBox();
             this.buttonModShowDesc = new System.Windows.Forms.Button();
@@ -58,7 +60,6 @@
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.tabPageCompact = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.checkedListBoxCompactModSources = new System.Windows.Forms.CheckedListBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.installPatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,10 +77,12 @@
             this.tTMMDownloadPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             panel1 = new System.Windows.Forms.Panel();
+            panel5 = new System.Windows.Forms.Panel();
             panel2 = new System.Windows.Forms.Panel();
             panel3 = new System.Windows.Forms.Panel();
             label1 = new System.Windows.Forms.Label();
             panel1.SuspendLayout();
+            panel5.SuspendLayout();
             panel2.SuspendLayout();
             this.panel4.SuspendLayout();
             panel3.SuspendLayout();
@@ -99,10 +102,11 @@
             panel1.AutoSize = true;
             panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             panel1.Controls.Add(this.listViewCompactMods);
+            panel1.Controls.Add(panel5);
             panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             panel1.Location = new System.Drawing.Point(3, 3);
             panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(476, 150);
+            panel1.Size = new System.Drawing.Size(476, 163);
             panel1.TabIndex = 0;
             // 
             // listViewCompactMods
@@ -126,10 +130,10 @@
             listViewGroup1,
             listViewGroup2,
             listViewGroup3});
-            this.listViewCompactMods.Location = new System.Drawing.Point(0, 0);
+            this.listViewCompactMods.Location = new System.Drawing.Point(0, 20);
             this.listViewCompactMods.MultiSelect = false;
             this.listViewCompactMods.Name = "listViewCompactMods";
-            this.listViewCompactMods.Size = new System.Drawing.Size(476, 150);
+            this.listViewCompactMods.Size = new System.Drawing.Size(476, 143);
             this.listViewCompactMods.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listViewCompactMods.TabIndex = 3;
             this.listViewCompactMods.UseCompatibleStateImageBehavior = false;
@@ -162,57 +166,70 @@
             this.columnHeaderSite.Text = "Site";
             this.columnHeaderSite.Width = 0;
             // 
+            // panel5
+            // 
+            panel5.Controls.Add(this.checkedListBoxCompactModSources);
+            panel5.Controls.Add(this.buttonLoadMoreMods);
+            panel5.Dock = System.Windows.Forms.DockStyle.Top;
+            panel5.Location = new System.Drawing.Point(0, 0);
+            panel5.Name = "panel5";
+            panel5.Size = new System.Drawing.Size(476, 20);
+            panel5.TabIndex = 4;
+            // 
+            // checkedListBoxCompactModSources
+            // 
+            this.checkedListBoxCompactModSources.CheckOnClick = true;
+            this.checkedListBoxCompactModSources.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.checkedListBoxCompactModSources.FormattingEnabled = true;
+            this.checkedListBoxCompactModSources.HorizontalScrollbar = true;
+            this.checkedListBoxCompactModSources.Items.AddRange(new object[] {
+            "Github",
+            "NexusMods (unavailable)"});
+            this.checkedListBoxCompactModSources.Location = new System.Drawing.Point(0, 0);
+            this.checkedListBoxCompactModSources.MultiColumn = true;
+            this.checkedListBoxCompactModSources.Name = "checkedListBoxCompactModSources";
+            this.checkedListBoxCompactModSources.Size = new System.Drawing.Size(401, 20);
+            this.checkedListBoxCompactModSources.TabIndex = 1;
+            // 
+            // buttonLoadMoreMods
+            // 
+            this.buttonLoadMoreMods.Dock = System.Windows.Forms.DockStyle.Right;
+            this.buttonLoadMoreMods.Location = new System.Drawing.Point(401, 0);
+            this.buttonLoadMoreMods.Name = "buttonLoadMoreMods";
+            this.buttonLoadMoreMods.Size = new System.Drawing.Size(75, 20);
+            this.buttonLoadMoreMods.TabIndex = 2;
+            this.buttonLoadMoreMods.Text = "Load more";
+            this.buttonLoadMoreMods.UseVisualStyleBackColor = true;
+            this.buttonLoadMoreMods.Visible = false;
+            this.buttonLoadMoreMods.Click += new System.EventHandler(this.buttonLoadMoreMods_Click);
+            // 
             // panel2
             // 
             panel2.AutoSize = true;
             panel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             panel2.Controls.Add(this.panel4);
             panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            panel2.Location = new System.Drawing.Point(3, 159);
+            panel2.Location = new System.Drawing.Point(3, 172);
             panel2.Name = "panel2";
-            panel2.Size = new System.Drawing.Size(476, 44);
+            panel2.Size = new System.Drawing.Size(476, 34);
             panel2.TabIndex = 1;
             // 
             // panel4
             // 
-            this.panel4.Controls.Add(this.labelModLink);
-            this.panel4.Controls.Add(this.labelModSource);
             this.panel4.Controls.Add(this.labelModIDesc);
             this.panel4.Controls.Add(this.labelModName);
+            this.panel4.Controls.Add(this.labelModLink);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(0, 0);
             this.panel4.Margin = new System.Windows.Forms.Padding(0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(476, 44);
+            this.panel4.Size = new System.Drawing.Size(476, 34);
             this.panel4.TabIndex = 6;
-            // 
-            // labelModLink
-            // 
-            this.labelModLink.AutoSize = true;
-            this.labelModLink.Dock = System.Windows.Forms.DockStyle.Left;
-            this.labelModLink.ForeColor = System.Drawing.Color.Blue;
-            this.labelModLink.Location = new System.Drawing.Point(0, 33);
-            this.labelModLink.Name = "labelModLink";
-            this.labelModLink.Size = new System.Drawing.Size(172, 13);
-            this.labelModLink.TabIndex = 5;
-            this.labelModLink.Text = "A link to the site that holds the mod";
-            this.labelModLink.UseWaitCursor = true;
-            this.labelModLink.Click += new System.EventHandler(this.OpenModLink);
-            // 
-            // labelModSource
-            // 
-            this.labelModSource.AutoSize = true;
-            this.labelModSource.Dock = System.Windows.Forms.DockStyle.Right;
-            this.labelModSource.Location = new System.Drawing.Point(362, 33);
-            this.labelModSource.Name = "labelModSource";
-            this.labelModSource.Size = new System.Drawing.Size(114, 13);
-            this.labelModSource.TabIndex = 4;
-            this.labelModSource.Text = "The source of the mod\r\n";
             // 
             // labelModIDesc
             // 
             this.labelModIDesc.AutoSize = true;
-            this.labelModIDesc.Dock = System.Windows.Forms.DockStyle.Top;
+            this.labelModIDesc.Dock = System.Windows.Forms.DockStyle.Left;
             this.labelModIDesc.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.labelModIDesc.Location = new System.Drawing.Point(0, 20);
             this.labelModIDesc.Name = "labelModIDesc";
@@ -231,6 +248,19 @@
             this.labelModName.TabIndex = 3;
             this.labelModName.Text = "Name";
             // 
+            // labelModLink
+            // 
+            this.labelModLink.AutoSize = true;
+            this.labelModLink.Dock = System.Windows.Forms.DockStyle.Right;
+            this.labelModLink.ForeColor = System.Drawing.Color.Blue;
+            this.labelModLink.Location = new System.Drawing.Point(304, 0);
+            this.labelModLink.Name = "labelModLink";
+            this.labelModLink.Size = new System.Drawing.Size(172, 13);
+            this.labelModLink.TabIndex = 5;
+            this.labelModLink.Text = "A link to the site that holds the mod";
+            this.labelModLink.UseWaitCursor = true;
+            this.labelModLink.Click += new System.EventHandler(this.OpenModLink);
+            // 
             // panel3
             // 
             panel3.AutoSize = true;
@@ -240,7 +270,7 @@
             panel3.Controls.Add(this.buttonModShowDesc);
             panel3.Controls.Add(this.buttonLocalModDelete);
             panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            panel3.Location = new System.Drawing.Point(0, 206);
+            panel3.Location = new System.Drawing.Point(0, 209);
             panel3.Margin = new System.Windows.Forms.Padding(0);
             panel3.Name = "panel3";
             panel3.Size = new System.Drawing.Size(482, 25);
@@ -319,7 +349,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.richTextBoxLog);
-            this.splitContainer1.Size = new System.Drawing.Size(703, 306);
+            this.splitContainer1.Size = new System.Drawing.Size(703, 290);
             this.splitContainer1.SplitterDistance = 496;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -341,7 +371,7 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.ShowToolTips = true;
-            this.tabControl1.Size = new System.Drawing.Size(496, 282);
+            this.tabControl1.Size = new System.Drawing.Size(496, 266);
             this.tabControl1.TabIndex = 2;
             this.tabControl1.TabStop = false;
             // 
@@ -352,7 +382,7 @@
             this.tabPageClassic.Location = new System.Drawing.Point(4, 22);
             this.tabPageClassic.Name = "tabPageClassic";
             this.tabPageClassic.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageClassic.Size = new System.Drawing.Size(488, 256);
+            this.tabPageClassic.Size = new System.Drawing.Size(488, 240);
             this.tabPageClassic.TabIndex = 0;
             this.tabPageClassic.Text = "Classic";
             this.tabPageClassic.UseVisualStyleBackColor = true;
@@ -363,17 +393,16 @@
             this.webBrowser1.Location = new System.Drawing.Point(3, 3);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(482, 250);
+            this.webBrowser1.Size = new System.Drawing.Size(482, 234);
             this.webBrowser1.TabIndex = 0;
             // 
             // tabPageCompact
             // 
             this.tabPageCompact.Controls.Add(this.tableLayoutPanel1);
-            this.tabPageCompact.Controls.Add(this.checkedListBoxCompactModSources);
             this.tabPageCompact.Location = new System.Drawing.Point(4, 22);
             this.tabPageCompact.Name = "tabPageCompact";
             this.tabPageCompact.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageCompact.Size = new System.Drawing.Size(488, 256);
+            this.tabPageCompact.Size = new System.Drawing.Size(488, 240);
             this.tabPageCompact.TabIndex = 1;
             this.tabPageCompact.Text = "Compact";
             this.tabPageCompact.UseVisualStyleBackColor = true;
@@ -388,30 +417,14 @@
             this.tableLayoutPanel1.Controls.Add(panel1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 22);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(482, 231);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(482, 234);
             this.tableLayoutPanel1.TabIndex = 1;
-            // 
-            // checkedListBoxCompactModSources
-            // 
-            this.checkedListBoxCompactModSources.CheckOnClick = true;
-            this.checkedListBoxCompactModSources.Dock = System.Windows.Forms.DockStyle.Top;
-            this.checkedListBoxCompactModSources.FormattingEnabled = true;
-            this.checkedListBoxCompactModSources.HorizontalScrollbar = true;
-            this.checkedListBoxCompactModSources.Items.AddRange(new object[] {
-            "Github",
-            "NexusMods"});
-            this.checkedListBoxCompactModSources.Location = new System.Drawing.Point(3, 3);
-            this.checkedListBoxCompactModSources.MultiColumn = true;
-            this.checkedListBoxCompactModSources.Name = "checkedListBoxCompactModSources";
-            this.checkedListBoxCompactModSources.Size = new System.Drawing.Size(482, 19);
-            this.checkedListBoxCompactModSources.TabIndex = 0;
-            this.checkedListBoxCompactModSources.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.ChangeModSources);
             // 
             // menuStrip1
             // 
@@ -540,7 +553,7 @@
             this.richTextBoxLog.ForeColor = System.Drawing.Color.Gainsboro;
             this.richTextBoxLog.Location = new System.Drawing.Point(0, 0);
             this.richTextBoxLog.Name = "richTextBoxLog";
-            this.richTextBoxLog.Size = new System.Drawing.Size(203, 306);
+            this.richTextBoxLog.Size = new System.Drawing.Size(203, 290);
             this.richTextBoxLog.TabIndex = 0;
             this.richTextBoxLog.Text = "";
             // 
@@ -548,7 +561,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(703, 306);
+            this.ClientSize = new System.Drawing.Size(703, 290);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -557,6 +570,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.IsClosing);
             this.Load += new System.EventHandler(this.NewMain_Load);
             panel1.ResumeLayout(false);
+            panel5.ResumeLayout(false);
             panel2.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
@@ -586,14 +600,12 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPageClassic;
         private System.Windows.Forms.TabPage tabPageCompact;
-        private System.Windows.Forms.CheckedListBox checkedListBoxCompactModSources;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem installPatchToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removePatchToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem configurationToolStripMenuItem;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Label labelModSource;
         private System.Windows.Forms.Label labelModIDesc;
         private System.Windows.Forms.Label labelModName;
         private System.Windows.Forms.Panel panel4;
@@ -619,5 +631,7 @@
         private System.Windows.Forms.ColumnHeader columnHeaderAuthor;
         private System.Windows.Forms.ColumnHeader columnHeaderSite;
         private System.Windows.Forms.ToolStripMenuItem tTMMDownloadPageToolStripMenuItem;
+        private System.Windows.Forms.CheckedListBox checkedListBoxCompactModSources;
+        private System.Windows.Forms.Button buttonLoadMoreMods;
     }
 }

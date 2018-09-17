@@ -268,151 +268,152 @@ namespace TerraTechModManager
 
         private void GetGitMods()
         {
-            var client = new WebClient();
-            try
-            {                
-                const string ModLink = @"<a href="; // End of search
-                const string ModPoint = @"<article"; // Mod Link
 
-                string site = client.DownloadString(new Uri("https://github.com/topics/ttqmm")); // Search
-                int newmodpos = site.IndexOf(ModPoint); // Get first mod position
-                int modpos = 0; // Current mod position
-                while (newmodpos != -1)
-                {
-                    modpos = newmodpos;
-                    int str = site.IndexOf(ModLink, modpos) + 9;
-                    newmodpos = site.IndexOf(ModPoint, str); // Next mod position
+            //var client = new WebClient();
+            //try
+            //{                
+            //    const string ModLink = @"<a href="; // End of search
+            //    const string ModPoint = @"<article"; // Mod Link
 
-                    string mod = site.Substring(str, site.IndexOf('"', str) - str);
-                    int modnamestart = mod.LastIndexOf('/') + 1;
-                    string modname = mod.Substring(modnamestart); // Get the name of the repo
+            //    string site = client.DownloadString(new Uri("https://github.com/topics/ttqmm")); // Search
+            //    int newmodpos = site.IndexOf(ModPoint); // Get first mod position
+            //    int modpos = 0; // Current mod position
+            //    while (newmodpos != -1)
+            //    {
+            //        modpos = newmodpos;
+            //        int str = site.IndexOf(ModLink, modpos) + 9;
+            //        newmodpos = site.IndexOf(ModPoint, str); // Next mod position
 
-                    GetGitMod_Internal(client, mod, modname, ref site, str, true);
-                }
+            //        string mod = site.Substring(str, site.IndexOf('"', str) - str);
+            //        int modnamestart = mod.LastIndexOf('/') + 1;
+            //        string modname = mod.Substring(modnamestart); // Get the name of the repo
 
-            }
-            catch (Exception E)
-            {
-                Log(E.Message, Color.Red);
-            }
-            if (false)
-            try
-            {
-                string StartingPoint = @"<ul class=""repo-list"">"; // Start of search
-                string EndingPoint = @"<a href="; // End of search
-                string ModPoint = @"href="""; // Mod Link
-                string site = client.DownloadString(new Uri("https://github.com/search?utf8=%E2%9C%93&q=TTQMM&ref=simplesearch")); // Search
-                int startget = site.IndexOf(StartingPoint); // Get start of search
-                int endget = site.IndexOf(EndingPoint, startget); // Get end of search
-                int newmodpos = site.IndexOf(ModPoint, startget); // Get first mod position
-                int modpos = 0; // Current mod position
-                while (newmodpos < endget)
-                {
-                    modpos = newmodpos;
-                    int str = modpos + 6;
-                    newmodpos = site.IndexOf(ModPoint, str); // Next mod position
+            //        GetGitMod_Internal(client, mod, modname, ref site, str, true);
+            //    }
 
-                    string mod = site.Substring(str, site.IndexOf('"', str) - str);
-                    int modnamestart = mod.LastIndexOf('/') + 1;
-                    string modname = mod.Substring(modnamestart); // Get the name of the repo
-                    if (modname.StartsWith("TTQMM-")) // If the repo's name starts with "TTQMM-"
-                    {
-                        GetGitMod_Internal(client, mod, modname, ref site, modpos, false);
-                    }
-                }
-            }
-            catch (Exception E)
-            {
-                Log(E.Message, Color.Red);
-            }
+            //}
+            //catch (Exception E)
+            //{
+            //    Log(E.Message, Color.Red);
+            //}
+            //if (false)
+            //try
+            //{
+            //    string StartingPoint = @"<ul class=""repo-list"">"; // Start of search
+            //    string EndingPoint = @"<a href="; // End of search
+            //    string ModPoint = @"href="""; // Mod Link
+            //    string site = client.DownloadString(new Uri("https://github.com/search?utf8=%E2%9C%93&q=TTQMM&ref=simplesearch")); // Search
+            //    int startget = site.IndexOf(StartingPoint); // Get start of search
+            //    int endget = site.IndexOf(EndingPoint, startget); // Get end of search
+            //    int newmodpos = site.IndexOf(ModPoint, startget); // Get first mod position
+            //    int modpos = 0; // Current mod position
+            //    while (newmodpos < endget)
+            //    {
+            //        modpos = newmodpos;
+            //        int str = modpos + 6;
+            //        newmodpos = site.IndexOf(ModPoint, str); // Next mod position
+
+            //        string mod = site.Substring(str, site.IndexOf('"', str) - str);
+            //        int modnamestart = mod.LastIndexOf('/') + 1;
+            //        string modname = mod.Substring(modnamestart); // Get the name of the repo
+            //        if (modname.StartsWith("TTQMM-")) // If the repo's name starts with "TTQMM-"
+            //        {
+            //            GetGitMod_Internal(client, mod, modname, ref site, modpos, false);
+            //        }
+            //    }
+            //}
+            //catch (Exception E)
+            //{
+            //    Log(E.Message, Color.Red);
+            //}
         }
         
         private void GetGitMod_Internal(WebClient client, string mod, string modname, ref string site, int modpos, bool IDescTypeDIV)
         {
-            string linkspath = "https://raw.githubusercontent.com" + mod + "/master/LINKS.";
-            string searchfor = "https://github.com" + mod + "/tree/";
+            //string linkspath = "https://raw.githubusercontent.com" + mod + "/master/LINKS.";
+            //string searchfor = "https://github.com" + mod + "/tree/";
 
-            bool flag = false;
-            string links = "";
-            try
-            {
-                links = client.DownloadString(linkspath + "md");
-            }
-            catch
-            {
-                try
-                {
-                    links = client.DownloadString(linkspath + "txt");
-                }
-                catch
-                {
-                    flag = true; // File doesn't exist
-                }
-            }
-            string downloadpath = "";
-            string[] requiredmods;
-            if (!flag) // Get links from LINKS.md or LINKS.txt
-            {
-                var linkarray = links.Split('\n', '\r');
-                downloadpath = linkarray[0];
-                requiredmods = new string[linkarray.Length - 1];
-                int EmptySpace = -1;
-                for (int i = 1; i < linkarray.Length; i++)
-                {
-                    if (linkarray[i] == "")
-                    {
-                        EmptySpace--;
-                        continue;
-                    }
-                    requiredmods[i + EmptySpace] = linkarray[i];
-                }
-                Array.Resize(ref requiredmods, linkarray.Length + EmptySpace);
-            }
-            else // Get link from README.md
-            {
-                string readmepath = "https://raw.githubusercontent.com" + mod + "/master/README.md";
-                string readme = client.DownloadString(readmepath); // Get README.md
-                int linkget = readme.IndexOf(searchfor);
-                if (linkget == -1)
-                {
-                    // The repo does not have a link to the latest build folder; Skipping
-                    return;
-                }
-                downloadpath = DigLink(ref readme, linkget);
-                requiredmods = new string[0];
+            //bool flag = false;
+            //string links = "";
+            //try
+            //{
+            //    links = client.DownloadString(linkspath + "md");
+            //}
+            //catch
+            //{
+            //    try
+            //    {
+            //        links = client.DownloadString(linkspath + "txt");
+            //    }
+            //    catch
+            //    {
+            //        flag = true; // File doesn't exist
+            //    }
+            //}
+            //string downloadpath = "";
+            //string[] requiredmods;
+            //if (!flag) // Get links from LINKS.md or LINKS.txt
+            //{
+            //    var linkarray = links.Split('\n', '\r');
+            //    downloadpath = linkarray[0];
+            //    requiredmods = new string[linkarray.Length - 1];
+            //    int EmptySpace = -1;
+            //    for (int i = 1; i < linkarray.Length; i++)
+            //    {
+            //        if (linkarray[i] == "")
+            //        {
+            //            EmptySpace--;
+            //            continue;
+            //        }
+            //        requiredmods[i + EmptySpace] = linkarray[i];
+            //    }
+            //    Array.Resize(ref requiredmods, linkarray.Length + EmptySpace);
+            //}
+            //else // Get link from README.md
+            //{
+            //    string readmepath = "https://raw.githubusercontent.com" + mod + "/master/README.md";
+            //    string readme = client.DownloadString(readmepath); // Get README.md
+            //    int linkget = readme.IndexOf(searchfor);
+            //    if (linkget == -1)
+            //    {
+            //         The repo does not have a link to the latest build folder; Skipping
+            //        return;
+            //    }
+            //    downloadpath = DigLink(ref readme, linkget);
+            //    requiredmods = new string[0];
 
-            }
-            ModInfo modInfo;
-            if (AllMods.ContainsKey(mod))
-            {
-                return;
-            }
-            else
-            {
-                modInfo = new ModInfo()
-                {
-                    Name = modname,
-                    CloudName = mod,
-                    Author = mod.Substring(1, mod.Length - modname.Length - 2),
-                    FilePath = downloadpath,
-                    Site = "https://github.com" + mod,
-                    RequiredModNames = requiredmods,
-                    State = ModInfo.ModState.Server,
-                };
-                AllMods.Add(mod, modInfo);
-            }
+            //}
+            //ModInfo modInfo;
+            //if (AllMods.ContainsKey(mod))
+            //{
+            //    return;
+            //}
+            //else
+            //{
+            //    modInfo = new ModInfo()
+            //    {
+            //        Name = modname,
+            //        CloudName = mod,
+            //        Author = mod.Substring(1, mod.Length - modname.Length - 2),
+            //        FilePath = downloadpath,
+            //        Site = "https://github.com" + mod,
+            //        RequiredModNames = requiredmods,
+            //        State = ModInfo.ModState.Server,
+            //    };
+            //    AllMods.Add(mod, modInfo);
+            //}
 
             // Start getting inline description
-            string ty = IDescTypeDIV ? "div" : "p";
-            int idescpos = site.IndexOf("<"+ty+" class=", modpos);
-            idescpos = site.IndexOf(">", idescpos) + 2;
-            int idescend = site.IndexOf("</"+ty+">", idescpos);
-            string inlinedesc = site.Substring(idescpos, idescend - idescpos).Trim(); // Get inline description
-            modInfo.InlineDescription = inlinedesc; // INLINE DESCRIPTION
+            //string ty = IDescTypeDIV ? "div" : "p";
+            //int idescpos = site.IndexOf("<"+ty+" class=", modpos);
+            //idescpos = site.IndexOf(">", idescpos) + 2;
+            //int idescend = site.IndexOf("</"+ty+">", idescpos);
+            //string inlinedesc = site.Substring(idescpos, idescend - idescpos).Trim(); // Get inline description
+            //modInfo.InlineDescription = inlinedesc; // INLINE DESCRIPTION
 
 
-            Log("Found mod in Github: " + mod, Color.LightBlue);
-            listViewCompactMods.Items.Add(modInfo.GetListViewItem(listViewCompactMods.Groups[1], false));
+            //Log("Found mod in Github: " + mod, Color.LightBlue);
+            //listViewCompactMods.Items.Add(modInfo.GetListViewItem(listViewCompactMods.Groups[1], false));
 
         }
 
@@ -557,10 +558,17 @@ namespace TerraTechModManager
                 var modInfo = GetModInfoFromIndex(listViewCompactMods.SelectedItems[0].Index);
                 labelModName.Text = modInfo.Name;
                 labelModIDesc.Text = modInfo.InlineDescription;
-                labelModSource.Text = modInfo.CloudName;
-                labelModLink.Text = modInfo.Site;
 
                 buttonDownloadMod.Visible = modInfo.Site != null && modInfo.Site.Length > 1;
+
+                if (modInfo.Site == "")
+                {
+                    labelModLink.Text = modInfo.FilePath;
+                }
+                else
+                {
+                    labelModLink.Text = modInfo.Site;
+                }
 
                 if (modInfo.State == ModInfo.ModState.Server)
                 {
@@ -604,6 +612,13 @@ namespace TerraTechModManager
         {
             Process.Start(labelModLink.Text);
         }
+
+
+        void Foo()
+        {
+
+        }
+
 
         private void ChangeLocalModState(int Index, ModInfo.ModState newState)
         {
@@ -854,6 +869,11 @@ namespace TerraTechModManager
         private void tTMMDownloadPageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Process.Start("https://github.com/Aceba1/TerraTech-Mod-Manager/releases");
+        }
+
+        private void buttonLoadMoreMods_Click(object sender, EventArgs e)
+        {
+
         }
     }
 
