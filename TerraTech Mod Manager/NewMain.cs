@@ -886,6 +886,7 @@ namespace TerraTechModManager
         public string Description;
         public string Site;
         public string[] RequiredModNames;
+        public string CurrentVersion;
 
         [JsonIgnore]
         public ModState State;

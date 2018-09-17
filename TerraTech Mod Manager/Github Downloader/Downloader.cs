@@ -28,23 +28,41 @@ namespace TerraTechModManager.Downloader
 
     public static class GetRepos
     {
-        public static int Page { get; internal set; }
-        
-        public static GetFirstPage()
-        {
+        public static double Page { get; internal set; }
+        public static double TotalCount { get; internal set; }
 
+        public static GithubRepoItem[] GetFirstPage()
+        {
+            var repos = WebClientHandler.DeserializeApiCall<GithubRepos>("https://api.github.com/search/repositories?q=topic:ttqmm");
+            Page = 0;
+            TotalCount = repos.total_count;
+            return repos.items;
+        }
+
+        public static GithubRepoItem[] GetNextPage()
+        {
+            Page++;
+            var repos = WebClientHandler.DeserializeApiCall<GithubRepos>("https://api.github.com/search/repositories?q=topic:ttqmm&page:" + Page.ToString());
+            if (TotalCount!=repos.total_count)
+            {
+                NewMain.inst.Log("Something has changed while this session was opened!",Color.LightBlue);
+                TotalCount = repos.total_count;
+            }
+            return repos.items;
         }
 
         public class GithubRepos
         {
-
-            GithubRepoItem[] items;
+            public double total_count;
+            public GithubRepoItem[] items;
         }
 
         public class GithubRepoItem
         {
             public string full_name;
             public string name;
+            public string description;
+            public string html_url;
 
         }
     }
