@@ -78,26 +78,12 @@ namespace TerraTechModManager.Downloader
         {
             string StartBranch = RepositoryPath.Substring(RepositoryPath.IndexOf("tree/master/") + 11);
             NewMain.inst.Log(GetApiUrl(CloudName, StartBranch), Color.Red);
-            return ProcessListOfEntries(WebClientHandler.DeserializeApiCall<GithubItem[]>(GetApiUrl(CloudName, StartBranch)), DownloadPath, RepositoryPath, CloudName, StartBranch);
+            return RecursiveDownload(WebClientHandler.DeserializeApiCall<GithubItem[]>(GetApiUrl(CloudName, StartBranch)), DownloadPath);
         }
 
-        public static string GetApiUrl(string CloudName, string BranchingPath)
-        {
-            /* <quote>
-            This API has an upper limit of 1,000 files for a directory.
-            If you need to retrieve more files, use the Git Trees API.
-            This API supports files up to 1 megabyte in size.
-               </quote> */
-            string subpath = "";
-            if (BranchingPath.Length != 0)
-            {
-                subpath = BranchingPath;
-                subpath += @"?ref=master";
-            }
-            return "https://api.github.com/repos" + CloudName + "/contents" + BranchingPath;
-        }
+        public static string GetApiUrl(string CloudName, string BranchingPath) => "https://api.github.com/repos/" + CloudName + "/contents" + BranchingPath;
 
-        private static string[] ProcessListOfEntries(IEnumerable<GithubItem> entries, string DownloadFolder, string repostiorySubDir, string CloudName, string StartBranch, string CurrentPath = "")
+        private static string[] RecursiveDownload(IEnumerable<GithubItem> entries, string DownloadFolder, string CurrentPath = "")
         {
             List<string> outFolders = new List<string>();
             try
@@ -124,7 +110,7 @@ namespace TerraTechModManager.Downloader
                             continue;
                         }
 
-                        ProcessListOfEntries(subEntries, DownloadFolder, repostiorySubDir, CloudName, StartBranch, CurrentPath + @"\" + localItem.name);
+                        RecursiveDownload(subEntries, DownloadFolder, CurrentPath + @"\" + localItem.name);
                     }
                     else if (localItem.type == "file")
                     {

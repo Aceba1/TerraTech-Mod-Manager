@@ -18,6 +18,9 @@ namespace TerraTechModManager
     {
         public static string StartMessage = "";
 
+        bool ShowProgramUpdatePrompt = true;
+        bool CheckForModUpdates = true;
+
         public static NewMain inst;
 
         public static string GithubToken
@@ -58,6 +61,8 @@ namespace TerraTechModManager
 
         private void LoadConfig()
         {
+            ConfigHandler.TryGetValue(ref CheckForModUpdates, "checklocalmodversion");
+            ConfigHandler.TryGetValue(ref ShowProgramUpdatePrompt, "getprogramupdates");
             tabControl1.SelectedIndex = ConfigHandler.TryGetValue("mmstyle", 1);
             ChangeVisibilityOfTabBar(!ConfigHandler.TryGetValue("hidetabs", false));
             bool hide = ConfigHandler.TryGetValue("hidelog", false);
@@ -70,6 +75,8 @@ namespace TerraTechModManager
         }
         public void SaveConfig()
         {
+            ConfigHandler.SetValue(CheckForModUpdates, "checklocalmodversion");
+            ConfigHandler.SetValue(ShowProgramUpdatePrompt, "getprogramupdates");
             ConfigHandler.SetValue(tabControl1.SelectedIndex, "mmstyle");
             ConfigHandler.SetValue(panelHideTabs.Visible, "hidetabs");
             ConfigHandler.SetValue(splitContainer1.Panel2Collapsed, "hidelog");
@@ -91,9 +98,11 @@ namespace TerraTechModManager
             {
                 RunPatcher.UpdatePatcher(DataFolder + @"\Managed");
             }
+
             RunPatcher.RunExe("-i");
             ChangeVisibilityOfCompactModInfo(false);
             ReloadLocalMods();
+
             LoadConfig();
         }
 
@@ -449,7 +458,7 @@ namespace TerraTechModManager
         private bool GetDescription(ref ModInfo modInfo)
         {
             var client = new WebClient();
-            string descpath = "https://raw.githubusercontent.com" + modInfo.CloudName + "/master/DESC.";
+            string descpath = "https://raw.githubusercontent.com/" + modInfo.CloudName + "/master/DESC.";
             bool flag2 = false;
             string desc = "";
             try
@@ -722,6 +731,8 @@ namespace TerraTechModManager
         }
 
         #region Download Mods
+
+#warning Fix downloading existent local mod
 
         private void GetModFromCloud(object sender, EventArgs e)
         {
