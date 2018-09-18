@@ -11,10 +11,9 @@ namespace TerraTechModManager.Downloader
 {
     public static class GetUpdateInfo
     {
-        private static bool isUpdateAvailable = false;
         public static GithubReleaseItem[] GetReleases(string CloudName)
         {
-            return WebClientHandler.DeserializeApiCall<GithubReleaseItem[]>("https://api.github.com/repos" + CloudName + "/releases");
+            return WebClientHandler.DeserializeApiCall<GithubReleaseItem[]>("https://api.github.com/repos/" + CloudName + "/releases");
         }
 
         public class GithubReleaseItem
@@ -35,6 +34,11 @@ namespace TerraTechModManager.Downloader
         public static bool MorePagesAvailable
         {
             get => Counted == TotalCount;
+        }
+
+        public static GithubRepoItem GetOneRepo(string CloudName)
+        {
+            return WebClientHandler.DeserializeApiCall<GithubRepoItem>("https://api.github.com/repos/" + CloudName);
         }
 
         public static GithubRepoItem[] GetFirstPage(string Search = "")
@@ -124,7 +128,7 @@ namespace TerraTechModManager.Downloader
                     {
                         using (var wc = new WebClient())
                         {
-                            NewMain.inst.Log("Downloading " + CurrentPath + @"\" + localItem.name + " from ", Color.Green);
+                            NewMain.inst.Log("Downloading " + CurrentPath + @"\" + localItem.name, Color.Green);
                             string filepath = DownloadFolder + CurrentPath + @"\" + localItem.name;
                             if (System.IO.File.Exists(filepath))
                             {
@@ -141,9 +145,9 @@ namespace TerraTechModManager.Downloader
                             {
                                 wc.DownloadFile(localItem.download_url, filepath);
                             }
-                            catch
+                            catch (Exception E)
                             {
-                                NewMain.inst.Log("Could not download " + localItem.name + "!", Color.Red);
+                                NewMain.inst.Log("Could not download " + localItem.name + "!\n" + E.Message + "\nTo " + filepath + "\nFrom " + localItem.download_url, Color.Red);
                             }
                         }
                     }
@@ -185,7 +189,7 @@ namespace TerraTechModManager.Downloader
                 string jsonData = webClient.DownloadString(ApiUrl);
                 return JsonConvert.DeserializeObject<T>(jsonData);
             }
-            catch
+            catch(Exception E)
             {
                 if (flag)
                 {
@@ -193,7 +197,7 @@ namespace TerraTechModManager.Downloader
                     NewMain.inst.Log("Github Token does not appear valid; Resetting...", Color.Orange);
                     goto Retry;
                 }
-                throw new Exception("Could not access API! Try again later?");
+                throw new Exception("Could not access API! Try again later?\n(This could have been caused by rate limiting: Try setting a Github user token in the Config)\n" + E.Message + "\n" + ApiUrl);
             }
         }
     }

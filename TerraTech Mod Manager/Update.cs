@@ -33,5 +33,17 @@ namespace TerraTechModManager
             Return = 1;
             this.Close();
         }
+
+        private void checkBoxIgnore_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxIgnore.Checked)
+            {
+                buttonDownloadUpdate.Enabled = false;
+            }
+            else
+            {
+                buttonDownloadUpdate.Enabled = true;
+            }
+        }
     }
 }

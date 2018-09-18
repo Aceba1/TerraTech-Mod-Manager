@@ -142,6 +142,7 @@
             this.checkBoxIgnore.TabIndex = 2;
             this.checkBoxIgnore.Text = "Always Ignore";
             this.checkBoxIgnore.UseVisualStyleBackColor = true;
+            this.checkBoxIgnore.CheckedChanged += new System.EventHandler(this.checkBoxIgnore_CheckedChanged);
             // 
             // richTextBoxBody
             // 
