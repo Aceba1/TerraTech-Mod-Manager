@@ -333,3 +333,4 @@ Executable/config.json
 TTMM2.zip
 Executable.zip
 *.json
+*.config
