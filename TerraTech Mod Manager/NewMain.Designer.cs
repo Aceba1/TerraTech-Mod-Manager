@@ -44,6 +44,7 @@
             this.columnHeaderAuthor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderSite = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.checkedListBoxCompactModSources = new System.Windows.Forms.CheckedListBox();
+            this.textBoxModSearch = new System.Windows.Forms.TextBox();
             this.buttonLoadMoreMods = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
             this.labelModIDesc = new System.Windows.Forms.Label();
@@ -69,6 +70,7 @@
             this.hideLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideTabsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skipStartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hideProgramUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.githubTokenToolStripMenuItem = new System.Windows.Forms.ToolStripTextBox();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.githubPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -106,7 +108,7 @@
             panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             panel1.Location = new System.Drawing.Point(3, 3);
             panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(476, 163);
+            panel1.Size = new System.Drawing.Size(408, 170);
             panel1.TabIndex = 0;
             // 
             // listViewCompactMods
@@ -133,7 +135,7 @@
             this.listViewCompactMods.Location = new System.Drawing.Point(0, 20);
             this.listViewCompactMods.MultiSelect = false;
             this.listViewCompactMods.Name = "listViewCompactMods";
-            this.listViewCompactMods.Size = new System.Drawing.Size(476, 143);
+            this.listViewCompactMods.Size = new System.Drawing.Size(408, 150);
             this.listViewCompactMods.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listViewCompactMods.TabIndex = 3;
             this.listViewCompactMods.UseCompatibleStateImageBehavior = false;
@@ -169,11 +171,12 @@
             // panel5
             // 
             panel5.Controls.Add(this.checkedListBoxCompactModSources);
+            panel5.Controls.Add(this.textBoxModSearch);
             panel5.Controls.Add(this.buttonLoadMoreMods);
             panel5.Dock = System.Windows.Forms.DockStyle.Top;
             panel5.Location = new System.Drawing.Point(0, 0);
             panel5.Name = "panel5";
-            panel5.Size = new System.Drawing.Size(476, 20);
+            panel5.Size = new System.Drawing.Size(408, 20);
             panel5.TabIndex = 4;
             // 
             // checkedListBoxCompactModSources
@@ -188,13 +191,21 @@
             this.checkedListBoxCompactModSources.Location = new System.Drawing.Point(0, 0);
             this.checkedListBoxCompactModSources.MultiColumn = true;
             this.checkedListBoxCompactModSources.Name = "checkedListBoxCompactModSources";
-            this.checkedListBoxCompactModSources.Size = new System.Drawing.Size(401, 20);
+            this.checkedListBoxCompactModSources.Size = new System.Drawing.Size(203, 20);
             this.checkedListBoxCompactModSources.TabIndex = 1;
+            // 
+            // textBoxModSearch
+            // 
+            this.textBoxModSearch.Dock = System.Windows.Forms.DockStyle.Right;
+            this.textBoxModSearch.Location = new System.Drawing.Point(203, 0);
+            this.textBoxModSearch.Name = "textBoxModSearch";
+            this.textBoxModSearch.Size = new System.Drawing.Size(130, 20);
+            this.textBoxModSearch.TabIndex = 3;
             // 
             // buttonLoadMoreMods
             // 
             this.buttonLoadMoreMods.Dock = System.Windows.Forms.DockStyle.Right;
-            this.buttonLoadMoreMods.Location = new System.Drawing.Point(401, 0);
+            this.buttonLoadMoreMods.Location = new System.Drawing.Point(333, 0);
             this.buttonLoadMoreMods.Name = "buttonLoadMoreMods";
             this.buttonLoadMoreMods.Size = new System.Drawing.Size(75, 20);
             this.buttonLoadMoreMods.TabIndex = 2;
@@ -209,9 +220,9 @@
             panel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             panel2.Controls.Add(this.panel4);
             panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            panel2.Location = new System.Drawing.Point(3, 172);
+            panel2.Location = new System.Drawing.Point(3, 179);
             panel2.Name = "panel2";
-            panel2.Size = new System.Drawing.Size(476, 34);
+            panel2.Size = new System.Drawing.Size(408, 34);
             panel2.TabIndex = 1;
             // 
             // panel4
@@ -223,7 +234,7 @@
             this.panel4.Location = new System.Drawing.Point(0, 0);
             this.panel4.Margin = new System.Windows.Forms.Padding(0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(476, 34);
+            this.panel4.Size = new System.Drawing.Size(408, 34);
             this.panel4.TabIndex = 6;
             // 
             // labelModIDesc
@@ -253,7 +264,7 @@
             this.labelModLink.AutoSize = true;
             this.labelModLink.Dock = System.Windows.Forms.DockStyle.Right;
             this.labelModLink.ForeColor = System.Drawing.Color.Blue;
-            this.labelModLink.Location = new System.Drawing.Point(304, 0);
+            this.labelModLink.Location = new System.Drawing.Point(236, 0);
             this.labelModLink.Name = "labelModLink";
             this.labelModLink.Size = new System.Drawing.Size(172, 13);
             this.labelModLink.TabIndex = 5;
@@ -270,10 +281,10 @@
             panel3.Controls.Add(this.buttonModShowDesc);
             panel3.Controls.Add(this.buttonLocalModDelete);
             panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            panel3.Location = new System.Drawing.Point(0, 209);
+            panel3.Location = new System.Drawing.Point(0, 216);
             panel3.Margin = new System.Windows.Forms.Padding(0);
             panel3.Name = "panel3";
-            panel3.Size = new System.Drawing.Size(482, 25);
+            panel3.Size = new System.Drawing.Size(414, 25);
             panel3.TabIndex = 2;
             // 
             // buttonDownloadMod
@@ -281,7 +292,7 @@
             this.buttonDownloadMod.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonDownloadMod.Location = new System.Drawing.Point(121, 0);
             this.buttonDownloadMod.Name = "buttonDownloadMod";
-            this.buttonDownloadMod.Size = new System.Drawing.Size(179, 25);
+            this.buttonDownloadMod.Size = new System.Drawing.Size(111, 25);
             this.buttonDownloadMod.TabIndex = 7;
             this.buttonDownloadMod.Text = "Download";
             this.buttonDownloadMod.UseVisualStyleBackColor = true;
@@ -305,7 +316,7 @@
             // buttonModShowDesc
             // 
             this.buttonModShowDesc.Dock = System.Windows.Forms.DockStyle.Right;
-            this.buttonModShowDesc.Location = new System.Drawing.Point(300, 0);
+            this.buttonModShowDesc.Location = new System.Drawing.Point(232, 0);
             this.buttonModShowDesc.Name = "buttonModShowDesc";
             this.buttonModShowDesc.Size = new System.Drawing.Size(102, 25);
             this.buttonModShowDesc.TabIndex = 1;
@@ -315,7 +326,7 @@
             // buttonLocalModDelete
             // 
             this.buttonLocalModDelete.Dock = System.Windows.Forms.DockStyle.Right;
-            this.buttonLocalModDelete.Location = new System.Drawing.Point(402, 0);
+            this.buttonLocalModDelete.Location = new System.Drawing.Point(334, 0);
             this.buttonLocalModDelete.Name = "buttonLocalModDelete";
             this.buttonLocalModDelete.Size = new System.Drawing.Size(80, 25);
             this.buttonLocalModDelete.TabIndex = 0;
@@ -349,8 +360,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.richTextBoxLog);
-            this.splitContainer1.Size = new System.Drawing.Size(703, 290);
-            this.splitContainer1.SplitterDistance = 496;
+            this.splitContainer1.Size = new System.Drawing.Size(607, 297);
+            this.splitContainer1.SplitterDistance = 428;
             this.splitContainer1.TabIndex = 0;
             // 
             // panelHideTabs
@@ -359,7 +370,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelHideTabs.Location = new System.Drawing.Point(-1, 23);
             this.panelHideTabs.Name = "panelHideTabs";
-            this.panelHideTabs.Size = new System.Drawing.Size(497, 6);
+            this.panelHideTabs.Size = new System.Drawing.Size(429, 6);
             this.panelHideTabs.TabIndex = 2;
             // 
             // tabControl1
@@ -371,7 +382,7 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.ShowToolTips = true;
-            this.tabControl1.Size = new System.Drawing.Size(496, 266);
+            this.tabControl1.Size = new System.Drawing.Size(428, 273);
             this.tabControl1.TabIndex = 2;
             this.tabControl1.TabStop = false;
             // 
@@ -382,7 +393,7 @@
             this.tabPageClassic.Location = new System.Drawing.Point(4, 22);
             this.tabPageClassic.Name = "tabPageClassic";
             this.tabPageClassic.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageClassic.Size = new System.Drawing.Size(488, 240);
+            this.tabPageClassic.Size = new System.Drawing.Size(420, 247);
             this.tabPageClassic.TabIndex = 0;
             this.tabPageClassic.Text = "Classic";
             this.tabPageClassic.UseVisualStyleBackColor = true;
@@ -393,7 +404,7 @@
             this.webBrowser1.Location = new System.Drawing.Point(3, 3);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(482, 234);
+            this.webBrowser1.Size = new System.Drawing.Size(414, 241);
             this.webBrowser1.TabIndex = 0;
             // 
             // tabPageCompact
@@ -402,7 +413,7 @@
             this.tabPageCompact.Location = new System.Drawing.Point(4, 22);
             this.tabPageCompact.Name = "tabPageCompact";
             this.tabPageCompact.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageCompact.Size = new System.Drawing.Size(488, 240);
+            this.tabPageCompact.Size = new System.Drawing.Size(420, 247);
             this.tabPageCompact.TabIndex = 1;
             this.tabPageCompact.Text = "Compact";
             this.tabPageCompact.UseVisualStyleBackColor = true;
@@ -423,7 +434,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(482, 234);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(414, 241);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // menuStrip1
@@ -434,7 +445,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(496, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(428, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -475,6 +486,7 @@
             this.hideLogToolStripMenuItem,
             this.hideTabsToolStripMenuItem,
             this.skipStartToolStripMenuItem,
+            this.hideProgramUpdatesToolStripMenuItem,
             this.githubTokenToolStripMenuItem});
             this.configurationToolStripMenuItem.Name = "configurationToolStripMenuItem";
             this.configurationToolStripMenuItem.Size = new System.Drawing.Size(93, 20);
@@ -500,6 +512,13 @@
             this.skipStartToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
             this.skipStartToolStripMenuItem.Text = "Skip Start";
             this.skipStartToolStripMenuItem.Click += new System.EventHandler(this.skipStartToolStripMenuItem_Click);
+            // 
+            // hideProgramUpdatesToolStripMenuItem
+            // 
+            this.hideProgramUpdatesToolStripMenuItem.Name = "hideProgramUpdatesToolStripMenuItem";
+            this.hideProgramUpdatesToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
+            this.hideProgramUpdatesToolStripMenuItem.Text = "Hide Program Updates";
+            this.hideProgramUpdatesToolStripMenuItem.Click += new System.EventHandler(this.hideProgramUpdatesToolStripMenuItem_Click);
             // 
             // githubTokenToolStripMenuItem
             // 
@@ -553,7 +572,7 @@
             this.richTextBoxLog.ForeColor = System.Drawing.Color.Gainsboro;
             this.richTextBoxLog.Location = new System.Drawing.Point(0, 0);
             this.richTextBoxLog.Name = "richTextBoxLog";
-            this.richTextBoxLog.Size = new System.Drawing.Size(203, 290);
+            this.richTextBoxLog.Size = new System.Drawing.Size(175, 297);
             this.richTextBoxLog.TabIndex = 0;
             this.richTextBoxLog.Text = "";
             // 
@@ -561,7 +580,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(703, 290);
+            this.ClientSize = new System.Drawing.Size(607, 297);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -571,6 +590,7 @@
             this.Load += new System.EventHandler(this.NewMain_Load);
             panel1.ResumeLayout(false);
             panel5.ResumeLayout(false);
+            panel5.PerformLayout();
             panel2.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
@@ -633,5 +653,7 @@
         private System.Windows.Forms.ToolStripMenuItem tTMMDownloadPageToolStripMenuItem;
         private System.Windows.Forms.CheckedListBox checkedListBoxCompactModSources;
         private System.Windows.Forms.Button buttonLoadMoreMods;
+        private System.Windows.Forms.TextBox textBoxModSearch;
+        private System.Windows.Forms.ToolStripMenuItem hideProgramUpdatesToolStripMenuItem;
     }
 }

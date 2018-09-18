@@ -18,8 +18,7 @@ namespace TerraTechModManager
     {
         public static string StartMessage = "";
 
-        bool ShowProgramUpdatePrompt = true;
-        bool CheckForModUpdates = true;
+        
 
         public static NewMain inst;
 
@@ -61,8 +60,10 @@ namespace TerraTechModManager
 
         private void LoadConfig()
         {
-            ConfigHandler.TryGetValue(ref CheckForModUpdates, "checklocalmodversion");
+            bool ShowProgramUpdatePrompt = true;
             ConfigHandler.TryGetValue(ref ShowProgramUpdatePrompt, "getprogramupdates");
+            hideProgramUpdatesToolStripMenuItem.Checked = !ShowProgramUpdatePrompt;
+
             tabControl1.SelectedIndex = ConfigHandler.TryGetValue("mmstyle", 1);
             ChangeVisibilityOfTabBar(!ConfigHandler.TryGetValue("hidetabs", false));
             bool hide = ConfigHandler.TryGetValue("hidelog", false);
@@ -75,8 +76,7 @@ namespace TerraTechModManager
         }
         public void SaveConfig()
         {
-            ConfigHandler.SetValue(CheckForModUpdates, "checklocalmodversion");
-            ConfigHandler.SetValue(ShowProgramUpdatePrompt, "getprogramupdates");
+            ConfigHandler.SetValue(!hideProgramUpdatesToolStripMenuItem.Checked, "getprogramupdates");
             ConfigHandler.SetValue(tabControl1.SelectedIndex, "mmstyle");
             ConfigHandler.SetValue(panelHideTabs.Visible, "hidetabs");
             ConfigHandler.SetValue(splitContainer1.Panel2Collapsed, "hidelog");
@@ -104,6 +104,39 @@ namespace TerraTechModManager
             ReloadLocalMods();
 
             LoadConfig();
+
+            if (!hideProgramUpdatesToolStripMenuItem.Checked)
+            {
+                Task.Run(action:LookForProgramUpdate);
+            }
+        }
+
+        private void LookForProgramUpdate()
+        {
+            var latest = Downloader.GetUpdateInfo.GetReleases("Aceba1/TerraTech-Mod-Manager")[0];
+            if (latest.tag_name != Start.Version_Number)
+            {
+                var updateScreen = new Update(latest);
+                updateScreen.Show();
+                if (updateScreen.Return == 1)
+                {
+                    string downloadPath = Path.Combine(Environment.CurrentDirectory, "Update");
+                    Downloader.DownloadFolder.Download("https://github.com/Aceba1/TerraTech-Mod-Manager/tree/master/Executable", "Aceba1/TerraTech-Mod-Manager", downloadPath);
+
+                    System.Diagnostics.Process process = new System.Diagnostics.Process();
+                    System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+                    startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+                    startInfo.FileName = "cmd.exe";
+                    startInfo.Arguments = "/C move /y \""+downloadPath+"\" \""+ Environment.CurrentDirectory+"\"";
+                    process.StartInfo = startInfo;
+                    process.Start();
+                    this.Close();
+                }
+                else if (updateScreen.Return == -1)
+                {
+                    hideProgramUpdatesToolStripMenuItem.Checked = true;
+                }
+            }
         }
 
         private void ChangeVisibilityOfCompactModInfo(bool Show)
@@ -277,7 +310,7 @@ namespace TerraTechModManager
 
         private void GetGitMods()
         {
-
+            Downloader.GetRepos.GetFirstPage();
             //var client = new WebClient();
             //try
             //{                
@@ -885,6 +918,11 @@ namespace TerraTechModManager
         private void buttonLoadMoreMods_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void hideProgramUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            hideProgramUpdatesToolStripMenuItem.Checked = !hideProgramUpdatesToolStripMenuItem.Checked;
         }
     }
 

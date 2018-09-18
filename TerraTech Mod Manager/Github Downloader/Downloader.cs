@@ -30,10 +30,18 @@ namespace TerraTechModManager.Downloader
     {
         public static double Page { get; internal set; }
         public static double TotalCount { get; internal set; }
-
-        public static GithubRepoItem[] GetFirstPage()
+        public static double Counted { get; internal set; }
+        public static string Search { get; internal set; }
+        public static bool MorePagesAvailable
         {
-            var repos = WebClientHandler.DeserializeApiCall<GithubRepos>("https://api.github.com/search/repositories?q=topic:ttqmm");
+            get => Counted == TotalCount;
+        }
+
+        public static GithubRepoItem[] GetFirstPage(string Search = "")
+        {
+            GetRepos.Search = Search;
+            var repos = WebClientHandler.DeserializeApiCall<GithubRepos>("https://api.github.com/search/repositories?q=topic:ttqmm" + (Search != "" ? "+" + Search : ""));
+            Counted = repos.items.Length;
             Page = 0;
             TotalCount = repos.total_count;
             return repos.items;
@@ -42,7 +50,7 @@ namespace TerraTechModManager.Downloader
         public static GithubRepoItem[] GetNextPage()
         {
             Page++;
-            var repos = WebClientHandler.DeserializeApiCall<GithubRepos>("https://api.github.com/search/repositories?q=topic:ttqmm&page:" + Page.ToString());
+            var repos = WebClientHandler.DeserializeApiCall<GithubRepos>("https://api.github.com/search/repositories?q=topic:ttqmm"+ (Search != "" ? "+" + Search : "") + "&page:" + Page.ToString());
             if (TotalCount!=repos.total_count)
             {
                 NewMain.inst.Log("Something has changed while this session was opened!",Color.LightBlue);
