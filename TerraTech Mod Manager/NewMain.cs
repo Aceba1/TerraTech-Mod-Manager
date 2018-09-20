@@ -17,7 +17,7 @@ namespace TerraTechModManager
     public partial class NewMain : Form
     {
 #warning Change version number with every update
-        public const string Version_Number = "1.1";
+        public const string Version_Number = "1.1.1";
 
         private string LastSearch = "";
 
@@ -949,7 +949,7 @@ namespace TerraTechModManager
             KillPatcherEXE();
             RunPatcher.UpdatePatcher(DataFolder + @"\Managed");
             RunPatcher.RunExe("-u");
-            RunPatcher.RunExe("-i");
+            RunPatcher.IsReinstalling = true;
         }
 
         private void githubPageToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1209,6 +1209,7 @@ namespace TerraTechModManager
                 catch { }
                 if (IsReinstalling)
                 {
+                    IsReinstalling = false;
                     RunPatcher.EXE.WaitForExit(5000);
                     RunExe("-i");
                 }
