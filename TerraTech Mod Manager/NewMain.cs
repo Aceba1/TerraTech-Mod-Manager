@@ -86,11 +86,11 @@ namespace TerraTechModManager
 
         private void LoadConfig()
         {
-            bool ShowProgramUpdatePrompt = false;
+            bool ShowProgramUpdatePrompt = true;
             ConfigHandler.TryGetValue(ref ShowProgramUpdatePrompt, "getprogramupdates");
             showProgramUpdatesToolStripMenuItem.Checked = ShowProgramUpdatePrompt;
 
-            bool LookForModUpdates = false;
+            bool LookForModUpdates = true;
             ConfigHandler.TryGetValue(ref LookForModUpdates, "getmodupdates");
             lookForModUpdatesToolStripMenuItem.Checked = LookForModUpdates;
 
@@ -108,7 +108,7 @@ namespace TerraTechModManager
                 AddToTaskQueue(new Task(action: LookForProgramUpdate_v));
             }
 
-            ReloadLocalMods(false);
+            ReloadLocalMods(true); // False for synchronous local/server mod loading, True for stability
         }
         public void SaveConfig()
         {
@@ -162,7 +162,7 @@ namespace TerraTechModManager
             bool result = false;
             try
             {
-                var latest = Downloader.GetUpdateInfo.GetReleases("Aceba1/TerraTech-Mod-Manager")[0];
+                var latest = Downloader.GetUpdateInfo.GetReleases("Aceba1/TerraTech-Mod-Manager");
                 if (latest.tag_name != Version_Number)
                 {
                     result = true;
@@ -236,10 +236,10 @@ namespace TerraTechModManager
 
         public void Log(string value, Color color, bool newLine = true)
         {
-            string _value = value;
             richTextBoxLog.DeselectAll();
             richTextBoxLog.SelectionColor = color;
-            richTextBoxLog.AppendText(_value + (newLine ? "\r" : ""));
+            richTextBoxLog.AppendText(value + (newLine ? "\r" : ""));
+            richTextBoxLog.ScrollToCaret();
         }
 
 
@@ -393,7 +393,9 @@ namespace TerraTechModManager
                     GithubMods.Remove(CloudName);
                     serverMod.FoundLocal = true;
                     serverMod.TrySetChecked(true);
+                    if (lookForModUpdatesToolStripMenuItem.Checked)
                     result = serverMod.GetVersionTagFromCloud();
+                    Log(CloudName + " (already in GithubMods)", Color.Green);
                 }
                 else
                 {
@@ -401,8 +403,16 @@ namespace TerraTechModManager
                     serverMod.FoundLocal = true;
                     if (lookForModUpdatesToolStripMenuItem.Checked)
                     result = serverMod.GetVersionTagFromCloud();
+                    Log(CloudName, Color.Green);
                 }
-                FoundServerMods.Add(CloudName, serverMod);
+                FoundServerMods[CloudName] = serverMod;
+                if (GithubMods.TryGetValue(CloudName, out ModInfo serverMod2)) // Temporary duplication fix for synchronous local/server mod loading
+                {
+                    serverMod.Visible = serverMod2.Visible;
+                    GithubMods.Remove(CloudName);
+                    serverMod.TrySetChecked(true);
+                    Log(CloudName + " (moved to local)", Color.Green);
+                }
             }
             catch (Exception E)
             {
@@ -467,12 +477,24 @@ namespace TerraTechModManager
                 mod.Visible = listViewCompactMods.Items.Add(mod.GetListViewItem(listViewCompactMods.Groups[1], false));
                 mod.FoundLocal = true;
                 mod.TrySetChecked(true);
+                Log(mod.CloudName + " (already in FoundServerMods)", Color.LightBlue);
             }
             else
             {
                 mod = new ModInfo(repo);
                 GithubMods.Add(mod.CloudName, mod);
                 mod.Visible = listViewCompactMods.Items.Add(mod.GetListViewItem(listViewCompactMods.Groups[1], false));
+                Log(mod.CloudName, Color.LightBlue);
+                if (FoundServerMods.TryGetValue(repo.full_name, out ModInfo mod2)) // Temporary duplication fix for synchronous local/server mod loading
+                {
+                    GithubMods.Remove(mod2.CloudName);
+                    mod2.FoundLocal = true;
+                    mod2.Visible = mod.Visible;
+                    mod2.TrySetChecked(true);
+                    if (lookForModUpdatesToolStripMenuItem.Checked)
+                        mod2.GetVersionTagFromCloud();
+                    Log(repo.full_name + " (moved to local)", Color.LightBlue);
+                }
             }
         }
 
@@ -701,14 +723,14 @@ namespace TerraTechModManager
             if (newState == ModInfo.ModState.Disabled)
             {
                 SetLocalModDisabled(ref modInfo.FilePath, true);
-                Log("Relocated " + modInfo.Name, Color.DarkGreen);
+                Log("Relocated " + modInfo.Name, Color.DarkOliveGreen);
             }
             else
             {
                 if (modInfo.State == ModInfo.ModState.Disabled)
                 {
                     SetLocalModDisabled(ref modInfo.FilePath, false);
-                    Log("Returned " + modInfo.Name, Color.DarkGreen);
+                    Log("Returned " + modInfo.Name, Color.DarkOliveGreen);
                 }
                 SetLocalModState(modInfo.FilePath, newState);
                 Log("Set " + modInfo.Name + " to " + newState.ToString(), Color.DarkSeaGreen);
@@ -822,6 +844,7 @@ namespace TerraTechModManager
                 {
                     localMod.Visible.SubItems[2].Text = "Updating...";
                 }
+                return;
             }
             if (modInfo.CloudName != null && modInfo.CloudName.Length > 0 && FoundServerMods.TryGetValue(modInfo.CloudName, out ModInfo cloudModInfo))
             {
@@ -1110,7 +1133,7 @@ namespace TerraTechModManager
         {
             try
             {
-                CurrentVersion = Downloader.GetUpdateInfo.GetReleases(CloudName)[0].tag_name;
+                CurrentVersion = Downloader.GetUpdateInfo.GetReleases(CloudName).tag_name;
                 return CurrentVersion;
             }
             catch
@@ -1210,7 +1233,11 @@ namespace TerraTechModManager
                 if (IsReinstalling)
                 {
                     IsReinstalling = false;
-                    RunPatcher.EXE.WaitForExit(5000);
+                    try
+                    {
+                        RunPatcher.EXE.WaitForExit(5000);
+                            }
+                    catch { }
                     RunExe("-i");
                 }
             }

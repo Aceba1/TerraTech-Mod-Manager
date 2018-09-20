@@ -111,7 +111,7 @@
             panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             panel1.Location = new System.Drawing.Point(3, 3);
             panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(355, 204);
+            panel1.Size = new System.Drawing.Size(565, 251);
             panel1.TabIndex = 0;
             // 
             // listViewCompactMods
@@ -138,7 +138,7 @@
             this.listViewCompactMods.Location = new System.Drawing.Point(0, 20);
             this.listViewCompactMods.MultiSelect = false;
             this.listViewCompactMods.Name = "listViewCompactMods";
-            this.listViewCompactMods.Size = new System.Drawing.Size(355, 184);
+            this.listViewCompactMods.Size = new System.Drawing.Size(565, 231);
             this.listViewCompactMods.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listViewCompactMods.TabIndex = 3;
             this.listViewCompactMods.UseCompatibleStateImageBehavior = false;
@@ -179,7 +179,7 @@
             panel5.Dock = System.Windows.Forms.DockStyle.Top;
             panel5.Location = new System.Drawing.Point(0, 0);
             panel5.Name = "panel5";
-            panel5.Size = new System.Drawing.Size(355, 20);
+            panel5.Size = new System.Drawing.Size(565, 20);
             panel5.TabIndex = 4;
             // 
             // textBoxModSearch
@@ -187,7 +187,7 @@
             this.textBoxModSearch.Dock = System.Windows.Forms.DockStyle.Top;
             this.textBoxModSearch.Location = new System.Drawing.Point(44, 0);
             this.textBoxModSearch.Name = "textBoxModSearch";
-            this.textBoxModSearch.Size = new System.Drawing.Size(236, 20);
+            this.textBoxModSearch.Size = new System.Drawing.Size(446, 20);
             this.textBoxModSearch.TabIndex = 3;
             this.textBoxModSearch.TextChanged += new System.EventHandler(this.textBoxModSearch_TextChanged);
             // 
@@ -205,7 +205,7 @@
             // buttonLoadMoreMods
             // 
             this.buttonLoadMoreMods.Dock = System.Windows.Forms.DockStyle.Right;
-            this.buttonLoadMoreMods.Location = new System.Drawing.Point(280, 0);
+            this.buttonLoadMoreMods.Location = new System.Drawing.Point(490, 0);
             this.buttonLoadMoreMods.Name = "buttonLoadMoreMods";
             this.buttonLoadMoreMods.Size = new System.Drawing.Size(75, 20);
             this.buttonLoadMoreMods.TabIndex = 2;
@@ -220,9 +220,9 @@
             panel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             panel2.Controls.Add(this.panel4);
             panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            panel2.Location = new System.Drawing.Point(3, 213);
+            panel2.Location = new System.Drawing.Point(3, 260);
             panel2.Name = "panel2";
-            panel2.Size = new System.Drawing.Size(355, 34);
+            panel2.Size = new System.Drawing.Size(565, 34);
             panel2.TabIndex = 1;
             // 
             // panel4
@@ -234,7 +234,7 @@
             this.panel4.Location = new System.Drawing.Point(0, 0);
             this.panel4.Margin = new System.Windows.Forms.Padding(0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(355, 34);
+            this.panel4.Size = new System.Drawing.Size(565, 34);
             this.panel4.TabIndex = 6;
             // 
             // labelModIDesc
@@ -264,7 +264,7 @@
             this.labelModLink.AutoSize = true;
             this.labelModLink.Dock = System.Windows.Forms.DockStyle.Right;
             this.labelModLink.ForeColor = System.Drawing.Color.Blue;
-            this.labelModLink.Location = new System.Drawing.Point(183, 0);
+            this.labelModLink.Location = new System.Drawing.Point(393, 0);
             this.labelModLink.Name = "labelModLink";
             this.labelModLink.Size = new System.Drawing.Size(172, 13);
             this.labelModLink.TabIndex = 5;
@@ -281,10 +281,10 @@
             panel3.Controls.Add(this.buttonModShowDesc);
             panel3.Controls.Add(this.buttonLocalModDelete);
             panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            panel3.Location = new System.Drawing.Point(0, 250);
+            panel3.Location = new System.Drawing.Point(0, 297);
             panel3.Margin = new System.Windows.Forms.Padding(0);
             panel3.Name = "panel3";
-            panel3.Size = new System.Drawing.Size(361, 25);
+            panel3.Size = new System.Drawing.Size(571, 25);
             panel3.TabIndex = 2;
             // 
             // buttonDownloadMod
@@ -292,7 +292,7 @@
             this.buttonDownloadMod.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonDownloadMod.Location = new System.Drawing.Point(121, 0);
             this.buttonDownloadMod.Name = "buttonDownloadMod";
-            this.buttonDownloadMod.Size = new System.Drawing.Size(58, 25);
+            this.buttonDownloadMod.Size = new System.Drawing.Size(268, 25);
             this.buttonDownloadMod.TabIndex = 7;
             this.buttonDownloadMod.Text = "Download";
             this.buttonDownloadMod.UseVisualStyleBackColor = true;
@@ -316,7 +316,7 @@
             // buttonModShowDesc
             // 
             this.buttonModShowDesc.Dock = System.Windows.Forms.DockStyle.Right;
-            this.buttonModShowDesc.Location = new System.Drawing.Point(179, 0);
+            this.buttonModShowDesc.Location = new System.Drawing.Point(389, 0);
             this.buttonModShowDesc.Name = "buttonModShowDesc";
             this.buttonModShowDesc.Size = new System.Drawing.Size(102, 25);
             this.buttonModShowDesc.TabIndex = 1;
@@ -326,7 +326,7 @@
             // buttonLocalModDelete
             // 
             this.buttonLocalModDelete.Dock = System.Windows.Forms.DockStyle.Right;
-            this.buttonLocalModDelete.Location = new System.Drawing.Point(281, 0);
+            this.buttonLocalModDelete.Location = new System.Drawing.Point(491, 0);
             this.buttonLocalModDelete.Name = "buttonLocalModDelete";
             this.buttonLocalModDelete.Size = new System.Drawing.Size(80, 25);
             this.buttonLocalModDelete.TabIndex = 0;
@@ -360,8 +360,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.richTextBoxLog);
-            this.splitContainer1.Size = new System.Drawing.Size(615, 331);
-            this.splitContainer1.SplitterDistance = 375;
+            this.splitContainer1.Size = new System.Drawing.Size(960, 378);
+            this.splitContainer1.SplitterDistance = 585;
             this.splitContainer1.TabIndex = 0;
             // 
             // panelHideTabs
@@ -370,7 +370,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelHideTabs.Location = new System.Drawing.Point(-1, 23);
             this.panelHideTabs.Name = "panelHideTabs";
-            this.panelHideTabs.Size = new System.Drawing.Size(264, 6);
+            this.panelHideTabs.Size = new System.Drawing.Size(587, 6);
             this.panelHideTabs.TabIndex = 2;
             // 
             // tabControl1
@@ -382,7 +382,7 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.ShowToolTips = true;
-            this.tabControl1.Size = new System.Drawing.Size(375, 307);
+            this.tabControl1.Size = new System.Drawing.Size(585, 354);
             this.tabControl1.TabIndex = 2;
             this.tabControl1.TabStop = false;
             // 
@@ -413,7 +413,7 @@
             this.tabPageCompact.Location = new System.Drawing.Point(4, 22);
             this.tabPageCompact.Name = "tabPageCompact";
             this.tabPageCompact.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageCompact.Size = new System.Drawing.Size(367, 281);
+            this.tabPageCompact.Size = new System.Drawing.Size(577, 328);
             this.tabPageCompact.TabIndex = 1;
             this.tabPageCompact.Text = "Compact";
             this.tabPageCompact.UseVisualStyleBackColor = true;
@@ -434,7 +434,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(361, 275);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(571, 322);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // menuStrip1
@@ -445,7 +445,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(375, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(585, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -588,7 +588,7 @@
             this.richTextBoxLog.ForeColor = System.Drawing.Color.Gainsboro;
             this.richTextBoxLog.Location = new System.Drawing.Point(0, 0);
             this.richTextBoxLog.Name = "richTextBoxLog";
-            this.richTextBoxLog.Size = new System.Drawing.Size(236, 331);
+            this.richTextBoxLog.Size = new System.Drawing.Size(371, 378);
             this.richTextBoxLog.TabIndex = 0;
             this.richTextBoxLog.Text = "";
             // 
@@ -596,7 +596,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(615, 331);
+            this.ClientSize = new System.Drawing.Size(960, 378);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;

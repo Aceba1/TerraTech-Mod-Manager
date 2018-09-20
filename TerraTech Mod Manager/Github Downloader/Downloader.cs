@@ -11,9 +11,9 @@ namespace TerraTechModManager.Downloader
 {
     public static class GetUpdateInfo
     {
-        public static GithubReleaseItem[] GetReleases(string CloudName)
+        public static GithubReleaseItem GetReleases(string CloudName)
         {
-            return WebClientHandler.DeserializeApiCall<GithubReleaseItem[]>("https://api.github.com/repos/" + CloudName + "/releases");
+            return WebClientHandler.DeserializeApiCall<GithubReleaseItem>("https://api.github.com/repos/" + CloudName + "/releases/latest");
         }
 
         public class GithubReleaseItem
