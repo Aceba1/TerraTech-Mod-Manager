@@ -33,7 +33,7 @@ namespace TerraTechModManager.Downloader
         public static string Search { get; internal set; }
         public static bool MorePagesAvailable
         {
-            get => Counted == TotalCount;
+            get => Counted < TotalCount;
         }
 
         public static GithubRepoItem GetOneRepo(string CloudName)
@@ -43,8 +43,8 @@ namespace TerraTechModManager.Downloader
 
         public static GithubRepoItem[] GetFirstPage(string Search = "")
         {
-            GetRepos.Search = Search;
-            var repos = WebClientHandler.DeserializeApiCall<GithubRepos>("https://api.github.com/search/repositories?q=topic:ttqmm" + (Search != "" ? "+" + Search : ""));
+            GetRepos.Search = Uri.EscapeUriString(Search);
+            var repos = WebClientHandler.DeserializeApiCall<GithubRepos>("https://api.github.com/search/repositories?q=topic:ttqmm" + (GetRepos.Search != "" ? "+" + Search : ""));
             Counted = repos.items.Length;
             Page = 0;
             TotalCount = repos.total_count;
@@ -162,12 +162,12 @@ namespace TerraTechModManager.Downloader
 
         private class GithubItem
         {
-            public string name;
-            public string url;
-            public string download_url;
-            public string path;
-            public long size;
-            public string type;
+            public string name = null;
+            public string url = null;
+            public string download_url = null;
+            public string path = null;
+            public long size = 0;
+            public string type = null;
         }
     }
 

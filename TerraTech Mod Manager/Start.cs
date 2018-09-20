@@ -14,9 +14,6 @@ namespace TerraTechModManager
 {
     public partial class Start : Form
     {
-        public const string Version_Number = "0.4";
-
-
         bool finished = false;
         /// <summary>
         /// Key: skipstart

@@ -33,6 +33,7 @@
             System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Github", System.Windows.Forms.HorizontalAlignment.Left);
             System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Nexus Mods", System.Windows.Forms.HorizontalAlignment.Left);
             System.Windows.Forms.Panel panel5;
+            System.Windows.Forms.Label labelSearch;
             System.Windows.Forms.Panel panel2;
             System.Windows.Forms.Panel panel3;
             System.Windows.Forms.Label label1;
@@ -43,7 +44,6 @@
             this.columnHeaderIDesc = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderAuthor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderSite = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.checkedListBoxCompactModSources = new System.Windows.Forms.CheckedListBox();
             this.textBoxModSearch = new System.Windows.Forms.TextBox();
             this.buttonLoadMoreMods = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -66,11 +66,13 @@
             this.installPatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removePatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.downloadLatestPatcherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lookForProgramUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideTabsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skipStartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hideProgramUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lookForModUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showProgramUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.githubTokenToolStripMenuItem = new System.Windows.Forms.ToolStripTextBox();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.githubPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,6 +82,7 @@
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             panel1 = new System.Windows.Forms.Panel();
             panel5 = new System.Windows.Forms.Panel();
+            labelSearch = new System.Windows.Forms.Label();
             panel2 = new System.Windows.Forms.Panel();
             panel3 = new System.Windows.Forms.Panel();
             label1 = new System.Windows.Forms.Label();
@@ -108,7 +111,7 @@
             panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             panel1.Location = new System.Drawing.Point(3, 3);
             panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(466, 225);
+            panel1.Size = new System.Drawing.Size(355, 204);
             panel1.TabIndex = 0;
             // 
             // listViewCompactMods
@@ -135,7 +138,7 @@
             this.listViewCompactMods.Location = new System.Drawing.Point(0, 20);
             this.listViewCompactMods.MultiSelect = false;
             this.listViewCompactMods.Name = "listViewCompactMods";
-            this.listViewCompactMods.Size = new System.Drawing.Size(466, 205);
+            this.listViewCompactMods.Size = new System.Drawing.Size(355, 184);
             this.listViewCompactMods.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listViewCompactMods.TabIndex = 3;
             this.listViewCompactMods.UseCompatibleStateImageBehavior = false;
@@ -170,43 +173,39 @@
             // 
             // panel5
             // 
-            panel5.Controls.Add(this.checkedListBoxCompactModSources);
             panel5.Controls.Add(this.textBoxModSearch);
+            panel5.Controls.Add(labelSearch);
             panel5.Controls.Add(this.buttonLoadMoreMods);
             panel5.Dock = System.Windows.Forms.DockStyle.Top;
             panel5.Location = new System.Drawing.Point(0, 0);
             panel5.Name = "panel5";
-            panel5.Size = new System.Drawing.Size(466, 20);
+            panel5.Size = new System.Drawing.Size(355, 20);
             panel5.TabIndex = 4;
-            // 
-            // checkedListBoxCompactModSources
-            // 
-            this.checkedListBoxCompactModSources.CheckOnClick = true;
-            this.checkedListBoxCompactModSources.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.checkedListBoxCompactModSources.FormattingEnabled = true;
-            this.checkedListBoxCompactModSources.HorizontalScrollbar = true;
-            this.checkedListBoxCompactModSources.Items.AddRange(new object[] {
-            "Github",
-            "NexusMods (unavailable)"});
-            this.checkedListBoxCompactModSources.Location = new System.Drawing.Point(0, 0);
-            this.checkedListBoxCompactModSources.MultiColumn = true;
-            this.checkedListBoxCompactModSources.Name = "checkedListBoxCompactModSources";
-            this.checkedListBoxCompactModSources.Size = new System.Drawing.Size(261, 20);
-            this.checkedListBoxCompactModSources.TabIndex = 1;
-            this.checkedListBoxCompactModSources.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.ChangeModSources);
             // 
             // textBoxModSearch
             // 
-            this.textBoxModSearch.Dock = System.Windows.Forms.DockStyle.Right;
-            this.textBoxModSearch.Location = new System.Drawing.Point(261, 0);
+            this.textBoxModSearch.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBoxModSearch.Location = new System.Drawing.Point(44, 0);
             this.textBoxModSearch.Name = "textBoxModSearch";
-            this.textBoxModSearch.Size = new System.Drawing.Size(130, 20);
+            this.textBoxModSearch.Size = new System.Drawing.Size(236, 20);
             this.textBoxModSearch.TabIndex = 3;
+            this.textBoxModSearch.TextChanged += new System.EventHandler(this.textBoxModSearch_TextChanged);
+            // 
+            // labelSearch
+            // 
+            labelSearch.AutoSize = true;
+            labelSearch.Dock = System.Windows.Forms.DockStyle.Left;
+            labelSearch.Location = new System.Drawing.Point(0, 0);
+            labelSearch.Name = "labelSearch";
+            labelSearch.Size = new System.Drawing.Size(44, 13);
+            labelSearch.TabIndex = 4;
+            labelSearch.Text = "Search:";
+            labelSearch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // buttonLoadMoreMods
             // 
             this.buttonLoadMoreMods.Dock = System.Windows.Forms.DockStyle.Right;
-            this.buttonLoadMoreMods.Location = new System.Drawing.Point(391, 0);
+            this.buttonLoadMoreMods.Location = new System.Drawing.Point(280, 0);
             this.buttonLoadMoreMods.Name = "buttonLoadMoreMods";
             this.buttonLoadMoreMods.Size = new System.Drawing.Size(75, 20);
             this.buttonLoadMoreMods.TabIndex = 2;
@@ -221,9 +220,9 @@
             panel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             panel2.Controls.Add(this.panel4);
             panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            panel2.Location = new System.Drawing.Point(3, 234);
+            panel2.Location = new System.Drawing.Point(3, 213);
             panel2.Name = "panel2";
-            panel2.Size = new System.Drawing.Size(466, 34);
+            panel2.Size = new System.Drawing.Size(355, 34);
             panel2.TabIndex = 1;
             // 
             // panel4
@@ -235,7 +234,7 @@
             this.panel4.Location = new System.Drawing.Point(0, 0);
             this.panel4.Margin = new System.Windows.Forms.Padding(0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(466, 34);
+            this.panel4.Size = new System.Drawing.Size(355, 34);
             this.panel4.TabIndex = 6;
             // 
             // labelModIDesc
@@ -265,7 +264,7 @@
             this.labelModLink.AutoSize = true;
             this.labelModLink.Dock = System.Windows.Forms.DockStyle.Right;
             this.labelModLink.ForeColor = System.Drawing.Color.Blue;
-            this.labelModLink.Location = new System.Drawing.Point(294, 0);
+            this.labelModLink.Location = new System.Drawing.Point(183, 0);
             this.labelModLink.Name = "labelModLink";
             this.labelModLink.Size = new System.Drawing.Size(172, 13);
             this.labelModLink.TabIndex = 5;
@@ -282,10 +281,10 @@
             panel3.Controls.Add(this.buttonModShowDesc);
             panel3.Controls.Add(this.buttonLocalModDelete);
             panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            panel3.Location = new System.Drawing.Point(0, 271);
+            panel3.Location = new System.Drawing.Point(0, 250);
             panel3.Margin = new System.Windows.Forms.Padding(0);
             panel3.Name = "panel3";
-            panel3.Size = new System.Drawing.Size(472, 25);
+            panel3.Size = new System.Drawing.Size(361, 25);
             panel3.TabIndex = 2;
             // 
             // buttonDownloadMod
@@ -293,7 +292,7 @@
             this.buttonDownloadMod.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonDownloadMod.Location = new System.Drawing.Point(121, 0);
             this.buttonDownloadMod.Name = "buttonDownloadMod";
-            this.buttonDownloadMod.Size = new System.Drawing.Size(169, 25);
+            this.buttonDownloadMod.Size = new System.Drawing.Size(58, 25);
             this.buttonDownloadMod.TabIndex = 7;
             this.buttonDownloadMod.Text = "Download";
             this.buttonDownloadMod.UseVisualStyleBackColor = true;
@@ -305,7 +304,7 @@
             this.comboBoxModState.FormattingEnabled = true;
             this.comboBoxModState.Items.AddRange(new object[] {
             "Enabled",
-            "Load",
+            "Inactive",
             "Disabled"});
             this.comboBoxModState.Location = new System.Drawing.Point(0, 0);
             this.comboBoxModState.Name = "comboBoxModState";
@@ -317,7 +316,7 @@
             // buttonModShowDesc
             // 
             this.buttonModShowDesc.Dock = System.Windows.Forms.DockStyle.Right;
-            this.buttonModShowDesc.Location = new System.Drawing.Point(290, 0);
+            this.buttonModShowDesc.Location = new System.Drawing.Point(179, 0);
             this.buttonModShowDesc.Name = "buttonModShowDesc";
             this.buttonModShowDesc.Size = new System.Drawing.Size(102, 25);
             this.buttonModShowDesc.TabIndex = 1;
@@ -327,7 +326,7 @@
             // buttonLocalModDelete
             // 
             this.buttonLocalModDelete.Dock = System.Windows.Forms.DockStyle.Right;
-            this.buttonLocalModDelete.Location = new System.Drawing.Point(392, 0);
+            this.buttonLocalModDelete.Location = new System.Drawing.Point(281, 0);
             this.buttonLocalModDelete.Name = "buttonLocalModDelete";
             this.buttonLocalModDelete.Size = new System.Drawing.Size(80, 25);
             this.buttonLocalModDelete.TabIndex = 0;
@@ -361,8 +360,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.richTextBoxLog);
-            this.splitContainer1.Size = new System.Drawing.Size(796, 352);
-            this.splitContainer1.SplitterDistance = 486;
+            this.splitContainer1.Size = new System.Drawing.Size(615, 331);
+            this.splitContainer1.SplitterDistance = 375;
             this.splitContainer1.TabIndex = 0;
             // 
             // panelHideTabs
@@ -371,7 +370,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelHideTabs.Location = new System.Drawing.Point(-1, 23);
             this.panelHideTabs.Name = "panelHideTabs";
-            this.panelHideTabs.Size = new System.Drawing.Size(375, 6);
+            this.panelHideTabs.Size = new System.Drawing.Size(264, 6);
             this.panelHideTabs.TabIndex = 2;
             // 
             // tabControl1
@@ -383,7 +382,7 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.ShowToolTips = true;
-            this.tabControl1.Size = new System.Drawing.Size(486, 328);
+            this.tabControl1.Size = new System.Drawing.Size(375, 307);
             this.tabControl1.TabIndex = 2;
             this.tabControl1.TabStop = false;
             // 
@@ -394,7 +393,7 @@
             this.tabPageClassic.Location = new System.Drawing.Point(4, 22);
             this.tabPageClassic.Name = "tabPageClassic";
             this.tabPageClassic.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageClassic.Size = new System.Drawing.Size(478, 302);
+            this.tabPageClassic.Size = new System.Drawing.Size(367, 281);
             this.tabPageClassic.TabIndex = 0;
             this.tabPageClassic.Text = "Classic";
             this.tabPageClassic.UseVisualStyleBackColor = true;
@@ -405,7 +404,7 @@
             this.webBrowser1.Location = new System.Drawing.Point(3, 3);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(472, 296);
+            this.webBrowser1.Size = new System.Drawing.Size(361, 275);
             this.webBrowser1.TabIndex = 0;
             // 
             // tabPageCompact
@@ -414,7 +413,7 @@
             this.tabPageCompact.Location = new System.Drawing.Point(4, 22);
             this.tabPageCompact.Name = "tabPageCompact";
             this.tabPageCompact.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageCompact.Size = new System.Drawing.Size(478, 302);
+            this.tabPageCompact.Size = new System.Drawing.Size(367, 281);
             this.tabPageCompact.TabIndex = 1;
             this.tabPageCompact.Text = "Compact";
             this.tabPageCompact.UseVisualStyleBackColor = true;
@@ -435,7 +434,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(472, 296);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(361, 275);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // menuStrip1
@@ -446,7 +445,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(486, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(375, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -455,7 +454,8 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.installPatchToolStripMenuItem,
             this.removePatchToolStripMenuItem,
-            this.downloadLatestPatcherToolStripMenuItem});
+            this.downloadLatestPatcherToolStripMenuItem,
+            this.lookForProgramUpdateToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -463,23 +463,30 @@
             // installPatchToolStripMenuItem
             // 
             this.installPatchToolStripMenuItem.Name = "installPatchToolStripMenuItem";
-            this.installPatchToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.installPatchToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
             this.installPatchToolStripMenuItem.Text = "Install Patch";
             this.installPatchToolStripMenuItem.Click += new System.EventHandler(this.InstallPatch);
             // 
             // removePatchToolStripMenuItem
             // 
             this.removePatchToolStripMenuItem.Name = "removePatchToolStripMenuItem";
-            this.removePatchToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.removePatchToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
             this.removePatchToolStripMenuItem.Text = "Remove Patch";
             this.removePatchToolStripMenuItem.Click += new System.EventHandler(this.UninstallPatch);
             // 
             // downloadLatestPatcherToolStripMenuItem
             // 
             this.downloadLatestPatcherToolStripMenuItem.Name = "downloadLatestPatcherToolStripMenuItem";
-            this.downloadLatestPatcherToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.downloadLatestPatcherToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
             this.downloadLatestPatcherToolStripMenuItem.Text = "Download Latest Patcher";
             this.downloadLatestPatcherToolStripMenuItem.Click += new System.EventHandler(this.DownloadPatcher);
+            // 
+            // lookForProgramUpdateToolStripMenuItem
+            // 
+            this.lookForProgramUpdateToolStripMenuItem.Name = "lookForProgramUpdateToolStripMenuItem";
+            this.lookForProgramUpdateToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.lookForProgramUpdateToolStripMenuItem.Text = "Look for Program Update";
+            this.lookForProgramUpdateToolStripMenuItem.Click += new System.EventHandler(this.lookForProgramUpdateToolStripMenuItem_Click);
             // 
             // configurationToolStripMenuItem
             // 
@@ -487,7 +494,8 @@
             this.hideLogToolStripMenuItem,
             this.hideTabsToolStripMenuItem,
             this.skipStartToolStripMenuItem,
-            this.hideProgramUpdatesToolStripMenuItem,
+            this.lookForModUpdatesToolStripMenuItem,
+            this.showProgramUpdatesToolStripMenuItem,
             this.githubTokenToolStripMenuItem});
             this.configurationToolStripMenuItem.Name = "configurationToolStripMenuItem";
             this.configurationToolStripMenuItem.Size = new System.Drawing.Size(93, 20);
@@ -514,12 +522,19 @@
             this.skipStartToolStripMenuItem.Text = "Skip Start";
             this.skipStartToolStripMenuItem.Click += new System.EventHandler(this.skipStartToolStripMenuItem_Click);
             // 
-            // hideProgramUpdatesToolStripMenuItem
+            // lookForModUpdatesToolStripMenuItem
             // 
-            this.hideProgramUpdatesToolStripMenuItem.Name = "hideProgramUpdatesToolStripMenuItem";
-            this.hideProgramUpdatesToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
-            this.hideProgramUpdatesToolStripMenuItem.Text = "Hide Program Updates";
-            this.hideProgramUpdatesToolStripMenuItem.Click += new System.EventHandler(this.hideProgramUpdatesToolStripMenuItem_Click);
+            this.lookForModUpdatesToolStripMenuItem.Name = "lookForModUpdatesToolStripMenuItem";
+            this.lookForModUpdatesToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
+            this.lookForModUpdatesToolStripMenuItem.Text = "Look for Mod Updates";
+            this.lookForModUpdatesToolStripMenuItem.Click += new System.EventHandler(this.lookForModUpdatesToolStripMenuItem_Click);
+            // 
+            // showProgramUpdatesToolStripMenuItem
+            // 
+            this.showProgramUpdatesToolStripMenuItem.Name = "showProgramUpdatesToolStripMenuItem";
+            this.showProgramUpdatesToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
+            this.showProgramUpdatesToolStripMenuItem.Text = "Look for Program Updates";
+            this.showProgramUpdatesToolStripMenuItem.Click += new System.EventHandler(this.showProgramUpdatesToolStripMenuItem_Click);
             // 
             // githubTokenToolStripMenuItem
             // 
@@ -573,7 +588,7 @@
             this.richTextBoxLog.ForeColor = System.Drawing.Color.Gainsboro;
             this.richTextBoxLog.Location = new System.Drawing.Point(0, 0);
             this.richTextBoxLog.Name = "richTextBoxLog";
-            this.richTextBoxLog.Size = new System.Drawing.Size(306, 352);
+            this.richTextBoxLog.Size = new System.Drawing.Size(236, 331);
             this.richTextBoxLog.TabIndex = 0;
             this.richTextBoxLog.Text = "";
             // 
@@ -581,7 +596,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(796, 352);
+            this.ClientSize = new System.Drawing.Size(615, 331);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -654,7 +669,8 @@
         private System.Windows.Forms.ToolStripMenuItem tTMMDownloadPageToolStripMenuItem;
         private System.Windows.Forms.Button buttonLoadMoreMods;
         private System.Windows.Forms.TextBox textBoxModSearch;
-        private System.Windows.Forms.ToolStripMenuItem hideProgramUpdatesToolStripMenuItem;
-        private System.Windows.Forms.CheckedListBox checkedListBoxCompactModSources;
+        private System.Windows.Forms.ToolStripMenuItem showProgramUpdatesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem lookForModUpdatesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem lookForProgramUpdateToolStripMenuItem;
     }
 }

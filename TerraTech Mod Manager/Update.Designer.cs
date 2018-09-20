@@ -30,6 +30,7 @@
         {
             System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
             System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Update));
             this.panel1 = new System.Windows.Forms.Panel();
             this.labelReleaseName = new System.Windows.Forms.Label();
             this.labelVersionNumber = new System.Windows.Forms.Label();
@@ -159,6 +160,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(481, 270);
             this.Controls.Add(tableLayoutPanel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Update";
             this.Text = "An Update is available";
             tableLayoutPanel1.ResumeLayout(false);
