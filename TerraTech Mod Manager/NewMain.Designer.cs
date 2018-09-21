@@ -58,7 +58,7 @@
             this.panelHideTabs = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageClassic = new System.Windows.Forms.TabPage();
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.buttonModHideDesc = new System.Windows.Forms.Button();
             this.tabPageCompact = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -79,6 +79,7 @@
             this.terraTechForumPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.terraTechWikiPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tTMMDownloadPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             panel1 = new System.Windows.Forms.Panel();
             panel5 = new System.Windows.Forms.Panel();
@@ -292,7 +293,7 @@
             this.buttonDownloadMod.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonDownloadMod.Location = new System.Drawing.Point(121, 0);
             this.buttonDownloadMod.Name = "buttonDownloadMod";
-            this.buttonDownloadMod.Size = new System.Drawing.Size(268, 25);
+            this.buttonDownloadMod.Size = new System.Drawing.Size(314, 25);
             this.buttonDownloadMod.TabIndex = 7;
             this.buttonDownloadMod.Text = "Download";
             this.buttonDownloadMod.UseVisualStyleBackColor = true;
@@ -316,12 +317,13 @@
             // buttonModShowDesc
             // 
             this.buttonModShowDesc.Dock = System.Windows.Forms.DockStyle.Right;
-            this.buttonModShowDesc.Location = new System.Drawing.Point(389, 0);
+            this.buttonModShowDesc.Location = new System.Drawing.Point(435, 0);
             this.buttonModShowDesc.Name = "buttonModShowDesc";
-            this.buttonModShowDesc.Size = new System.Drawing.Size(102, 25);
+            this.buttonModShowDesc.Size = new System.Drawing.Size(56, 25);
             this.buttonModShowDesc.TabIndex = 1;
-            this.buttonModShowDesc.Text = "Description";
+            this.buttonModShowDesc.Text = "More";
             this.buttonModShowDesc.UseVisualStyleBackColor = true;
+            this.buttonModShowDesc.Click += new System.EventHandler(this.buttonModShowDesc_Click);
             // 
             // buttonLocalModDelete
             // 
@@ -341,9 +343,9 @@
             label1.Dock = System.Windows.Forms.DockStyle.Top;
             label1.Location = new System.Drawing.Point(3, 3);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(116, 13);
+            label1.Size = new System.Drawing.Size(230, 39);
             label1.TabIndex = 1;
-            label1.Text = "There is nothing here...";
+            label1.Text = "There is nothing here... yet\r\n\r\n(This may become an options window for mods)";
             // 
             // splitContainer1
             // 
@@ -389,23 +391,25 @@
             // tabPageClassic
             // 
             this.tabPageClassic.Controls.Add(label1);
-            this.tabPageClassic.Controls.Add(this.webBrowser1);
+            this.tabPageClassic.Controls.Add(this.buttonModHideDesc);
             this.tabPageClassic.Location = new System.Drawing.Point(4, 22);
             this.tabPageClassic.Name = "tabPageClassic";
             this.tabPageClassic.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageClassic.Size = new System.Drawing.Size(367, 281);
+            this.tabPageClassic.Size = new System.Drawing.Size(577, 328);
             this.tabPageClassic.TabIndex = 0;
             this.tabPageClassic.Text = "Classic";
             this.tabPageClassic.UseVisualStyleBackColor = true;
             // 
-            // webBrowser1
+            // buttonModHideDesc
             // 
-            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser1.Location = new System.Drawing.Point(3, 3);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(361, 275);
-            this.webBrowser1.TabIndex = 0;
+            this.buttonModHideDesc.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.buttonModHideDesc.Location = new System.Drawing.Point(3, 300);
+            this.buttonModHideDesc.Name = "buttonModHideDesc";
+            this.buttonModHideDesc.Size = new System.Drawing.Size(571, 25);
+            this.buttonModHideDesc.TabIndex = 2;
+            this.buttonModHideDesc.Text = "Go back";
+            this.buttonModHideDesc.UseVisualStyleBackColor = true;
+            this.buttonModHideDesc.Click += new System.EventHandler(this.buttonModHideDesc_Click);
             // 
             // tabPageCompact
             // 
@@ -548,7 +552,8 @@
             this.githubPageToolStripMenuItem,
             this.terraTechForumPageToolStripMenuItem,
             this.terraTechWikiPageToolStripMenuItem,
-            this.tTMMDownloadPageToolStripMenuItem});
+            this.tTMMDownloadPageToolStripMenuItem,
+            this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
@@ -580,6 +585,13 @@
             this.tTMMDownloadPageToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.tTMMDownloadPageToolStripMenuItem.Text = "TTMM Download Page";
             this.tTMMDownloadPageToolStripMenuItem.Click += new System.EventHandler(this.tTMMDownloadPageToolStripMenuItem_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.aboutToolStripMenuItem.Text = "About...";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // richTextBoxLog
             // 
@@ -653,7 +665,6 @@
         private System.Windows.Forms.ToolStripMenuItem hideTabsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem skipStartToolStripMenuItem;
         private System.Windows.Forms.Label labelModLink;
-        private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.ToolStripMenuItem downloadLatestPatcherToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox githubTokenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
@@ -672,5 +683,7 @@
         private System.Windows.Forms.ToolStripMenuItem showProgramUpdatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lookForModUpdatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lookForProgramUpdateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.Button buttonModHideDesc;
     }
 }

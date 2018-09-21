@@ -17,7 +17,7 @@ namespace TerraTechModManager
     public partial class NewMain : Form
     {
 #warning Change version number with every update
-        public const string Version_Number = "1.1";
+        public const string Version_Number = "1.2";
 
         private string LastSearch = "";
 
@@ -94,7 +94,7 @@ namespace TerraTechModManager
             ConfigHandler.TryGetValue(ref LookForModUpdates, "getmodupdates");
             lookForModUpdatesToolStripMenuItem.Checked = LookForModUpdates;
 
-            tabControl1.SelectedIndex = ConfigHandler.TryGetValue("mmstyle", 1);
+            tabControl1.SelectedIndex = 1;
             ChangeVisibilityOfTabBar(!ConfigHandler.TryGetValue("hidetabs", false));
             bool hide = ConfigHandler.TryGetValue("hidelog", false);
             splitContainer1.Panel2Collapsed = hide;
@@ -114,7 +114,6 @@ namespace TerraTechModManager
         {
             ConfigHandler.SetValue(showProgramUpdatesToolStripMenuItem.Checked, "getprogramupdates");
             ConfigHandler.SetValue(lookForModUpdatesToolStripMenuItem.Checked, "getmodupdates");
-            ConfigHandler.SetValue(tabControl1.SelectedIndex, "mmstyle");
             ConfigHandler.SetValue(panelHideTabs.Visible, "hidetabs");
             ConfigHandler.SetValue(splitContainer1.Panel2Collapsed, "hidelog");
             ConfigHandler.SetValue(Start.SkipAtStart, "skipstart");
@@ -811,7 +810,7 @@ namespace TerraTechModManager
                     Log("Deleted " + modInfo.Name + "...", Color.DarkRed);
                 }
                 LocalMods.Remove(modInfo.Name);
-                if (FoundServerMods.TryGetValue(modInfo.CloudName, out ModInfo cloudMod))
+                if (modInfo.CloudName != null && FoundServerMods.TryGetValue(modInfo.CloudName, out ModInfo cloudMod))
                 {
                     cloudMod.FoundLocal = false;
                     FoundServerMods.Remove(modInfo.CloudName);
@@ -922,6 +921,7 @@ namespace TerraTechModManager
                 if (GithubMods.TryGetValue(param[1], out serverMod))
                 {
                     FoundServerMods.Add(serverMod.CloudName, serverMod);
+                    serverMod.FoundLocal = true;
                     GithubMods.Remove(param[1]);
                     serverMod.TrySetChecked(true);
                 }
@@ -1035,6 +1035,21 @@ namespace TerraTechModManager
             {
                 ShowLoadMoreModsButton(true, "Search");
             }
+        }
+
+        private void buttonModShowDesc_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedTab = tabPageClassic;
+        }
+
+        private void buttonModHideDesc_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedTab = tabPageCompact;
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 
