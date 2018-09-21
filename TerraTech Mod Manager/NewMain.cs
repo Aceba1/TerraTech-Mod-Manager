@@ -95,7 +95,7 @@ namespace TerraTechModManager
             lookForModUpdatesToolStripMenuItem.Checked = LookForModUpdates;
 
             tabControl1.SelectedIndex = 1;
-            ChangeVisibilityOfTabBar(!ConfigHandler.TryGetValue("hidetabs", false));
+            ChangeVisibilityOfTabBar(!ConfigHandler.TryGetValue("hidetabs", true));
             bool hide = ConfigHandler.TryGetValue("hidelog", false);
             splitContainer1.Panel2Collapsed = hide;
             hideLogToolStripMenuItem.Checked = hide;
@@ -394,7 +394,6 @@ namespace TerraTechModManager
                     serverMod.TrySetChecked(true);
                     if (lookForModUpdatesToolStripMenuItem.Checked)
                     result = serverMod.GetVersionTagFromCloud();
-                    Log(CloudName + " (already in GithubMods)", Color.Green);
                 }
                 else
                 {
@@ -402,7 +401,6 @@ namespace TerraTechModManager
                     serverMod.FoundLocal = true;
                     if (lookForModUpdatesToolStripMenuItem.Checked)
                     result = serverMod.GetVersionTagFromCloud();
-                    Log(CloudName, Color.Green);
                 }
                 FoundServerMods[CloudName] = serverMod;
                 if (GithubMods.TryGetValue(CloudName, out ModInfo serverMod2)) // Temporary duplication fix for synchronous local/server mod loading
@@ -410,7 +408,6 @@ namespace TerraTechModManager
                     serverMod.Visible = serverMod2.Visible;
                     GithubMods.Remove(CloudName);
                     serverMod.TrySetChecked(true);
-                    Log(CloudName + " (moved to local)", Color.Green);
                 }
             }
             catch (Exception E)
@@ -476,14 +473,12 @@ namespace TerraTechModManager
                 mod.Visible = listViewCompactMods.Items.Add(mod.GetListViewItem(listViewCompactMods.Groups[1], false));
                 mod.FoundLocal = true;
                 mod.TrySetChecked(true);
-                Log(mod.CloudName + " (already in FoundServerMods)", Color.LightBlue);
             }
             else
             {
                 mod = new ModInfo(repo);
                 GithubMods.Add(mod.CloudName, mod);
                 mod.Visible = listViewCompactMods.Items.Add(mod.GetListViewItem(listViewCompactMods.Groups[1], false));
-                Log(mod.CloudName, Color.LightBlue);
                 if (FoundServerMods.TryGetValue(repo.full_name, out ModInfo mod2)) // Temporary duplication fix for synchronous local/server mod loading
                 {
                     GithubMods.Remove(mod2.CloudName);
@@ -492,7 +487,6 @@ namespace TerraTechModManager
                     mod2.TrySetChecked(true);
                     if (lookForModUpdatesToolStripMenuItem.Checked)
                         mod2.GetVersionTagFromCloud();
-                    Log(repo.full_name + " (moved to local)", Color.LightBlue);
                 }
             }
         }
