@@ -175,13 +175,14 @@ namespace TerraTechModManager.Downloader
     {
         public static T DeserializeApiCall<T>(string ApiUrl)
         {
+            string Token = NewMain.GithubToken;
             WebClient webClient = new WebClient();
         Retry:
             webClient.Headers.Add("user-agent", "ttmm-downloader-client");
             bool flag = false;
-            if (NewMain.GithubToken != null && NewMain.GithubToken != "" && NewMain.GithubToken != "Github Token")
+            if (Token != null && Token != "" && Token != "Github Token")
             {
-                webClient.Headers.Add("Authorization", "Token " + NewMain.GithubToken);
+                webClient.Headers.Add("Authorization", "Token " + Token);
                 flag = true;
             }
             try
@@ -193,8 +194,8 @@ namespace TerraTechModManager.Downloader
             {
                 if (flag)
                 {
-                    NewMain.GithubToken = "";
-                    NewMain.inst.Log("Github Token does not appear valid; Resetting...", Color.Orange);
+                    Token = "";
+                    NewMain.inst.Log("Skipping Github Token", Color.Orange);
                     goto Retry;
                 }
                 throw new Exception("Could not access API! Try again later?\n(This could have been caused by rate limiting: Try setting a Github user token in the Config)\n" + E.Message + "\n" + ApiUrl);
