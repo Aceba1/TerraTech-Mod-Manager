@@ -130,6 +130,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Copy of Artificial Intelligence Bomb %28compressed%29.mp4" />
     <Content Include="TerraTechIco.ico" />
     <Content Include="Properties\mega-icon-vector-logo.png" />
   </ItemGroup>
