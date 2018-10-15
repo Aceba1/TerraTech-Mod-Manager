@@ -155,7 +155,7 @@
             // columnHeaderName
             // 
             this.columnHeaderName.Text = "Name";
-            this.columnHeaderName.Width = 139;
+            this.columnHeaderName.Width = 206;
             // 
             // columnHeaderIDesc
             // 
@@ -293,7 +293,7 @@
             this.buttonDownloadMod.Dock = System.Windows.Forms.DockStyle.Fill;
             this.buttonDownloadMod.Location = new System.Drawing.Point(121, 0);
             this.buttonDownloadMod.Name = "buttonDownloadMod";
-            this.buttonDownloadMod.Size = new System.Drawing.Size(314, 25);
+            this.buttonDownloadMod.Size = new System.Drawing.Size(290, 25);
             this.buttonDownloadMod.TabIndex = 7;
             this.buttonDownloadMod.Text = "Download";
             this.buttonDownloadMod.UseVisualStyleBackColor = true;
@@ -317,9 +317,10 @@
             // buttonModShowDesc
             // 
             this.buttonModShowDesc.Dock = System.Windows.Forms.DockStyle.Right;
-            this.buttonModShowDesc.Location = new System.Drawing.Point(435, 0);
+            this.buttonModShowDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonModShowDesc.Location = new System.Drawing.Point(411, 0);
             this.buttonModShowDesc.Name = "buttonModShowDesc";
-            this.buttonModShowDesc.Size = new System.Drawing.Size(56, 25);
+            this.buttonModShowDesc.Size = new System.Drawing.Size(80, 25);
             this.buttonModShowDesc.TabIndex = 1;
             this.buttonModShowDesc.Text = "More";
             this.buttonModShowDesc.UseVisualStyleBackColor = true;

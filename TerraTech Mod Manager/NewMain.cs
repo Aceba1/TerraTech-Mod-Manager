@@ -598,6 +598,7 @@ namespace TerraTechModManager
                 if (modInfo.State == ModInfo.ModState.Server)
                 {
                     e.NewValue = modInfo.FoundLocal ? CheckState.Checked : CheckState.Unchecked;
+                    listViewCompactMods.Items[e.Index].Selected = true;
                     return;
                 }
                 if (modInfo.State != ModInfo.ModState.Disabled)
@@ -659,7 +660,7 @@ namespace TerraTechModManager
                 }
                 else
                 {
-                    ChangeVisibilityOfCompactModInfo(false);
+                    //ChangeVisibilityOfCompactModInfo(false);
                 }
             }
             catch(Exception E)
@@ -814,7 +815,8 @@ namespace TerraTechModManager
                     GithubMods.Add(modInfo.CloudName, cloudMod);
                     cloudMod.TrySetChecked(false);
                 }
-                listViewCompactMods.Items.RemoveAt(GetCurrentIndex());
+                modInfo.Visible.Remove();
+                ChangeVisibilityOfCompactModInfo(false);
             }
         }
 
