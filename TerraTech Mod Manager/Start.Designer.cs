@@ -58,13 +58,13 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 48F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(631, 251);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(596, 362);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(3, 206);
+            this.splitContainer1.Location = new System.Drawing.Point(3, 317);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -75,8 +75,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.buttonOpenMain);
-            this.splitContainer1.Size = new System.Drawing.Size(625, 42);
-            this.splitContainer1.SplitterDistance = 407;
+            this.splitContainer1.Size = new System.Drawing.Size(590, 42);
+            this.splitContainer1.SplitterDistance = 384;
             this.splitContainer1.TabIndex = 0;
             // 
             // label2
@@ -84,7 +84,7 @@
             this.label2.Dock = System.Windows.Forms.DockStyle.Top;
             this.label2.Location = new System.Drawing.Point(0, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(407, 22);
+            this.label2.Size = new System.Drawing.Size(384, 22);
             this.label2.TabIndex = 3;
             this.label2.Text = "Location of TerraTech";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -93,7 +93,7 @@
             // 
             this.textBoxFolderDirectory.AllowDrop = true;
             this.textBoxFolderDirectory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxFolderDirectory.Location = new System.Drawing.Point(-1093, 22);
+            this.textBoxFolderDirectory.Location = new System.Drawing.Point(-1116, 22);
             this.textBoxFolderDirectory.Name = "textBoxFolderDirectory";
             this.textBoxFolderDirectory.Size = new System.Drawing.Size(1500, 20);
             this.textBoxFolderDirectory.TabIndex = 2;
@@ -107,7 +107,7 @@
             this.buttonOpenMain.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonOpenMain.Location = new System.Drawing.Point(2, 8);
             this.buttonOpenMain.Name = "buttonOpenMain";
-            this.buttonOpenMain.Size = new System.Drawing.Size(212, 25);
+            this.buttonOpenMain.Size = new System.Drawing.Size(200, 25);
             this.buttonOpenMain.TabIndex = 0;
             this.buttonOpenMain.Text = "Continue";
             this.buttonOpenMain.UseVisualStyleBackColor = true;
@@ -120,7 +120,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(625, 197);
+            this.panel1.Size = new System.Drawing.Size(590, 308);
             this.panel1.TabIndex = 1;
             // 
             // richTextBox1
@@ -131,7 +131,7 @@
             this.richTextBox1.Location = new System.Drawing.Point(0, 34);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(625, 163);
+            this.richTextBox1.Size = new System.Drawing.Size(590, 274);
             this.richTextBox1.TabIndex = 1;
             this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
             // 
@@ -141,7 +141,7 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.label1.Location = new System.Drawing.Point(0, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(625, 34);
+            this.label1.Size = new System.Drawing.Size(590, 34);
             this.label1.TabIndex = 0;
             this.label1.Text = "TerraTech Mod Manager";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -151,7 +151,7 @@
             this.AcceptButton = this.buttonOpenMain;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(631, 251);
+            this.ClientSize = new System.Drawing.Size(596, 362);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
