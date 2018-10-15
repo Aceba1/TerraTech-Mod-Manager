@@ -70,6 +70,11 @@ namespace TerraTechModManager
                         }
                     if (flag)
                     {
+                        if (CheckPiracy())
+                        {
+                            this.Close();
+                            return "Cancelled Operation";
+                        }
                         ConfigHandler.SetValue(rootpath, "ttroot");
                         NewMain Main = new NewMain()
                         {
@@ -119,6 +124,33 @@ namespace TerraTechModManager
         private void textBoxFolderDirectory_TextChanged(object sender, EventArgs e)
         {
             label2.Text = "Location of TerraTech";
+        }
+
+        private bool CheckPiracy()
+        {
+            bool Check = new DirectoryInfo(textBoxFolderDirectory.Text).GetFiles("*igg*").Length > 0;
+            Check = Check || new DirectoryInfo(textBoxFolderDirectory.Text).GetFiles("*ogg*").Length > 0;
+            if (!Check)
+            {
+                var f = new DirectoryInfo(textBoxFolderDirectory.Text).GetFiles("valve.ini");
+                if (f.Length > 0)
+                {
+                    string check = File.ReadAllText(f[0].FullName).ToLower();
+                    Check = check.Contains("igg");
+                    Check = Check || check.Contains("ogg");
+                }
+            }
+            if (Check)
+            {
+                Enabled = false;
+                Warning warning = new Warning();
+                warning.ShowDialog();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 

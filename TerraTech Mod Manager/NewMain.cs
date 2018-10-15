@@ -17,7 +17,7 @@ namespace TerraTechModManager
     public partial class NewMain : Form
     {
 #warning Change version number with every update
-        public const string Version_Number = "1.2";
+        public const string Version_Number = "1.3";
 
         private string LastSearch = "";
 
@@ -1082,7 +1082,7 @@ namespace TerraTechModManager
             CloudName = repo.full_name;
             Author = repo.full_name.Substring(0, repo.full_name.IndexOf(repo.name) - 1);
             InlineDescription = repo.description;
-            Site = "https://github.com" + CloudName;
+            Site = "https://github.com/" + CloudName;
 
             var client = new WebClient();
             string linkspath = "https://raw.githubusercontent.com/" + CloudName + "/master/LINKS.";
