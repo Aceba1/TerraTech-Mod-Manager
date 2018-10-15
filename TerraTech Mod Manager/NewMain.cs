@@ -375,7 +375,10 @@ namespace TerraTechModManager
                     string version = FindServerMod(modInfo.CloudName);
                     if (version != "" && version != modInfo.CurrentVersion)
                     {
+                        Log("Update available for " + modInfo.CloudName + " (" + version + ")",Color.Turquoise);
                         modInfo.Visible.SubItems[2].Text = "[Update Available] " + modInfo.Visible.SubItems[2].Text;
+                        modInfo.Visible.UseItemStyleForSubItems = false;
+                        modInfo.Visible.SubItems[1].Font = new Font(modInfo.Visible.SubItems[1].Font, FontStyle.Bold);
                     }
                 }
             }
