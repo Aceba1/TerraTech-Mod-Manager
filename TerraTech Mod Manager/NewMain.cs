@@ -325,7 +325,7 @@ namespace TerraTechModManager
             }
         }
 
-        internal void GetLocalMod_Internal(string path, bool IsDisabled = false)
+        internal void GetLocalMod_Internal(string path, bool IsDisabled = false, bool ImmediatelyFromCloud = false)
         {
             string modjson = path + @"\mod.json";
             string ttmmjson = path + @"\ttmm.json";
@@ -372,7 +372,7 @@ namespace TerraTechModManager
                 modInfo.Visible = listViewCompactMods.Items.Add(item);
                 if (modInfo.CloudName != null && modInfo.CloudName != "" && flag)
                 {
-                    string version = FindServerMod(modInfo.CloudName);
+                    string version = FindServerMod(modInfo.CloudName, ImmediatelyFromCloud);
                     if (version != "" && version != modInfo.CurrentVersion)
                     {
                         Log("Update available for " + modInfo.CloudName + " (" + version + ")",Color.Turquoise);
@@ -384,7 +384,7 @@ namespace TerraTechModManager
             }
         }
 
-        string FindServerMod(string CloudName)
+        string FindServerMod(string CloudName, bool IgnoreResult)
         {
             string result = "";
             try
@@ -395,15 +395,15 @@ namespace TerraTechModManager
                     GithubMods.Remove(CloudName);
                     serverMod.FoundLocal = true;
                     serverMod.TrySetChecked(true);
-                    if (lookForModUpdatesToolStripMenuItem.Checked)
-                    result = serverMod.GetVersionTagFromCloud();
+                    if (!IgnoreResult && lookForModUpdatesToolStripMenuItem.Checked)
+                        result = serverMod.GetVersionTagFromCloud();
                 }
                 else
                 {
                     serverMod = new ModInfo(Downloader.GetRepos.GetOneRepo(CloudName));
                     serverMod.FoundLocal = true;
-                    if (lookForModUpdatesToolStripMenuItem.Checked)
-                    result = serverMod.GetVersionTagFromCloud();
+                    if (!IgnoreResult && lookForModUpdatesToolStripMenuItem.Checked)
+                        result = serverMod.GetVersionTagFromCloud();
                 }
                 FoundServerMods[CloudName] = serverMod;
                 if (GithubMods.TryGetValue(CloudName, out ModInfo serverMod2)) // Temporary duplication fix for synchronous local/server mod loading
@@ -930,7 +930,7 @@ namespace TerraTechModManager
                 }
                 serverMod.GetVersionTagFromCloud();
                 File.WriteAllText(RootFolder + @"\QMods\" + newFolder + @"\ttmm.json", JsonConvert.SerializeObject(serverMod));
-                GetLocalMod_Internal(RootFolder + @"\QMods\" + newFolder);
+                GetLocalMod_Internal(RootFolder + @"\QMods\" + newFolder, false, true);
             }
             catch (Exception e)
             {
@@ -1062,6 +1062,8 @@ namespace TerraTechModManager
         public string Site;
         public string[] RequiredModNames;
         public string CurrentVersion;
+        [JsonIgnore]
+        private bool VersionGrabbed = false;
 
         [JsonIgnore]
         public bool FoundLocal;
@@ -1145,15 +1147,20 @@ namespace TerraTechModManager
 
         public string GetVersionTagFromCloud()
         {
-            try
+            if (!VersionGrabbed && (CurrentVersion == null || CurrentVersion == ""))
             {
-                CurrentVersion = Downloader.GetUpdateInfo.GetReleases(CloudName).tag_name;
-                return CurrentVersion;
+                VersionGrabbed = true;
+                try
+                {
+                    CurrentVersion = Downloader.GetUpdateInfo.GetReleases(CloudName).tag_name;
+                    return CurrentVersion;
+                }
+                catch
+                {
+                    return "";
+                }
             }
-            catch
-            {
-                return "";
-            }
+            else return CurrentVersion;
         }
 
         public ListViewItem GetListViewItem(ListViewGroup Group, bool IsLocal) => new ListViewItem(new string[] {
