@@ -54,10 +54,10 @@ namespace TerraTechModManager.Downloader
         public static GithubRepoItem[] GetNextPage()
         {
             Page++;
-            var repos = WebClientHandler.DeserializeApiCall<GithubRepos>("https://api.github.com/search/repositories?q=topic:ttqmm"+ (Search != "" ? "+" + Search : "") + "&page:" + Page.ToString());
-            if (TotalCount!=repos.total_count)
+            var repos = WebClientHandler.DeserializeApiCall<GithubRepos>("https://api.github.com/search/repositories?q=topic:ttqmm" + (Search != "" ? "+" + Search : "") + "&page:" + Page.ToString());
+            if (TotalCount != repos.total_count)
             {
-                NewMain.inst.Log("Something has changed while this session was opened!",Color.LightBlue);
+                NewMain.inst.Log("Something has changed while this session was opened!", Color.LightBlue);
                 TotalCount = repos.total_count;
             }
             return repos.items;
@@ -111,9 +111,9 @@ namespace TerraTechModManager.Downloader
 
                     if (localItem.type == "dir")
                     {
-                        if (!System.IO.Directory.Exists(DownloadFolder + CurrentPath + @"\" + localItem.name))
+                        if (!System.IO.Directory.Exists(DownloadFolder + CurrentPath + @"/" + localItem.name))
                         {
-                            System.IO.Directory.CreateDirectory(DownloadFolder + CurrentPath + @"\" + localItem.name);
+                            System.IO.Directory.CreateDirectory(DownloadFolder + CurrentPath + @"/" + localItem.name);
                         }
                         outFolders.Add(localItem.name);
                         var subEntries = WebClientHandler.DeserializeApiCall<GithubItem[]>(localItem.url);
@@ -122,14 +122,14 @@ namespace TerraTechModManager.Downloader
                             continue;
                         }
 
-                        RecursiveDownload(subEntries, DownloadFolder, CurrentPath + @"\" + localItem.name);
+                        RecursiveDownload(subEntries, DownloadFolder, CurrentPath + @"/" + localItem.name);
                     }
                     else if (localItem.type == "file")
                     {
                         using (var wc = new WebClient())
                         {
-                            NewMain.inst.Log("Downloading " + CurrentPath + @"\" + localItem.name, Color.Green);
-                            string filepath = DownloadFolder + CurrentPath + @"\" + localItem.name;
+                            NewMain.inst.Log("Downloading " + CurrentPath + @"/" + localItem.name, Color.Green);
+                            string filepath = DownloadFolder + CurrentPath + @"/" + localItem.name;
                             if (System.IO.File.Exists(filepath))
                             {
                                 try
@@ -177,7 +177,7 @@ namespace TerraTechModManager.Downloader
         {
             string Token = NewMain.GithubToken;
             WebClient webClient = new WebClient();
-        Retry:
+            Retry:
             webClient.Headers.Add("user-agent", "ttmm-downloader-client");
             bool flag = false;
             if (Token != null && Token != "" && Token != "Github Token")
@@ -190,7 +190,7 @@ namespace TerraTechModManager.Downloader
                 string jsonData = webClient.DownloadString(ApiUrl);
                 return JsonConvert.DeserializeObject<T>(jsonData);
             }
-            catch(Exception E)
+            catch (Exception E)
             {
                 if (flag)
                 {

@@ -48,7 +48,7 @@ namespace TerraTechModManager
         {
             get => Downloads.Count != 0;
         }
-        
+
         private Dictionary<string, ModInfo> LocalMods = new Dictionary<string, ModInfo>();
         private Dictionary<string, ModInfo> GithubMods = new Dictionary<string, ModInfo>();
         private Dictionary<string, ModInfo> FoundServerMods = new Dictionary<string, ModInfo>();
@@ -127,10 +127,10 @@ namespace TerraTechModManager
             Log(StartMessage, Color.Red, false);
 
             RunPatcher.MMWindow = this;
-            RunPatcher.PathToExe = DataFolder + @"\Managed\QModManager.exe";
+            RunPatcher.PathToExe = DataFolder + @"/Managed/QModManager.exe";
             if (!File.Exists(RunPatcher.PathToExe))
             {
-                RunPatcher.UpdatePatcher(DataFolder + @"\Managed");
+                RunPatcher.UpdatePatcher(DataFolder + @"/Managed");
             }
 
             RunPatcher.RunExe("-i");
@@ -199,7 +199,7 @@ namespace TerraTechModManager
                     }
                 }
             }
-            catch(Exception E)
+            catch (Exception E)
             {
                 Log("Update check failed: " + E.Message, Color.Red);
             }
@@ -271,10 +271,10 @@ namespace TerraTechModManager
             else
                 task.Start();
         }
-        
+
         internal void SetLocalModState(string path, ModInfo.ModState State)
         {
-            string modjson = path + @"\mod.json";
+            string modjson = path + @"/mod.json";
 
             var json = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(File.ReadAllText(modjson));
             json["Enable"] = State == ModInfo.ModState.Enabled;
@@ -283,7 +283,7 @@ namespace TerraTechModManager
 
         internal void SetLocalModDisabled(ref string path, bool Disable)
         {
-            string newPath = RootFolder + @"\QMods" + (Disable ? @"-Disabled\" : @"\") + new DirectoryInfo(path).Name;
+            string newPath = RootFolder + @"/QMods" + (Disable ? @"-Disabled/" : @"/") + new DirectoryInfo(path).Name;
             Directory.Move(path, newPath);
             path = newPath;
         }
@@ -293,42 +293,42 @@ namespace TerraTechModManager
 
         private void GetLocalMods()
         {
-            if (!Directory.Exists(RootFolder + @"\QMods"))
+            if (!Directory.Exists(RootFolder + @"/QMods"))
             {
-                Directory.CreateDirectory(RootFolder + @"\QMods");
+                Directory.CreateDirectory(RootFolder + @"/QMods");
             }
-            else foreach (string folder in Directory.GetDirectories(RootFolder + @"\QMods"))
+            else foreach (string folder in Directory.GetDirectories(RootFolder + @"/QMods"))
+                {
+                    try
+                    {
+                        GetLocalMod_Internal(folder, false);
+                    }
+                    catch (Exception E)
+                    {
+                        Log("There was a problem handling a local mod: \n" + E.Message + "\nAt " + folder, Color.Red);
+                    }
+                }
+            if (!Directory.Exists(RootFolder + @"/QMods-Disabled"))
             {
-                try
-                {
-                    GetLocalMod_Internal(folder, false);
-                }
-                catch (Exception E)
-                {
-                    Log("There was a problem handling a local mod: \n" + E.Message + "\nAt " + folder, Color.Red);
-                }
+                Directory.CreateDirectory(RootFolder + @"/QMods-Disabled");
             }
-            if (!Directory.Exists(RootFolder + @"\QMods-Disabled"))
-            {
-                Directory.CreateDirectory(RootFolder + @"\QMods-Disabled");
-            }
-            else foreach (string folder in Directory.GetDirectories(RootFolder + @"\QMods-Disabled"))
-            {
-                try
+            else foreach (string folder in Directory.GetDirectories(RootFolder + @"/QMods-Disabled"))
                 {
-                    GetLocalMod_Internal(folder, true);
+                    try
+                    {
+                        GetLocalMod_Internal(folder, true);
+                    }
+                    catch (Exception E)
+                    {
+                        Log("There was a problem handling a local mod: \n" + E.Message + "\nAt " + folder, Color.Red);
+                    }
                 }
-                catch (Exception E)
-                {
-                    Log("There was a problem handling a local mod: \n" + E.Message + "\nAt " + folder, Color.Red);
-                }
-            }
         }
 
         internal void GetLocalMod_Internal(string path, bool IsDisabled = false, bool ImmediatelyFromCloud = false)
         {
-            string modjson = path + @"\mod.json";
-            string ttmmjson = path + @"\ttmm.json";
+            string modjson = path + @"/mod.json";
+            string ttmmjson = path + @"/ttmm.json";
             if (File.Exists(modjson))
             {
                 var json = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(File.ReadAllText(modjson));
@@ -375,7 +375,7 @@ namespace TerraTechModManager
                     string version = FindServerMod(modInfo.CloudName, ImmediatelyFromCloud);
                     if (version != "" && version != modInfo.CurrentVersion)
                     {
-                        Log("Update available for " + modInfo.CloudName + " (" + version + ")",Color.Turquoise);
+                        Log("Update available for " + modInfo.CloudName + " (" + version + ")", Color.Turquoise);
                         modInfo.Visible.SubItems[2].Text = "[Update Available] " + modInfo.Visible.SubItems[2].Text;
                         modInfo.Visible.UseItemStyleForSubItems = false;
                         modInfo.Visible.SubItems[1].Font = new Font(modInfo.Visible.SubItems[1].Font, FontStyle.Bold);
@@ -663,7 +663,7 @@ namespace TerraTechModManager
                     //ChangeVisibilityOfCompactModInfo(false);
                 }
             }
-            catch(Exception E)
+            catch (Exception E)
             {
                 Log(E.Message, Color.Red);
                 ChangeVisibilityOfCompactModInfo(false);
@@ -707,7 +707,7 @@ namespace TerraTechModManager
                 ModInfo modInfo = GetModInfoFromIndex(Index);
                 ChangeLocalModState(modInfo, newState);
             }
-            catch(Exception E)
+            catch (Exception E)
             {
                 Log(E.Message, Color.Red);
             }
@@ -821,7 +821,7 @@ namespace TerraTechModManager
         }
 
         #region Download Mods
-        
+
         private void GetModFromCloud(object sender, EventArgs e)
         {
             var modInfo = GetModInfoFromIndex();
@@ -909,7 +909,7 @@ namespace TerraTechModManager
             Log("Downloading " + param[1], Color.LawnGreen);
             try
             {
-                string newFolder = TerraTechModManager.Downloader.DownloadFolder.Download(param[0], param[1], RootFolder + @"\QMods")[0];
+                string newFolder = TerraTechModManager.Downloader.DownloadFolder.Download(param[0], param[1], RootFolder + @"/QMods")[0];
                 if (KillDownload)
                 {
                     KillDownload = false;
@@ -929,8 +929,9 @@ namespace TerraTechModManager
                     serverMod = FoundServerMods[param[1]];
                 }
                 serverMod.GetVersionTagFromCloud();
-                File.WriteAllText(RootFolder + @"\QMods\" + newFolder + @"\ttmm.json", JsonConvert.SerializeObject(serverMod));
-                GetLocalMod_Internal(RootFolder + @"\QMods\" + newFolder, false, true);
+
+                File.WriteAllText(RootFolder + @"/QMods/" + newFolder + @"/ttmm.json", JsonConvert.SerializeObject(serverMod));
+                GetLocalMod_Internal(RootFolder + @"/QMods/" + newFolder, false, true);
             }
             catch (Exception e)
             {
@@ -969,7 +970,7 @@ namespace TerraTechModManager
         private void DownloadPatcher(object sender, EventArgs e)
         {
             KillPatcherEXE();
-            RunPatcher.UpdatePatcher(DataFolder + @"\Managed");
+            RunPatcher.UpdatePatcher(DataFolder + @"/Managed");
             RunPatcher.RunExe("-u");
             RunPatcher.IsReinstalling = true;
         }
@@ -1004,7 +1005,7 @@ namespace TerraTechModManager
             else
             {
                 ClearGitMods();
-                    AddToTaskQueue(new Task(GetGitMods));
+                AddToTaskQueue(new Task(GetGitMods));
             }
         }
 
@@ -1257,7 +1258,7 @@ namespace TerraTechModManager
                     try
                     {
                         RunPatcher.EXE.WaitForExit(5000);
-                            }
+                    }
                     catch { }
                     RunExe("-i");
                 }
