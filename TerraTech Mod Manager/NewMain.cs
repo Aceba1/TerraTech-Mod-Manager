@@ -779,7 +779,7 @@ namespace TerraTechModManager
 
         private void PromptDeleteMod(object sender, EventArgs e)
         {
-            var response = MessageBox.Show("Are you sure you want to delete this mod?\nYou can set it as disabled instead to use later and keep completely out of the game\nDeleting may remove any special data it has created in it's folder!", "Delete Mod", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+            var response = MessageBox.Show("Are you sure you want to delete this mod?\nYou can set it as disabled instead to use later and keep completely out of the game.\n\nDeleting may remove any special data it has created in it's folder!", "Delete Mod", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
             if (response == DialogResult.OK)
             {
                 var modInfo = GetModInfoFromIndex();
