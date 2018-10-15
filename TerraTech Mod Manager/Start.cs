@@ -72,6 +72,7 @@ namespace TerraTechModManager
                     {
                         if (CheckPiracy())
                         {
+                            ConfigHandler.ResetConfig();
                             this.Close();
                             return "Cancelled Operation";
                         }
@@ -128,11 +129,11 @@ namespace TerraTechModManager
 
         private bool CheckPiracy()
         {
-            bool Check = new DirectoryInfo(textBoxFolderDirectory.Text).GetFiles("*igg*").Length > 0;
-            Check = Check || new DirectoryInfo(textBoxFolderDirectory.Text).GetFiles("*ogg*").Length > 0;
+            bool Check = new DirectoryInfo(RootPath).GetFiles("*igg*").Length > 0;
+            Check = Check || new DirectoryInfo(RootPath).GetFiles("*ogg*").Length > 0;
             if (!Check)
             {
-                var f = new DirectoryInfo(textBoxFolderDirectory.Text).GetFiles("valve.ini");
+                var f = new DirectoryInfo(RootPath).GetFiles("valve.ini");
                 if (f.Length > 0)
                 {
                     string check = File.ReadAllText(f[0].FullName).ToLower();
@@ -157,6 +158,12 @@ namespace TerraTechModManager
     public static class ConfigHandler
     {
         private static Dictionary<string, object> config = new Dictionary<string, object>();
+
+        public static void ResetConfig()
+        {
+            string path = Environment.CurrentDirectory + @"\config.json";
+            File.Delete(path);
+        }
 
         public static void LoadConfig()
         {
