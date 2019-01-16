@@ -17,7 +17,7 @@ namespace TerraTechModManager
     public partial class NewMain : Form
     {
 #warning Change version number with every update
-        public const string Version_Number = "1.3";
+        public string Version_Number => TerraTechModManager.Start.inst.Version_Number.Text;
 
         private string LastSearch = "";
 
@@ -123,6 +123,7 @@ namespace TerraTechModManager
 
         private void NewMain_Load(object sender, EventArgs e)
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
             inst = this;
             Log(StartMessage, Color.Red, false);
 

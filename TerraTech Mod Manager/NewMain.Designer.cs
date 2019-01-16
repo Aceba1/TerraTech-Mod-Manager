@@ -79,7 +79,6 @@
             this.terraTechForumPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.terraTechWikiPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tTMMDownloadPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
             panel1 = new System.Windows.Forms.Panel();
             panel5 = new System.Windows.Forms.Panel();
@@ -553,8 +552,7 @@
             this.githubPageToolStripMenuItem,
             this.terraTechForumPageToolStripMenuItem,
             this.terraTechWikiPageToolStripMenuItem,
-            this.tTMMDownloadPageToolStripMenuItem,
-            this.aboutToolStripMenuItem});
+            this.tTMMDownloadPageToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
@@ -586,13 +584,6 @@
             this.tTMMDownloadPageToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.tTMMDownloadPageToolStripMenuItem.Text = "TTMM Download Page";
             this.tTMMDownloadPageToolStripMenuItem.Click += new System.EventHandler(this.tTMMDownloadPageToolStripMenuItem_Click);
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.aboutToolStripMenuItem.Text = "About...";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // richTextBoxLog
             // 
@@ -684,7 +675,6 @@
         private System.Windows.Forms.ToolStripMenuItem showProgramUpdatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lookForModUpdatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lookForProgramUpdateToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.Button buttonModHideDesc;
     }
 }

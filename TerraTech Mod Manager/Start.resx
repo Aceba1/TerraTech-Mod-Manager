@@ -120,17 +120,16 @@
   <data name="richTextBox1.Text" xml:space="preserve">
     <value>A few things to note:
 
- - This program establishes an internet connection with Github for aquiring mods, the patcher, etc
- - If not present when booting, the program will download the patcher from Github
- - When booting TTMM, the program will ensure that the modloader (TTQMM) is in the game
-    - The modloader has no effect on the game with no mods present
-    - If necessary, the modloader can be removed from the game using the File menu item
-    - Updating or reinstalling the game will remove the modloader and stop mods from loading 
-       - In that case, you can simply run TTMM again to be able to play with mods
- - Downloading mods through TTMM will use the Github Network API
- - You are responsible for how this tool is used on your device
+ - This program connects to Github to aquire mods, the patcher, and updates.
+ - If not present when booting, the program will download the patcher from Github.
+ - Loading the program will make sure that the modloader (TTQMM) is present in the game.
+    - The modloader has no effect on the game when there are no mods present.
+    - The modloader can be removed from the game from within this program's File menu.
 
-Antiviruses may cause this program to not work properly
+Updating or reinstalling the game will remove the modloader and stop mods from loading. You can reinstall the patch by loading TTMM again.
+
+If you encounter the Github API throttling error, you can create a token to bypass it here: 
+https://github.com/settings/tokens
 
 If you have any problems, please contact the creator on the TerraTech Forum, Github, or on the official TerraTech Discord (https://discord.gg/TerraTechGame)</value>
   </data>

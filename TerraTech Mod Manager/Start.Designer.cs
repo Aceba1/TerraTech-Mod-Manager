@@ -34,6 +34,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxFolderDirectory = new System.Windows.Forms.TextBox();
             this.buttonOpenMain = new System.Windows.Forms.Button();
+            this.Version_Number = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -75,6 +76,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.buttonOpenMain);
+            this.splitContainer1.Panel2.Controls.Add(this.Version_Number);
             this.splitContainer1.Size = new System.Drawing.Size(590, 42);
             this.splitContainer1.SplitterDistance = 384;
             this.splitContainer1.TabIndex = 0;
@@ -112,6 +114,17 @@
             this.buttonOpenMain.Text = "Continue";
             this.buttonOpenMain.UseVisualStyleBackColor = true;
             this.buttonOpenMain.Click += new System.EventHandler(this.OpenMain_Click);
+            // 
+            // Version_Number
+            // 
+            this.Version_Number.AutoSize = true;
+            this.Version_Number.Dock = System.Windows.Forms.DockStyle.Right;
+            this.Version_Number.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Version_Number.Location = new System.Drawing.Point(181, 0);
+            this.Version_Number.Name = "Version_Number";
+            this.Version_Number.Size = new System.Drawing.Size(21, 9);
+            this.Version_Number.TabIndex = 1;
+            this.Version_Number.Text = "1.3.1";
             // 
             // panel1
             // 
@@ -162,6 +175,7 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
@@ -179,5 +193,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Label label1;
+        public System.Windows.Forms.Label Version_Number;
     }
 }

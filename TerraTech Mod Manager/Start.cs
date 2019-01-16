@@ -14,6 +14,8 @@ namespace TerraTechModManager
 {
     public partial class Start : Form
     {
+        public static Start inst;
+
         bool finished = false;
         /// <summary>
         /// Key: skipstart
@@ -26,6 +28,7 @@ namespace TerraTechModManager
 
         public Start()
         {
+            inst = this;
             ConfigHandler.LoadConfig();
             ConfigHandler.TryGetValue(ref SkipAtStart, "skipstart");
             ConfigHandler.TryGetValue(ref RootPath, "ttroot");

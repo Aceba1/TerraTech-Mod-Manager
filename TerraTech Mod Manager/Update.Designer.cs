@@ -36,8 +36,8 @@
             this.labelVersionNumber = new System.Windows.Forms.Label();
             this.buttonDownloadUpdate = new System.Windows.Forms.Button();
             this.buttonIgnore = new System.Windows.Forms.Button();
-            this.checkBoxIgnore = new System.Windows.Forms.CheckBox();
             this.richTextBoxBody = new System.Windows.Forms.RichTextBox();
+            this.labelVersionCurrent = new System.Windows.Forms.Label();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             tableLayoutPanel1.SuspendLayout();
@@ -102,7 +102,7 @@
             tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
             tableLayoutPanel2.Controls.Add(this.buttonDownloadUpdate, 2, 0);
             tableLayoutPanel2.Controls.Add(this.buttonIgnore, 1, 0);
-            tableLayoutPanel2.Controls.Add(this.checkBoxIgnore, 0, 0);
+            tableLayoutPanel2.Controls.Add(this.labelVersionCurrent, 0, 0);
             tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             tableLayoutPanel2.Location = new System.Drawing.Point(3, 238);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -133,18 +133,6 @@
             this.buttonIgnore.UseVisualStyleBackColor = true;
             this.buttonIgnore.Click += new System.EventHandler(this.buttonIgnore_Click);
             // 
-            // checkBoxIgnore
-            // 
-            this.checkBoxIgnore.AutoSize = true;
-            this.checkBoxIgnore.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.checkBoxIgnore.Location = new System.Drawing.Point(3, 3);
-            this.checkBoxIgnore.Name = "checkBoxIgnore";
-            this.checkBoxIgnore.Size = new System.Drawing.Size(94, 23);
-            this.checkBoxIgnore.TabIndex = 2;
-            this.checkBoxIgnore.Text = "Always Ignore";
-            this.checkBoxIgnore.UseVisualStyleBackColor = true;
-            this.checkBoxIgnore.CheckedChanged += new System.EventHandler(this.checkBoxIgnore_CheckedChanged);
-            // 
             // richTextBoxBody
             // 
             this.richTextBoxBody.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -153,6 +141,17 @@
             this.richTextBoxBody.Size = new System.Drawing.Size(475, 189);
             this.richTextBoxBody.TabIndex = 2;
             this.richTextBoxBody.Text = "";
+            // 
+            // labelVersionCurrent
+            // 
+            this.labelVersionCurrent.AutoSize = true;
+            this.labelVersionCurrent.Dock = System.Windows.Forms.DockStyle.Top;
+            this.labelVersionCurrent.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.labelVersionCurrent.Location = new System.Drawing.Point(3, 0);
+            this.labelVersionCurrent.Name = "labelVersionCurrent";
+            this.labelVersionCurrent.Size = new System.Drawing.Size(94, 13);
+            this.labelVersionCurrent.TabIndex = 2;
+            this.labelVersionCurrent.Text = "Current version: ";
             // 
             // Update
             // 
@@ -179,7 +178,7 @@
         private System.Windows.Forms.Label labelVersionNumber;
         private System.Windows.Forms.Button buttonDownloadUpdate;
         private System.Windows.Forms.Button buttonIgnore;
-        private System.Windows.Forms.CheckBox checkBoxIgnore;
         private System.Windows.Forms.RichTextBox richTextBoxBody;
+        private System.Windows.Forms.Label labelVersionCurrent;
     }
 }

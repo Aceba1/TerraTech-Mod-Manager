@@ -20,11 +20,12 @@ namespace TerraTechModManager
             richTextBoxBody.Text = Release.body;
             labelVersionNumber.Text = Release.tag_name;
             labelReleaseName.Text = Release.name;
+            labelVersionCurrent.Text = "Current Version:\n" + Start.inst.Version_Number.Text;
         }
 
         private void buttonIgnore_Click(object sender, EventArgs e)
         {
-            Return = checkBoxIgnore.Checked ? -1 : 0;
+            Return = 0;
             this.Close();
         }
 
@@ -32,18 +33,6 @@ namespace TerraTechModManager
         {
             Return = 1;
             this.Close();
-        }
-
-        private void checkBoxIgnore_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxIgnore.Checked)
-            {
-                buttonDownloadUpdate.Enabled = false;
-            }
-            else
-            {
-                buttonDownloadUpdate.Enabled = true;
-            }
         }
     }
 }

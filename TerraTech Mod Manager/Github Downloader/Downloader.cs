@@ -198,7 +198,7 @@ namespace TerraTechModManager.Downloader
                     NewMain.inst.Log("Skipping Github Token", Color.Orange);
                     goto Retry;
                 }
-                throw new Exception("Could not access API! Try again later?\n(This could have been caused by rate limiting: Try setting a Github user token in the Config)\n" + E.Message + "\n" + ApiUrl);
+                throw new Exception($"Could not access API!\n{(E.Message.Contains("Forbidden") ? "(This could have been caused by rate limiting: Try setting a Github user token in the Config)\n" : "")}{E.Message}\n{ApiUrl}");
             }
         }
     }
