@@ -14,7 +14,8 @@ namespace TerraTechModManager
 {
     public partial class Start : Form
     {
-        public static Start inst;
+#warning Change Version_Number with every update!
+        public const string Version_Number = "1.3.2";
 
         bool finished = false;
         /// <summary>
@@ -28,7 +29,6 @@ namespace TerraTechModManager
 
         public Start()
         {
-            inst = this;
             ConfigHandler.LoadConfig();
             ConfigHandler.TryGetValue(ref SkipAtStart, "skipstart");
             ConfigHandler.TryGetValue(ref RootPath, "ttroot");
@@ -36,6 +36,7 @@ namespace TerraTechModManager
             if (SkipAtStart)
             txt = BootMain();
             InitializeComponent();
+            V_Num.Text = Version_Number;
             label2.Text = txt;
             textBoxFolderDirectory.Text = RootPath;
         }

@@ -17,7 +17,7 @@ namespace TerraTechModManager
     public partial class NewMain : Form
     {
 #warning Change version number with every update
-        public string Version_Number => TerraTechModManager.Start.inst.Version_Number.Text;
+        public string Version_Number => TerraTechModManager.Start.Version_Number;
 
         private string LastSearch = "";
 
@@ -86,9 +86,6 @@ namespace TerraTechModManager
 
         private void LoadConfig()
         {
-            bool ShowProgramUpdatePrompt = true;
-            ConfigHandler.TryGetValue(ref ShowProgramUpdatePrompt, "getprogramupdates");
-            showProgramUpdatesToolStripMenuItem.Checked = ShowProgramUpdatePrompt;
 
             bool LookForModUpdates = true;
             ConfigHandler.TryGetValue(ref LookForModUpdates, "getmodupdates");
@@ -103,16 +100,12 @@ namespace TerraTechModManager
 
             githubTokenToolStripMenuItem.Text = ConfigHandler.TryGetValue("githubtoken", "Github Token");
 
-            if (showProgramUpdatesToolStripMenuItem.Checked)
-            {
-                AddToTaskQueue(new Task(action: LookForProgramUpdate_v));
-            }
+            AddToTaskQueue(new Task(action: LookForProgramUpdate_v));
 
             ReloadLocalMods(true); // False for synchronous local/server mod loading, True for stability
         }
         public void SaveConfig()
         {
-            ConfigHandler.SetValue(showProgramUpdatesToolStripMenuItem.Checked, "getprogramupdates");
             ConfigHandler.SetValue(lookForModUpdatesToolStripMenuItem.Checked, "getmodupdates");
             ConfigHandler.SetValue(panelHideTabs.Visible, "hidetabs");
             ConfigHandler.SetValue(splitContainer1.Panel2Collapsed, "hidelog");
@@ -192,10 +185,6 @@ namespace TerraTechModManager
                             Downloads.Clear();
                             process.Start();
                             Close();
-                        }
-                        else if (updateScreen.Return == -1)
-                        {
-                            showProgramUpdatesToolStripMenuItem.Checked = false;
                         }
                     }
                 }
@@ -1008,11 +997,6 @@ namespace TerraTechModManager
                 ClearGitMods();
                 AddToTaskQueue(new Task(GetGitMods));
             }
-        }
-
-        private void showProgramUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            showProgramUpdatesToolStripMenuItem.Checked = !showProgramUpdatesToolStripMenuItem.Checked;
         }
 
         private void lookForModUpdatesToolStripMenuItem_Click(object sender, EventArgs e)

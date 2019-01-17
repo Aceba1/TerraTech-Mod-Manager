@@ -72,7 +72,6 @@
             this.hideTabsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skipStartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lookForModUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showProgramUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.githubTokenToolStripMenuItem = new System.Windows.Forms.ToolStripTextBox();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.githubPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -499,7 +498,6 @@
             this.hideTabsToolStripMenuItem,
             this.skipStartToolStripMenuItem,
             this.lookForModUpdatesToolStripMenuItem,
-            this.showProgramUpdatesToolStripMenuItem,
             this.githubTokenToolStripMenuItem});
             this.configurationToolStripMenuItem.Name = "configurationToolStripMenuItem";
             this.configurationToolStripMenuItem.Size = new System.Drawing.Size(93, 20);
@@ -532,13 +530,6 @@
             this.lookForModUpdatesToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
             this.lookForModUpdatesToolStripMenuItem.Text = "Look for Mod Updates";
             this.lookForModUpdatesToolStripMenuItem.Click += new System.EventHandler(this.lookForModUpdatesToolStripMenuItem_Click);
-            // 
-            // showProgramUpdatesToolStripMenuItem
-            // 
-            this.showProgramUpdatesToolStripMenuItem.Name = "showProgramUpdatesToolStripMenuItem";
-            this.showProgramUpdatesToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
-            this.showProgramUpdatesToolStripMenuItem.Text = "Look for Program Updates";
-            this.showProgramUpdatesToolStripMenuItem.Click += new System.EventHandler(this.showProgramUpdatesToolStripMenuItem_Click);
             // 
             // githubTokenToolStripMenuItem
             // 
@@ -672,7 +663,6 @@
         private System.Windows.Forms.ToolStripMenuItem tTMMDownloadPageToolStripMenuItem;
         private System.Windows.Forms.Button buttonLoadMoreMods;
         private System.Windows.Forms.TextBox textBoxModSearch;
-        private System.Windows.Forms.ToolStripMenuItem showProgramUpdatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lookForModUpdatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lookForProgramUpdateToolStripMenuItem;
         private System.Windows.Forms.Button buttonModHideDesc;

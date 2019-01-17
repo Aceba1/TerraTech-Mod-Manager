@@ -20,7 +20,7 @@ namespace TerraTechModManager
             richTextBoxBody.Text = Release.body;
             labelVersionNumber.Text = Release.tag_name;
             labelReleaseName.Text = Release.name;
-            labelVersionCurrent.Text = "Current Version:\n" + Start.inst.Version_Number.Text;
+            labelVersionCurrent.Text = "Current Version:\n" + Start.Version_Number;
         }
 
         private void buttonIgnore_Click(object sender, EventArgs e)
