@@ -79,6 +79,7 @@
             this.terraTechWikiPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tTMMDownloadPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             panel1 = new System.Windows.Forms.Panel();
             panel5 = new System.Windows.Forms.Panel();
             labelSearch = new System.Windows.Forms.Label();
@@ -498,6 +499,7 @@
             this.hideTabsToolStripMenuItem,
             this.skipStartToolStripMenuItem,
             this.lookForModUpdatesToolStripMenuItem,
+            this.toolStripSeparator1,
             this.githubTokenToolStripMenuItem});
             this.configurationToolStripMenuItem.Name = "configurationToolStripMenuItem";
             this.configurationToolStripMenuItem.Size = new System.Drawing.Size(93, 20);
@@ -526,6 +528,9 @@
             // 
             // lookForModUpdatesToolStripMenuItem
             // 
+            this.lookForModUpdatesToolStripMenuItem.Checked = true;
+            this.lookForModUpdatesToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.lookForModUpdatesToolStripMenuItem.Enabled = false;
             this.lookForModUpdatesToolStripMenuItem.Name = "lookForModUpdatesToolStripMenuItem";
             this.lookForModUpdatesToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
             this.lookForModUpdatesToolStripMenuItem.Text = "Look for Mod Updates";
@@ -586,6 +591,11 @@
             this.richTextBoxLog.Size = new System.Drawing.Size(371, 378);
             this.richTextBoxLog.TabIndex = 0;
             this.richTextBoxLog.Text = "";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(237, 6);
             // 
             // NewMain
             // 
@@ -666,5 +676,6 @@
         private System.Windows.Forms.ToolStripMenuItem lookForModUpdatesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lookForProgramUpdateToolStripMenuItem;
         private System.Windows.Forms.Button buttonModHideDesc;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }

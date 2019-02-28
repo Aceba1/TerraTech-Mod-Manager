@@ -55,6 +55,7 @@ namespace TerraTechModManager.Downloader
         {
             Page++;
             var repos = WebClientHandler.DeserializeApiCall<GithubRepos>("https://api.github.com/search/repositories?q=topic:ttqmm" + (Search != "" ? "+" + Search : "") + "&page:" + Page.ToString());
+            Counted += repos.items.Length;
             if (TotalCount != repos.total_count)
             {
                 NewMain.inst.Log("Something has changed while this session was opened!", Color.LightBlue);
@@ -75,7 +76,7 @@ namespace TerraTechModManager.Downloader
             public string name;
             public string description;
             public string html_url;
-
+            public string pushed_at;
         }
     }
 
@@ -198,7 +199,7 @@ namespace TerraTechModManager.Downloader
                     NewMain.inst.Log("Skipping Github Token", Color.Orange);
                     goto Retry;
                 }
-                throw new Exception($"Could not access API!\n{(E.Message.Contains("Forbidden") ? "(This could have been caused by rate limiting: Try setting a Github user token in the Config)\n" : "")}{E.Message}\n{ApiUrl}");
+                throw new Exception($"Could not access API!\n{(E.Message.Contains("Forbidden") ? "(Github Rate Limiting: Try setting a Github user token in the Config)\n" : "")}{E.Message}\n{ApiUrl}");
             }
         }
     }

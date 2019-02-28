@@ -114,6 +114,7 @@ namespace TerraTechModManager
             ConfigHandler.SaveConfig();
         }
 
+
         private void NewMain_Load(object sender, EventArgs e)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
@@ -125,9 +126,15 @@ namespace TerraTechModManager
             if (!File.Exists(RunPatcher.PathToExe))
             {
                 RunPatcher.UpdatePatcher(DataFolder + @"/Managed");
+                RunPatcher.RunExe("-i");
             }
-
-            RunPatcher.RunExe("-i");
+            else if (ConfigHandler.TryGetValue("lastpatchversion", "0.0.0") != Version_Number)
+            {
+                RunPatcher.UpdatePatcher(DataFolder + @"/Managed");
+                RunPatcher.RunExe("-u");
+                RunPatcher.IsReinstalling = true;
+            }
+            ConfigHandler.SetValue(Version_Number, "lastpatchversion");
             ChangeVisibilityOfCompactModInfo(false);
 
             LoadConfig();
@@ -225,10 +232,17 @@ namespace TerraTechModManager
 
         public void Log(string value, Color color, bool newLine = true)
         {
-            richTextBoxLog.DeselectAll();
-            richTextBoxLog.SelectionColor = color;
-            richTextBoxLog.AppendText(value + (newLine ? "\r" : ""));
-            richTextBoxLog.ScrollToCaret();
+            try
+            {
+                richTextBoxLog.DeselectAll();
+                richTextBoxLog.SelectionColor = color;
+                richTextBoxLog.AppendText(value + (newLine ? "\r" : ""));
+                //richTextBoxLog.ScrollToCaret(); /* <- That line there, do not trust. Cannot trust. I don't know why, but do NOT. */
+            }
+            catch
+            {
+                /* fail silently */
+            }
         }
 
 
@@ -329,7 +343,7 @@ namespace TerraTechModManager
                     {
                         modInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<ModInfo>(File.ReadAllText(ttmmjson), new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore });
                     }
-                    catch { }
+                    catch { /* fail silently */ }
                 }
                 if (modInfo != null)
                 {
@@ -360,20 +374,21 @@ namespace TerraTechModManager
 
                 LocalMods[modInfo.Name] = modInfo;
                 modInfo.Visible = listViewCompactMods.Items.Add(item);
-                if (modInfo.CloudName != null && modInfo.CloudName != "" && flag)
-                {
-                    string version = FindServerMod(modInfo.CloudName, ImmediatelyFromCloud);
-                    if (version != "" && version != modInfo.CurrentVersion)
-                    {
-                        Log("Update available for " + modInfo.CloudName + " (" + version + ")", Color.Turquoise);
-                        modInfo.Visible.SubItems[2].Text = "[Update Available] " + modInfo.Visible.SubItems[2].Text;
-                        modInfo.Visible.UseItemStyleForSubItems = false;
-                        modInfo.Visible.SubItems[1].Font = new Font(modInfo.Visible.SubItems[1].Font, FontStyle.Bold);
-                    }
-                }
+                //if (modInfo.CloudName != null && modInfo.CloudName != "" && flag)
+                //{
+                //    string version = FindServerMod(modInfo.CloudName, ImmediatelyFromCloud);
+                //    if (version != "" && version != modInfo.CurrentVersion)
+                //    {
+                //        Log("Update available for " + modInfo.CloudName + " (" + version + ")", Color.Turquoise);
+                //        modInfo.Visible.SubItems[2].Text = "[Update Available] " + modInfo.Visible.SubItems[2].Text;
+                //        modInfo.Visible.UseItemStyleForSubItems = false;
+                //        modInfo.Visible.SubItems[1].Font = new Font(modInfo.Visible.SubItems[1].Font, FontStyle.Bold);
+                //    }
+                //}
             }
         }
 
+        // Do not use
         string FindServerMod(string CloudName, bool IgnoreResult)
         {
             string result = "";
@@ -385,15 +400,15 @@ namespace TerraTechModManager
                     GithubMods.Remove(CloudName);
                     serverMod.FoundLocal = true;
                     serverMod.TrySetChecked(true);
-                    if (!IgnoreResult && lookForModUpdatesToolStripMenuItem.Checked)
-                        result = serverMod.GetVersionTagFromCloud();
+                    //if (!IgnoreResult && lookForModUpdatesToolStripMenuItem.Checked)
+                    //    result = serverMod.GetVersionTagFromCloud();
                 }
                 else
                 {
                     serverMod = new ModInfo(Downloader.GetRepos.GetOneRepo(CloudName));
                     serverMod.FoundLocal = true;
-                    if (!IgnoreResult && lookForModUpdatesToolStripMenuItem.Checked)
-                        result = serverMod.GetVersionTagFromCloud();
+                    //if (!IgnoreResult && lookForModUpdatesToolStripMenuItem.Checked)
+                    //    result = serverMod.GetVersionTagFromCloud();
                 }
                 FoundServerMods[CloudName] = serverMod;
                 if (GithubMods.TryGetValue(CloudName, out ModInfo serverMod2)) // Temporary duplication fix for synchronous local/server mod loading
@@ -419,6 +434,7 @@ namespace TerraTechModManager
         private void GetGitMods()
         {
             int count = 0;
+            int updatecount = 0;
             try
             {
                 LastSearch = textBoxModSearch.Text;
@@ -426,7 +442,7 @@ namespace TerraTechModManager
                 count = repos.Length;
                 foreach (var repo in repos)
                 {
-                    GithubModFromRepo(repo);
+                    updatecount += GithubModFromRepo(repo);
                 }
                 ShowLoadMoreModsButton(Downloader.GetRepos.MorePagesAvailable, "Load more");
             }
@@ -435,11 +451,13 @@ namespace TerraTechModManager
                 Log(E.Message, Color.Red);
             }
             Log("Found " + count.ToString() + " Github mods" + (LastSearch == "" ? "" : " with search '" + LastSearch + "'"), Color.LightBlue);
+            if (updatecount != 0) Log("Found " + updatecount.ToString() + " mod updates", Color.LightBlue);
         }
 
         private void GetMoreGitMods()
         {
             int count = 0;
+            int updatecount = 0;
             try
             {
                 LastSearch = textBoxModSearch.Text;
@@ -447,7 +465,7 @@ namespace TerraTechModManager
                 count = repos.Length;
                 foreach (var repo in repos)
                 {
-                    GithubModFromRepo(repo);
+                    updatecount += GithubModFromRepo(repo);
                 }
                 ShowLoadMoreModsButton(Downloader.GetRepos.MorePagesAvailable, "Load more");
             }
@@ -456,32 +474,30 @@ namespace TerraTechModManager
                 Log(E.Message, Color.Red);
             }
             Log("Found " + count.ToString() + " Github mods" + (LastSearch == "" ? "" : " with search '" + LastSearch + "'"), Color.LightBlue);
+            if (updatecount != 0) Log("Found " + updatecount.ToString() + " mod updates in this page", Color.LightBlue);
         }
 
-        void GithubModFromRepo(Downloader.GetRepos.GithubRepoItem repo)
+        int GithubModFromRepo(Downloader.GetRepos.GithubRepoItem repo)
         {
-            ModInfo mod;
-            if (FoundServerMods.TryGetValue(repo.full_name, out mod))
+            ModInfo mod = new ModInfo(repo);
+            bool flag = LocalMods.TryGetValue(repo.name, out ModInfo localmod);
+            mod.Visible = listViewCompactMods.Items.Add(mod.GetListViewItem(listViewCompactMods.Groups[1], false, flag));
+            if (flag)
             {
-                mod.Visible = listViewCompactMods.Items.Add(mod.GetListViewItem(listViewCompactMods.Groups[1], false));
                 mod.FoundLocal = true;
-                mod.TrySetChecked(true);
-            }
-            else
-            {
-                mod = new ModInfo(repo);
-                GithubMods.Add(mod.CloudName, mod);
-                mod.Visible = listViewCompactMods.Items.Add(mod.GetListViewItem(listViewCompactMods.Groups[1], false));
-                if (FoundServerMods.TryGetValue(repo.full_name, out ModInfo mod2)) // Temporary duplication fix for synchronous local/server mod loading
+                localmod.TrySetChecked(true);
+                FoundServerMods[mod.CloudName] = mod;
+                if (mod.CurrentVersion != "" && mod.CurrentVersion != localmod.CurrentVersion)
                 {
-                    GithubMods.Remove(mod2.CloudName);
-                    mod2.FoundLocal = true;
-                    mod2.Visible = mod.Visible;
-                    mod2.TrySetChecked(true);
-                    if (lookForModUpdatesToolStripMenuItem.Checked)
-                        mod2.GetVersionTagFromCloud();
+                    Log("Update available for " + localmod.CloudName + " (" + mod.CurrentVersion + ")", Color.Turquoise);
+                    localmod.Visible.SubItems[2].Text = "[Update Available] " + localmod.Visible.SubItems[2].Text;
+                    localmod.Visible.UseItemStyleForSubItems = false;
+                    localmod.Visible.SubItems[1].Font = new Font(localmod.Visible.SubItems[1].Font, FontStyle.Bold);
                 }
+                return 1;
             }
+            GithubMods.Add(mod.CloudName, mod);
+            return 0;
         }
 
         void ShowLoadMoreModsButton(bool Show, string Message)
@@ -605,7 +621,7 @@ namespace TerraTechModManager
             }
             catch
             {
-
+                /* fail silently */
             }
         }
 
@@ -747,7 +763,7 @@ namespace TerraTechModManager
                 ChangeLocalModState(-1, (ModInfo.ModState)comboBoxModState.SelectedIndex);
                 listViewCompactMods.SelectedItems[0].Checked = comboBoxModState.SelectedIndex == 0;
             }
-            catch { }
+            catch { /* fail silently */ }
         }
 
         private void IsClosing(object sender, FormClosingEventArgs e)
@@ -918,7 +934,7 @@ namespace TerraTechModManager
                 {
                     serverMod = FoundServerMods[param[1]];
                 }
-                serverMod.GetVersionTagFromCloud();
+                //serverMod.GetVersionTagFromCloud();
 
                 File.WriteAllText(RootFolder + @"/QMods/" + newFolder + @"/ttmm.json", JsonConvert.SerializeObject(serverMod));
                 GetLocalMod_Internal(RootFolder + @"/QMods/" + newFolder, false, true);
@@ -933,6 +949,7 @@ namespace TerraTechModManager
                     Log("Deleted " + param[1] + "...", Color.DarkRed);
                 }
             }
+            Log("Done!", Color.LawnGreen);
             Download_Internal_2();
         }
 
@@ -954,7 +971,7 @@ namespace TerraTechModManager
                     process.Kill();
                 }
             }
-            catch { }
+            catch { /* fail silently */ }
         }
 
         private void DownloadPatcher(object sender, EventArgs e)
@@ -1048,8 +1065,6 @@ namespace TerraTechModManager
         public string Site;
         public string[] RequiredModNames;
         public string CurrentVersion;
-        [JsonIgnore]
-        private bool VersionGrabbed = false;
 
         [JsonIgnore]
         public bool FoundLocal;
@@ -1068,7 +1083,7 @@ namespace TerraTechModManager
 
         }
 
-        public ModInfo(Downloader.GetRepos.GithubRepoItem repo)
+        public ModInfo(TerraTechModManager.Downloader.GetRepos.GithubRepoItem repo)
         {
             State = ModState.Server;
             Name = repo.name;
@@ -1076,6 +1091,7 @@ namespace TerraTechModManager
             Author = repo.full_name.Substring(0, repo.full_name.IndexOf(repo.name) - 1);
             InlineDescription = repo.description;
             Site = "https://github.com/" + CloudName;
+            CurrentVersion = repo.pushed_at;
 
             var client = new WebClient();
             string linkspath = "https://raw.githubusercontent.com/" + CloudName + "/master/LINKS.";
@@ -1131,24 +1147,6 @@ namespace TerraTechModManager
             }
         }
 
-        public string GetVersionTagFromCloud()
-        {
-            if (!VersionGrabbed && (CurrentVersion == null || CurrentVersion == ""))
-            {
-                VersionGrabbed = true;
-                try
-                {
-                    CurrentVersion = Downloader.GetUpdateInfo.GetReleases(CloudName).tag_name;
-                    return CurrentVersion;
-                }
-                catch
-                {
-                    return "";
-                }
-            }
-            else return CurrentVersion;
-        }
-
         public ListViewItem GetListViewItem(ListViewGroup Group, bool IsLocal) => new ListViewItem(new string[] {
             "",
             Name,
@@ -1161,13 +1159,25 @@ namespace TerraTechModManager
             Checked = State == ModState.Enabled
         };
 
+        public ListViewItem GetListViewItem(ListViewGroup Group, bool IsLocal, bool Checked) => new ListViewItem(new string[] {
+            "",
+            Name,
+            InlineDescription,
+            Author,
+            IsLocal ? Name : CloudName
+        })
+        {
+            Group = Group,
+            Checked = Checked
+        };
+
         public void TrySetChecked(bool Checked)
         {
             try
             {
                 Visible.Checked = Checked;
             }
-            catch { }
+            catch { /* fail silently */ }
         }
 
         public enum ModState : byte
@@ -1185,6 +1195,16 @@ namespace TerraTechModManager
         public static Process EXE;
         public static NewMain MMWindow;
         public static bool IsReinstalling = false;
+
+        public static bool IsLinux
+        {
+            get
+            {
+                int p = (int)Environment.OSVersion.Platform;
+                return (p == 4) || (p == 6) || (p == 128);
+            }
+        }
+
         public static void UpdatePatcher(string ManagedPath)
         {
             MMWindow.Log("Downloading Patcher executable...", Color.GreenYellow);
@@ -1202,11 +1222,13 @@ namespace TerraTechModManager
                     return EXE;
                 }
             }
-            catch { }
+            catch { /* fail silently */ }
             Process patcher = new Process();
             patcher.StartInfo.WorkingDirectory = Path.Combine(PathToExe, @"../");
-            patcher.StartInfo.FileName = PathToExe;
-            patcher.StartInfo.Arguments = args;
+
+            patcher.StartInfo.FileName = IsLinux ? "mono" : PathToExe;
+            patcher.StartInfo.Arguments = IsLinux ? $"{PathToExe} {args}" : args;
+
             patcher.StartInfo.UseShellExecute = false;
             patcher.StartInfo.RedirectStandardOutput = true;
             patcher.StartInfo.CreateNoWindow = true;
@@ -1231,12 +1253,12 @@ namespace TerraTechModManager
                 {
                     EXE.CloseMainWindow();
                 }
-                catch { }
+                catch { /* fail silently */ }
                 try
                 {
                     EXE.Close();
                 }
-                catch { }
+                catch { /* fail silently */ }
                 if (IsReinstalling)
                 {
                     IsReinstalling = false;
@@ -1244,7 +1266,7 @@ namespace TerraTechModManager
                     {
                         RunPatcher.EXE.WaitForExit(5000);
                     }
-                    catch { }
+                    catch { /* fail silently */ }
                     RunExe("-i");
                 }
             }

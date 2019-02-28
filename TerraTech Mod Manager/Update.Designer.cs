@@ -36,8 +36,8 @@
             this.labelVersionNumber = new System.Windows.Forms.Label();
             this.buttonDownloadUpdate = new System.Windows.Forms.Button();
             this.buttonIgnore = new System.Windows.Forms.Button();
-            this.richTextBoxBody = new System.Windows.Forms.RichTextBox();
             this.labelVersionCurrent = new System.Windows.Forms.Label();
+            this.richTextBoxBody = new System.Windows.Forms.RichTextBox();
             tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             tableLayoutPanel1.SuspendLayout();
@@ -133,15 +133,6 @@
             this.buttonIgnore.UseVisualStyleBackColor = true;
             this.buttonIgnore.Click += new System.EventHandler(this.buttonIgnore_Click);
             // 
-            // richTextBoxBody
-            // 
-            this.richTextBoxBody.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBoxBody.Location = new System.Drawing.Point(3, 43);
-            this.richTextBoxBody.Name = "richTextBoxBody";
-            this.richTextBoxBody.Size = new System.Drawing.Size(475, 189);
-            this.richTextBoxBody.TabIndex = 2;
-            this.richTextBoxBody.Text = "";
-            // 
             // labelVersionCurrent
             // 
             this.labelVersionCurrent.AutoSize = true;
@@ -152,6 +143,15 @@
             this.labelVersionCurrent.Size = new System.Drawing.Size(94, 13);
             this.labelVersionCurrent.TabIndex = 2;
             this.labelVersionCurrent.Text = "Current version: ";
+            // 
+            // richTextBoxBody
+            // 
+            this.richTextBoxBody.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBoxBody.Location = new System.Drawing.Point(3, 43);
+            this.richTextBoxBody.Name = "richTextBoxBody";
+            this.richTextBoxBody.Size = new System.Drawing.Size(475, 189);
+            this.richTextBoxBody.TabIndex = 2;
+            this.richTextBoxBody.Text = "";
             // 
             // Update
             // 
