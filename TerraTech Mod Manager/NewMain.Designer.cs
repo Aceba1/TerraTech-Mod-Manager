@@ -393,6 +393,7 @@
             // 
             // richTextBoxModDescription
             // 
+            this.richTextBoxModDescription.BackColor = System.Drawing.Color.White;
             this.richTextBoxModDescription.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBoxModDescription.Location = new System.Drawing.Point(3, 3);
             this.richTextBoxModDescription.Name = "richTextBoxModDescription";

@@ -1068,6 +1068,7 @@ namespace TerraTechModManager
             {
                 try
                 {
+                    richTextBoxModDescription.Clear();
                     richTextBoxModDescription.Rtf = MarkdownToRTF.ToRTFString(GetModInfoFromIndex().GetDescription);
                 }
                 catch (Exception E)

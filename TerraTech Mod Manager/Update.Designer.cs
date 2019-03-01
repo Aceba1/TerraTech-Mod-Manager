@@ -146,6 +146,7 @@
             // 
             // richTextBoxBody
             // 
+            this.richTextBoxBody.BackColor = System.Drawing.Color.White;
             this.richTextBoxBody.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBoxBody.Location = new System.Drawing.Point(3, 43);
             this.richTextBoxBody.Name = "richTextBoxBody";
