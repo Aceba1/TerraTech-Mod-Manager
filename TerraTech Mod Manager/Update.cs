@@ -17,7 +17,7 @@ namespace TerraTechModManager
         public Update(Downloader.GetUpdateInfo.GithubReleaseItem Release)
         {
             InitializeComponent();
-            richTextBoxBody.Text = Release.body;
+            richTextBoxBody.Rtf = MarkdownToRTF.ToRTFString(Release.body);
             labelVersionNumber.Text = Release.tag_name;
             labelReleaseName.Text = Release.name;
             labelVersionCurrent.Text = "Current Version:\n" + Start.Version_Number;
