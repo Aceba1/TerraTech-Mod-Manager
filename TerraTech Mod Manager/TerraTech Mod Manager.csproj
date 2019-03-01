@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="Github Downloader\Downloader.cs" />
     <Compile Include="Config\Program.cs" />
+    <Compile Include="MarkdownToRTF.cs" />
     <Compile Include="NewMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -139,7 +140,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Copy of Artificial Intelligence Bomb %28compressed%29.mp4" />
     <Content Include="TerraTechIco.ico" />
     <Content Include="Properties\mega-icon-vector-logo.png" />
   </ItemGroup>
