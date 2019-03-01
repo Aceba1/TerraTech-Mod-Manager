@@ -134,6 +134,10 @@ namespace TerraTechModManager
                 RunPatcher.RunExe("-u");
                 RunPatcher.IsReinstalling = true;
             }
+            else
+            {
+                RunPatcher.RunExe("-i");
+            }
             ConfigHandler.SetValue(Version_Number, "lastpatchversion");
             ChangeVisibilityOfCompactModInfo(false);
 
@@ -370,7 +374,15 @@ namespace TerraTechModManager
                     flag = false;
                 }
 
-                var item = modInfo.GetListViewItem(listViewCompactMods.Groups[0], true);
+                ListViewItem item;
+                if (IsDisabled)
+                {
+                    item = modInfo.GetListViewItem(listViewCompactMods.Groups[0], true, false);
+                }
+                else
+                {
+                    item = modInfo.GetListViewItem(listViewCompactMods.Groups[0], true);
+                }
 
                 LocalMods[modInfo.Name] = modInfo;
                 modInfo.Visible = listViewCompactMods.Items.Add(item);
@@ -485,7 +497,7 @@ namespace TerraTechModManager
             if (flag)
             {
                 mod.FoundLocal = true;
-                localmod.TrySetChecked(true);
+                //localmod.TrySetChecked(true);
                 FoundServerMods[mod.CloudName] = mod;
                 if (mod.CurrentVersion != "" && mod.CurrentVersion != localmod.CurrentVersion)
                 {
@@ -493,8 +505,9 @@ namespace TerraTechModManager
                     localmod.Visible.SubItems[2].Text = "[Update Available] " + localmod.Visible.SubItems[2].Text;
                     localmod.Visible.UseItemStyleForSubItems = false;
                     localmod.Visible.SubItems[1].Font = new Font(localmod.Visible.SubItems[1].Font, FontStyle.Bold);
+                    return 1;
                 }
-                return 1;
+                return 0;
             }
             GithubMods.Add(mod.CloudName, mod);
             return 0;
@@ -534,35 +547,6 @@ namespace TerraTechModManager
                 return Source.Substring(SearchPosition);
             else
                 return Source.Substring(SearchPosition, linkend - SearchPosition);
-        }
-
-        private bool GetDescription(ref ModInfo modInfo)
-        {
-            var client = new WebClient();
-            string descpath = "https://raw.githubusercontent.com/" + modInfo.CloudName + "/master/DESC.";
-            bool flag2 = false;
-            string desc = "";
-            try
-            {
-                desc = client.DownloadString(descpath + "md");
-            }
-            catch
-            {
-                try
-                {
-                    desc = client.DownloadString(descpath + "txt");
-                }
-                catch
-                {
-                    flag2 = true; // File doesn't exist
-                }
-            }
-            if (!flag2)
-            {
-                modInfo.Description = desc; // DESCRIPTION
-                return true;
-            }
-            return false;
         }
 
         #endregion
@@ -828,6 +812,29 @@ namespace TerraTechModManager
 
         #region Download Mods
 
+        private void TryUpdateAll(object sender, EventArgs e)
+        {
+            foreach (var localMod in LocalMods)
+            {
+                if (localMod.Value.CloudName!=null && FoundServerMods.TryGetValue(localMod.Value.CloudName, out ModInfo modInfo))
+                {
+                    if (localMod.Value.CurrentVersion == modInfo.CurrentVersion) continue;
+
+                    if (localMod.Value.State == ModInfo.ModState.Disabled)
+                    {
+                        Log("Can't update a disabled mod! (" + localMod.Value.Name + ")", Color.OrangeRed);
+                        continue;
+                    }
+                    if (AddModDownload(modInfo))
+                    {
+                        localMod.Value.Visible.SubItems[2].Text = "Updating...";
+                    }
+                    continue;
+                }
+
+            }
+        }
+
         private void GetModFromCloud(object sender, EventArgs e)
         {
             var modInfo = GetModInfoFromIndex();
@@ -935,7 +942,8 @@ namespace TerraTechModManager
                     serverMod = FoundServerMods[param[1]];
                 }
                 //serverMod.GetVersionTagFromCloud();
-
+                if (serverMod.Description == null)
+                if (serverMod.GetDescription != "") Log("Downloaded description", Color.LawnGreen);
                 File.WriteAllText(RootFolder + @"/QMods/" + newFolder + @"/ttmm.json", JsonConvert.SerializeObject(serverMod));
                 GetLocalMod_Internal(RootFolder + @"/QMods/" + newFolder, false, true);
             }
@@ -1052,6 +1060,21 @@ namespace TerraTechModManager
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void SwapPages(object sender, EventArgs e)
+        {
+            if (tabControl1.SelectedTab == tabPageClassic)
+            {
+                try
+                {
+                    richTextBoxModDescription.Rtf = MarkdownToRTF.ToRTFString(GetModInfoFromIndex().GetDescription);
+                }
+                catch (Exception E)
+                {
+                    richTextBoxModDescription.Text = "EXCEPTION:\n" + E.Message;
+                }
+            }
         }
     }
 
@@ -1170,6 +1193,51 @@ namespace TerraTechModManager
             Group = Group,
             Checked = Checked
         };
+
+        public string GetDescription
+        {
+            get
+            {
+                if (Description == null)
+                {
+                    var client = new WebClient();
+                    string descpath = "https://raw.githubusercontent.com/" + CloudName + "/master/DESC.";
+                    bool FileExists = true;
+                    string desc = "";
+                    try
+                    {
+                        desc = client.DownloadString(descpath + "md");
+                    }
+                    catch
+                    {
+                        try
+                        {
+                            desc = client.DownloadString(descpath + "txt");
+                        }
+                        catch
+                        {
+                            try
+                            {
+                                desc = client.DownloadString("https://raw.githubusercontent.com/" + CloudName + "/master/README.md");
+                            }
+                            catch
+                            {
+                                FileExists = false; // File doesn't exist
+                            }
+                        }
+                    }
+                    if (FileExists)
+                    {
+                        Description = desc; // DESCRIPTION
+                    }
+                    else
+                    {
+                        Description = "";
+                    }
+                }
+                return Description;
+            }
+        }
 
         public void TrySetChecked(bool Checked)
         {

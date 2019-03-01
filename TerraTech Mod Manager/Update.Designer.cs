@@ -149,6 +149,7 @@
             this.richTextBoxBody.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBoxBody.Location = new System.Drawing.Point(3, 43);
             this.richTextBoxBody.Name = "richTextBoxBody";
+            this.richTextBoxBody.ReadOnly = true;
             this.richTextBoxBody.Size = new System.Drawing.Size(475, 189);
             this.richTextBoxBody.TabIndex = 2;
             this.richTextBoxBody.Text = "";

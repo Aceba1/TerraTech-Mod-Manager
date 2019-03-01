@@ -36,7 +36,6 @@
             System.Windows.Forms.Label labelSearch;
             System.Windows.Forms.Panel panel2;
             System.Windows.Forms.Panel panel3;
-            System.Windows.Forms.Label label1;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewMain));
             this.listViewCompactMods = new System.Windows.Forms.ListView();
             this.columnHeaderActive = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -58,6 +57,7 @@
             this.panelHideTabs = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageClassic = new System.Windows.Forms.TabPage();
+            this.richTextBoxModDescription = new System.Windows.Forms.RichTextBox();
             this.buttonModHideDesc = new System.Windows.Forms.Button();
             this.tabPageCompact = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -67,11 +67,13 @@
             this.removePatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.downloadLatestPatcherToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lookForProgramUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.downloadAllModUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideTabsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skipStartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lookForModUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.githubTokenToolStripMenuItem = new System.Windows.Forms.ToolStripTextBox();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.githubPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,13 +81,11 @@
             this.terraTechWikiPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tTMMDownloadPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             panel1 = new System.Windows.Forms.Panel();
             panel5 = new System.Windows.Forms.Panel();
             labelSearch = new System.Windows.Forms.Label();
             panel2 = new System.Windows.Forms.Panel();
             panel3 = new System.Windows.Forms.Panel();
-            label1 = new System.Windows.Forms.Label();
             panel1.SuspendLayout();
             panel5.SuspendLayout();
             panel2.SuspendLayout();
@@ -321,7 +321,7 @@
             this.buttonModShowDesc.Name = "buttonModShowDesc";
             this.buttonModShowDesc.Size = new System.Drawing.Size(80, 25);
             this.buttonModShowDesc.TabIndex = 1;
-            this.buttonModShowDesc.Text = "More";
+            this.buttonModShowDesc.Text = "Description";
             this.buttonModShowDesc.UseVisualStyleBackColor = true;
             this.buttonModShowDesc.Click += new System.EventHandler(this.buttonModShowDesc_Click);
             // 
@@ -336,16 +336,6 @@
             this.buttonLocalModDelete.UseVisualStyleBackColor = true;
             this.buttonLocalModDelete.Visible = false;
             this.buttonLocalModDelete.Click += new System.EventHandler(this.PromptDeleteMod);
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Dock = System.Windows.Forms.DockStyle.Top;
-            label1.Location = new System.Drawing.Point(3, 3);
-            label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(230, 39);
-            label1.TabIndex = 1;
-            label1.Text = "There is nothing here... yet\r\n\r\n(This may become an options window for mods)";
             // 
             // splitContainer1
             // 
@@ -387,18 +377,29 @@
             this.tabControl1.Size = new System.Drawing.Size(585, 354);
             this.tabControl1.TabIndex = 2;
             this.tabControl1.TabStop = false;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.SwapPages);
             // 
             // tabPageClassic
             // 
-            this.tabPageClassic.Controls.Add(label1);
+            this.tabPageClassic.Controls.Add(this.richTextBoxModDescription);
             this.tabPageClassic.Controls.Add(this.buttonModHideDesc);
             this.tabPageClassic.Location = new System.Drawing.Point(4, 22);
             this.tabPageClassic.Name = "tabPageClassic";
             this.tabPageClassic.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageClassic.Size = new System.Drawing.Size(577, 328);
             this.tabPageClassic.TabIndex = 0;
-            this.tabPageClassic.Text = "Classic";
+            this.tabPageClassic.Text = "Description";
             this.tabPageClassic.UseVisualStyleBackColor = true;
+            // 
+            // richTextBoxModDescription
+            // 
+            this.richTextBoxModDescription.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBoxModDescription.Location = new System.Drawing.Point(3, 3);
+            this.richTextBoxModDescription.Name = "richTextBoxModDescription";
+            this.richTextBoxModDescription.ReadOnly = true;
+            this.richTextBoxModDescription.Size = new System.Drawing.Size(571, 297);
+            this.richTextBoxModDescription.TabIndex = 3;
+            this.richTextBoxModDescription.Text = "";
             // 
             // buttonModHideDesc
             // 
@@ -419,7 +420,7 @@
             this.tabPageCompact.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageCompact.Size = new System.Drawing.Size(577, 328);
             this.tabPageCompact.TabIndex = 1;
-            this.tabPageCompact.Text = "Compact";
+            this.tabPageCompact.Text = "Compact Mod List";
             this.tabPageCompact.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel1
@@ -459,7 +460,8 @@
             this.installPatchToolStripMenuItem,
             this.removePatchToolStripMenuItem,
             this.downloadLatestPatcherToolStripMenuItem,
-            this.lookForProgramUpdateToolStripMenuItem});
+            this.lookForProgramUpdateToolStripMenuItem,
+            this.downloadAllModUpdatesToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -467,30 +469,37 @@
             // installPatchToolStripMenuItem
             // 
             this.installPatchToolStripMenuItem.Name = "installPatchToolStripMenuItem";
-            this.installPatchToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.installPatchToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
             this.installPatchToolStripMenuItem.Text = "Install Patch";
             this.installPatchToolStripMenuItem.Click += new System.EventHandler(this.InstallPatch);
             // 
             // removePatchToolStripMenuItem
             // 
             this.removePatchToolStripMenuItem.Name = "removePatchToolStripMenuItem";
-            this.removePatchToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.removePatchToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
             this.removePatchToolStripMenuItem.Text = "Remove Patch";
             this.removePatchToolStripMenuItem.Click += new System.EventHandler(this.UninstallPatch);
             // 
             // downloadLatestPatcherToolStripMenuItem
             // 
             this.downloadLatestPatcherToolStripMenuItem.Name = "downloadLatestPatcherToolStripMenuItem";
-            this.downloadLatestPatcherToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.downloadLatestPatcherToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
             this.downloadLatestPatcherToolStripMenuItem.Text = "Download Latest Patcher";
             this.downloadLatestPatcherToolStripMenuItem.Click += new System.EventHandler(this.DownloadPatcher);
             // 
             // lookForProgramUpdateToolStripMenuItem
             // 
             this.lookForProgramUpdateToolStripMenuItem.Name = "lookForProgramUpdateToolStripMenuItem";
-            this.lookForProgramUpdateToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.lookForProgramUpdateToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
             this.lookForProgramUpdateToolStripMenuItem.Text = "Look for Program Update";
             this.lookForProgramUpdateToolStripMenuItem.Click += new System.EventHandler(this.lookForProgramUpdateToolStripMenuItem_Click);
+            // 
+            // downloadAllModUpdatesToolStripMenuItem
+            // 
+            this.downloadAllModUpdatesToolStripMenuItem.Name = "downloadAllModUpdatesToolStripMenuItem";
+            this.downloadAllModUpdatesToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.downloadAllModUpdatesToolStripMenuItem.Text = "Download All Mod Updates";
+            this.downloadAllModUpdatesToolStripMenuItem.Click += new System.EventHandler(this.TryUpdateAll);
             // 
             // configurationToolStripMenuItem
             // 
@@ -535,6 +544,11 @@
             this.lookForModUpdatesToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
             this.lookForModUpdatesToolStripMenuItem.Text = "Look for Mod Updates";
             this.lookForModUpdatesToolStripMenuItem.Click += new System.EventHandler(this.lookForModUpdatesToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(237, 6);
             // 
             // githubTokenToolStripMenuItem
             // 
@@ -592,11 +606,6 @@
             this.richTextBoxLog.TabIndex = 0;
             this.richTextBoxLog.Text = "";
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(237, 6);
-            // 
             // NewMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -623,7 +632,6 @@
             this.splitContainer1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPageClassic.ResumeLayout(false);
-            this.tabPageClassic.PerformLayout();
             this.tabPageCompact.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
@@ -677,5 +685,7 @@
         private System.Windows.Forms.ToolStripMenuItem lookForProgramUpdateToolStripMenuItem;
         private System.Windows.Forms.Button buttonModHideDesc;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem downloadAllModUpdatesToolStripMenuItem;
+        private System.Windows.Forms.RichTextBox richTextBoxModDescription;
     }
 }
