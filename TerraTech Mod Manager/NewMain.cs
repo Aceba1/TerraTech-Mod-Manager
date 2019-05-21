@@ -616,7 +616,7 @@ namespace TerraTechModManager
                 if (listViewCompactMods.SelectedItems.Count != 0)
                 {
                     var modInfo = GetModInfoFromIndex(listViewCompactMods.SelectedItems[0].Index);
-                    labelModName.Text = modInfo.Name;
+                    labelModName.Text = modInfo.FancyName();
                     labelModIDesc.Text = modInfo.InlineDescription;
 
                     buttonDownloadMod.Visible = modInfo.Site != null && modInfo.Site.Length > 1;
@@ -880,7 +880,7 @@ namespace TerraTechModManager
             {
                 if (GithubMods.TryGetValue(modname, out ModInfo modInfo))
                 {
-                    var response = MessageBox.Show(modInfo.Name + " is needed for this mod to work.\nDownload as well?", "Download Mod", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                    var response = MessageBox.Show(modInfo.FancyName() + " is needed for this mod to work.\nDownload as well?", "Download Mod", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
                     if (response == DialogResult.Yes)
                     {
                         neededmods.Add(modInfo);
@@ -1107,6 +1107,20 @@ namespace TerraTechModManager
 
         }
 
+        public string FancyName()
+        {
+            string result = Name.Substring(Name.StartsWith("TTQMM-") ? 6 : 0).Replace("-", "").Replace("_", "");
+            for (int i = 1; i < result.Length; i++)
+            {
+                if (char.IsUpper(result[i]) && char.IsLower(result[i - 1]))
+                {
+                    result = result.Insert(i, " ");
+                    i++;
+                }
+            }
+            return result;
+        }
+
         public ModInfo(TerraTechModManager.Downloader.GetRepos.GithubRepoItem repo)
         {
             State = ModState.Server;
@@ -1173,7 +1187,7 @@ namespace TerraTechModManager
 
         public ListViewItem GetListViewItem(ListViewGroup Group, bool IsLocal) => new ListViewItem(new string[] {
             "",
-            Name,
+            FancyName(),
             InlineDescription,
             Author,
             IsLocal ? Name : CloudName
@@ -1185,7 +1199,7 @@ namespace TerraTechModManager
 
         public ListViewItem GetListViewItem(ListViewGroup Group, bool IsLocal, bool Checked) => new ListViewItem(new string[] {
             "",
-            Name,
+            FancyName(),
             InlineDescription,
             Author,
             IsLocal ? Name : CloudName

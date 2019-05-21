@@ -15,7 +15,7 @@ namespace TerraTechModManager
     public partial class Start : Form
     {
 #warning Change Version_Number with every update!
-        public const string Version_Number = "1.4.1";
+        public const string Version_Number = "1.4.2";
 
         bool finished = false;
         /// <summary>
