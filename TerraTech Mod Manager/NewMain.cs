@@ -91,8 +91,6 @@ namespace TerraTechModManager
             ConfigHandler.TryGetValue(ref LookForModUpdates, "getmodupdates");
             lookForModUpdatesToolStripMenuItem.Checked = LookForModUpdates;
 
-            tabControl1.SelectedIndex = 1;
-            ChangeVisibilityOfTabBar(!ConfigHandler.TryGetValue("hidetabs", true));
             bool hide = ConfigHandler.TryGetValue("hidelog", false);
             splitContainer1.Panel2Collapsed = hide;
             hideLogToolStripMenuItem.Checked = hide;
@@ -107,7 +105,6 @@ namespace TerraTechModManager
         public void SaveConfig()
         {
             ConfigHandler.SetValue(lookForModUpdatesToolStripMenuItem.Checked, "getmodupdates");
-            ConfigHandler.SetValue(panelHideTabs.Visible, "hidetabs");
             ConfigHandler.SetValue(splitContainer1.Panel2Collapsed, "hidelog");
             ConfigHandler.SetValue(Start.SkipAtStart, "skipstart");
             ConfigHandler.SetValue(githubTokenToolStripMenuItem.Text, "githubtoken");
@@ -215,23 +212,6 @@ namespace TerraTechModManager
                 tableLayoutPanel1.RowStyles[1].Height = 50 * show;
                 tableLayoutPanel1.RowStyles[2].Height = 25 * show;
             }
-        }
-
-        private void ChangeVisibilityOfTabBar(bool Show)
-        {
-            if (Show)
-            {
-                tabControl1.ItemSize = new Size(45, 18);
-                tabControl1.SizeMode = TabSizeMode.Normal;
-                panelHideTabs.Visible = false;
-            }
-            else
-            {
-                tabControl1.ItemSize = new Size(1, 1);
-                tabControl1.SizeMode = TabSizeMode.Fixed;
-                panelHideTabs.Visible = true;
-            }
-            hideTabsToolStripMenuItem.Checked = !Show;
         }
 
         public void Log(string value, Color color, bool newLine = true)
@@ -554,11 +534,6 @@ namespace TerraTechModManager
         private void reloadLocalModsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ReloadLocalMods();
-        }
-
-        private void hideTabsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeVisibilityOfTabBar(panelHideTabs.Visible);
         }
 
         private void hideLogToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1047,35 +1022,14 @@ namespace TerraTechModManager
             }
         }
 
-        private void buttonModShowDesc_Click(object sender, EventArgs e)
-        {
-            tabControl1.SelectedTab = tabPageClassic;
-        }
-
-        private void buttonModHideDesc_Click(object sender, EventArgs e)
-        {
-            tabControl1.SelectedTab = tabPageCompact;
-        }
-
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void SwapPages(object sender, EventArgs e)
+        private void ConfigurationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (tabControl1.SelectedTab == tabPageClassic)
-            {
-                try
-                {
-                    richTextBoxModDescription.Clear();
-                    richTextBoxModDescription.Rtf = MarkdownToRTF.ToRTFString(GetModInfoFromIndex().GetDescription);
-                }
-                catch (Exception E)
-                {
-                    richTextBoxModDescription.Text = "EXCEPTION:\n" + E.Message;
-                }
-            }
+
         }
     }
 
