@@ -118,29 +118,56 @@ namespace TerraTechModManager
             inst = this;
             Log(StartMessage, Color.Red, false);
 
-            RunPatcher.MMWindow = this;
-            RunPatcher.PathToExe = DataFolder + @"/Managed/QModManager.exe";
-            if (!File.Exists(RunPatcher.PathToExe))
-            {
-                RunPatcher.UpdatePatcher(DataFolder + @"/Managed");
-                RunPatcher.RunExe("-i");
-            }
-            else if (ConfigHandler.TryGetValue("lastpatchversion", "0.0.0") != Version_Number)
-            {
-                RunPatcher.UpdatePatcher(DataFolder + @"/Managed");
-                RunPatcher.RunExe("-u");
-                RunPatcher.IsReinstalling = true;
-            }
-            else
-            {
-                RunPatcher.RunExe("-i");
-            }
-            ConfigHandler.SetValue(Version_Number, "lastpatchversion");
             ChangeVisibilityOfCompactModInfo(false);
 
             LoadConfig();
 
+            NewMain.AddToTaskQueue(new Task(VerifyPatch));
             NewMain.AddToTaskQueue(new Task(GetGitMods));
+        }
+
+        private void VerifyPatch()
+        {
+
+            RunPatcher.MMWindow = this;
+            RunPatcher.PathToExe = DataFolder + @"/Managed/QModManager.exe";
+
+            if (!RunPatcher.PatcherExists) //Download installer the 1st time
+            {
+                try
+                {
+                    RunPatcher.UpdatePatcher(DataFolder + @"/Managed");
+                    ConfigHandler.SetValue(Version_Number, "lastpatchversion");
+                }
+                catch (Exception E)
+                {
+                    Log("The patcher cannot be reached!\n-" + E.ToString(), Color.DarkRed);
+                    return;
+                }
+                RunPatcher.RunExe("-i");
+                return;
+            }
+
+            if (ConfigHandler.TryGetValue("lastpatchversion", "0.0.0") != Version_Number) //Update installer after a change
+            {
+                try
+                {
+                    RunPatcher.UpdatePatcher(DataFolder + @"/Managed");
+                    ConfigHandler.SetValue(Version_Number, "lastpatchversion");
+                }
+                catch (Exception E)
+                {
+                    Log("Unable to get latest patcher:\n-" + E.ToString(), Color.Red);
+                }
+                RunPatcher.RunExe("-u");
+                RunPatcher.IsReinstalling = true;
+                return;
+            }
+
+            //Ensure patch exists
+            RunPatcher.RunExe("-i");
+            ConfigHandler.SetValue(Version_Number, "lastpatchversion");
+            return;
         }
 
         private void ClearGitMods()
@@ -1241,6 +1268,8 @@ namespace TerraTechModManager
                 return (p == 4) || (p == 6) || (p == 128);
             }
         }
+
+        public static bool PatcherExists => System.IO.File.Exists(PathToExe);
 
         public static void UpdatePatcher(string ManagedPath)
         {
