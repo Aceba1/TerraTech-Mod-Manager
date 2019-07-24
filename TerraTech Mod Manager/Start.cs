@@ -25,8 +25,21 @@ namespace TerraTechModManager
         /// <summary>
         /// Key: ttroot
         /// </summary>
-        string RootPath = @"C:\Program Files (x86)\Steam\steamapps\common\TerraTech Beta";
+        string RootPath = GetRootPath();
 
+        static string GetRootPath()
+        {
+            string path = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\TerraTech";
+            if (!Directory.Exists(path))
+            {
+                if (Directory.Exists(path + " Beta"))
+                {
+                    path += " Beta";
+                }
+            }
+            return path;
+        }
+            
         public Start()
         {
             ConfigHandler.LoadConfig();
