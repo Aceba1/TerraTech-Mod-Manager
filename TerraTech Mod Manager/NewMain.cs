@@ -141,7 +141,7 @@ namespace TerraTechModManager
                 }
                 catch (Exception E)
                 {
-                    Log("The patcher cannot be reached!\n-" + E.ToString(), Color.DarkRed);
+                    Log("The patcher cannot be reached! " + E.Message, Color.DarkRed);
                     return;
                 }
                 RunPatcher.RunExe("-i");
@@ -157,7 +157,7 @@ namespace TerraTechModManager
                 }
                 catch (Exception E)
                 {
-                    Log("Unable to get latest patcher:\n-" + E.ToString(), Color.Red);
+                    Log("Unable to get latest patcher: " + E.Message, Color.Red);
                 }
                 RunPatcher.RunExe("-u");
                 RunPatcher.IsReinstalling = true;
