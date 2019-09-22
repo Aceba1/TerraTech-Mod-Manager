@@ -946,12 +946,13 @@ namespace TerraTechModManager
                 }
                 //serverMod.GetVersionTagFromCloud();
                 if (serverMod.Description == null)
-                if (serverMod.GetDescription != "") Log("Downloaded description", Color.LawnGreen);
-                if (LocalMods.TryGetValue(serverMod.Name, out ModInfo existingMod) && existingMod.FilePath != Folder)
+                    if (serverMod.GetDescription != "") Log("Downloaded description", Color.LawnGreen);
+                if (LocalMods.TryGetValue(serverMod.Name, out ModInfo existingMod) && new DirectoryInfo(existingMod.FilePath).FullName != new DirectoryInfo(Folder).FullName)
                 {
+                    Log("Overlapping existing mod folder with downloaded folder...", Color.YellowGreen);
                     try
                     {
-                        foreach (var file in new DirectoryInfo(existingMod.FilePath).GetFiles("*", System.IO.SearchOption.AllDirectories))
+                        foreach (var file in new DirectoryInfo(existingMod.FilePath).GetFiles("*", SearchOption.AllDirectories))
                         {
                             string newPath = Path.Combine(Folder, file.FullName.Substring(existingMod.FilePath.Length + 1));
                             Console.WriteLine(newPath);
@@ -971,8 +972,8 @@ namespace TerraTechModManager
                         Log("Could not overlap existing mod folder with downloaded folder!\n" + E.Message, Color.Red);
                     }
                 }
-                File.WriteAllText(RootFolder + @"/QMods/" + Folder + @"/ttmm.json", JsonConvert.SerializeObject(serverMod));
-                GetLocalMod_Internal(RootFolder + @"/QMods/" + Folder, /*false,*/ true);
+                File.WriteAllText(Path.Combine(RootFolder, "QMods", Folder, "ttmm.json"), JsonConvert.SerializeObject(serverMod));
+                GetLocalMod_Internal(Path.Combine(RootFolder, "QMods", Folder), /*false,*/ true);
             }
             catch (Exception e)
             {
