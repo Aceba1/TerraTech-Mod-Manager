@@ -130,10 +130,12 @@
             this.comboBoxModState.Size = new System.Drawing.Size(121, 21);
             this.comboBoxModState.TabIndex = 6;
             this.comboBoxModState.Visible = false;
+            this.comboBoxModState.SelectedIndexChanged += new System.EventHandler(this.LocalModStateChanged);
             // 
             // buttonModShowDesc
             // 
             this.buttonModShowDesc.Dock = System.Windows.Forms.DockStyle.Right;
+            this.buttonModShowDesc.Enabled = false;
             this.buttonModShowDesc.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonModShowDesc.Location = new System.Drawing.Point(425, 0);
             this.buttonModShowDesc.Name = "buttonModShowDesc";
@@ -243,6 +245,7 @@
             listViewGroup1,
             listViewGroup2,
             listViewGroup3});
+            this.listViewCompactMods.HideSelection = false;
             this.listViewCompactMods.Location = new System.Drawing.Point(0, 20);
             this.listViewCompactMods.MultiSelect = false;
             this.listViewCompactMods.Name = "listViewCompactMods";
@@ -251,6 +254,8 @@
             this.listViewCompactMods.TabIndex = 3;
             this.listViewCompactMods.UseCompatibleStateImageBehavior = false;
             this.listViewCompactMods.View = System.Windows.Forms.View.Details;
+            this.listViewCompactMods.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.SetModActive);
+            this.listViewCompactMods.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
             // 
             // columnHeaderActive
             // 
@@ -295,6 +300,7 @@
             this.textBoxModSearch.Name = "textBoxModSearch";
             this.textBoxModSearch.Size = new System.Drawing.Size(460, 20);
             this.textBoxModSearch.TabIndex = 3;
+            this.textBoxModSearch.TextChanged += new System.EventHandler(this.textBoxModSearch_TextChanged);
             // 
             // labelSearch
             // 
@@ -476,28 +482,28 @@
             // githubPageToolStripMenuItem
             // 
             this.githubPageToolStripMenuItem.Name = "githubPageToolStripMenuItem";
-            this.githubPageToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.githubPageToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.githubPageToolStripMenuItem.Text = "Github page";
             this.githubPageToolStripMenuItem.Click += new System.EventHandler(this.githubPageToolStripMenuItem_Click);
             // 
             // terraTechForumPageToolStripMenuItem
             // 
             this.terraTechForumPageToolStripMenuItem.Name = "terraTechForumPageToolStripMenuItem";
-            this.terraTechForumPageToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.terraTechForumPageToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.terraTechForumPageToolStripMenuItem.Text = "TerraTech Forum page";
             this.terraTechForumPageToolStripMenuItem.Click += new System.EventHandler(this.terraTechForumPageToolStripMenuItem_Click);
             // 
             // terraTechWikiPageToolStripMenuItem
             // 
             this.terraTechWikiPageToolStripMenuItem.Name = "terraTechWikiPageToolStripMenuItem";
-            this.terraTechWikiPageToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.terraTechWikiPageToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.terraTechWikiPageToolStripMenuItem.Text = "TerraTech Wiki page";
             this.terraTechWikiPageToolStripMenuItem.Click += new System.EventHandler(this.terraTechWikiPageToolStripMenuItem_Click);
             // 
             // tTMMDownloadPageToolStripMenuItem
             // 
             this.tTMMDownloadPageToolStripMenuItem.Name = "tTMMDownloadPageToolStripMenuItem";
-            this.tTMMDownloadPageToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.tTMMDownloadPageToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.tTMMDownloadPageToolStripMenuItem.Text = "TTMM Download Page";
             this.tTMMDownloadPageToolStripMenuItem.Click += new System.EventHandler(this.tTMMDownloadPageToolStripMenuItem_Click);
             // 
