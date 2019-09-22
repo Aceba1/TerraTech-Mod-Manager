@@ -116,6 +116,7 @@
             this.buttonDownloadMod.TabIndex = 7;
             this.buttonDownloadMod.Text = "Download";
             this.buttonDownloadMod.UseVisualStyleBackColor = true;
+            this.buttonDownloadMod.Click += new System.EventHandler(this.GetModFromCloud);
             // 
             // comboBoxModState
             // 
@@ -153,6 +154,7 @@
             this.buttonLocalModDelete.Text = "Delete Mod";
             this.buttonLocalModDelete.UseVisualStyleBackColor = true;
             this.buttonLocalModDelete.Visible = false;
+            this.buttonLocalModDelete.Click += new System.EventHandler(this.PromptDeleteMod);
             // 
             // panel2
             // 
@@ -202,6 +204,7 @@
             // labelModLink
             // 
             this.labelModLink.AutoSize = true;
+            this.labelModLink.Cursor = System.Windows.Forms.Cursors.WaitCursor;
             this.labelModLink.Dock = System.Windows.Forms.DockStyle.Right;
             this.labelModLink.ForeColor = System.Drawing.Color.Blue;
             this.labelModLink.Location = new System.Drawing.Point(407, 0);
@@ -210,6 +213,7 @@
             this.labelModLink.TabIndex = 5;
             this.labelModLink.Text = "A link to the site that holds the mod";
             this.labelModLink.UseWaitCursor = true;
+            this.labelModLink.Click += new System.EventHandler(this.OpenModLink);
             // 
             // panel1
             // 
@@ -322,6 +326,7 @@
             this.buttonLoadMoreMods.Text = "Load more";
             this.buttonLoadMoreMods.UseVisualStyleBackColor = true;
             this.buttonLoadMoreMods.Visible = false;
+            this.buttonLoadMoreMods.Click += new System.EventHandler(this.buttonLoadMoreMods_Click);
             // 
             // splitContainer1
             // 
