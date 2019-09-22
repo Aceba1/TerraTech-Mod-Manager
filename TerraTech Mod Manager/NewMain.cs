@@ -323,21 +323,21 @@ namespace TerraTechModManager
                         Log("There was a problem handling a local mod: \n" + E.Message + "\nAt " + folder, Color.Red);
                     }
                 }
-            if (!Directory.Exists(RootFolder + @"/QMods-Disabled"))
-            {
-                Directory.CreateDirectory(RootFolder + @"/QMods-Disabled");
-            }
-            else foreach (string folder in Directory.GetDirectories(RootFolder + @"/QMods-Disabled"))
-                {
-                    try
-                    {
-                        GetLocalMod_Internal(folder, true);
-                    }
-                    catch (Exception E)
-                    {
-                        Log("There was a problem handling a local mod: \n" + E.Message + "\nAt " + folder, Color.Red);
-                    }
-                }
+            //if (!Directory.Exists(RootFolder + @"/QMods-Disabled"))
+            //{
+            //    Directory.CreateDirectory(RootFolder + @"/QMods-Disabled");
+            //}
+            //else foreach (string folder in Directory.GetDirectories(RootFolder + @"/QMods-Disabled"))
+            //    {
+            //        try
+            //        {
+            //            GetLocalMod_Internal(folder, true);
+            //        }
+            //        catch (Exception E)
+            //        {
+            //            Log("There was a problem handling a local mod: \n" + E.Message + "\nAt " + folder, Color.Red);
+            //        }
+            //    }
         }
 
         internal void GetLocalMod_Internal(string path,/* bool IsDisabled = false,*/ bool ImmediatelyFromCloud = false)

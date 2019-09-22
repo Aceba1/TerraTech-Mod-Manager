@@ -123,7 +123,6 @@
             this.comboBoxModState.FormattingEnabled = true;
             this.comboBoxModState.Items.AddRange(new object[] {
             "Enabled",
-            "Inactive",
             "Disabled"});
             this.comboBoxModState.Location = new System.Drawing.Point(0, 0);
             this.comboBoxModState.Name = "comboBoxModState";
