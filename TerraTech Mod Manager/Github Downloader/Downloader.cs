@@ -87,18 +87,27 @@ namespace TerraTechModManager.Downloader
 
     public static class DownloadFolder
     {
-        public static string[] Download(string RepositoryPath, string CloudName, string DownloadPath)
+        public static IEnumerable<string> Download(string RepositoryPath, string CloudName, string DownloadPath)
         {
             string StartBranch = RepositoryPath.Substring(RepositoryPath.IndexOf("tree/master/") + 11);
             NewMain.inst.Log(GetApiUrl(CloudName, StartBranch), Color.Red);
-            return RecursiveDownload(WebClientHandler.DeserializeApiCall<GithubItem[]>(GetApiUrl(CloudName, StartBranch)), DownloadPath);
+            var Entries = WebClientHandler.DeserializeApiCall<GithubItem[]>(GetApiUrl(CloudName, StartBranch));
+            foreach (var entry in Entries)
+            {
+                if (entry.type == "file" && entry.name == "mod.json")
+                {
+                    DownloadPath = System.IO.Path.Combine(DownloadPath, CloudName.Substring(CloudName.LastIndexOf('/') + 1));
+                    break;
+                }
+            }
+            return RecursiveDownload(Entries, DownloadPath);
         }
 
         public static string GetApiUrl(string CloudName, string BranchingPath) => "https://api.github.com/repos/" + CloudName + "/contents" + BranchingPath;
 
-        private static string[] RecursiveDownload(IEnumerable<GithubItem> entries, string DownloadFolder, string CurrentPath = "")
+        private static List<string> RecursiveDownload(IEnumerable<GithubItem> entries, string DownloadFolder, string CurrentPath = "")
         {
-            List<string> outFolders = new List<string>();
+            List<string> result = new List<string>();
             try
             {
                 foreach (var item in entries)
@@ -116,39 +125,54 @@ namespace TerraTechModManager.Downloader
                         {
                             System.IO.Directory.CreateDirectory(DownloadFolder + CurrentPath + @"/" + localItem.name);
                         }
-                        outFolders.Add(localItem.name);
+
                         var subEntries = WebClientHandler.DeserializeApiCall<GithubItem[]>(localItem.url);
                         if (!subEntries.Any())
                         {
                             continue;
                         }
 
-                        RecursiveDownload(subEntries, DownloadFolder, CurrentPath + @"/" + localItem.name);
+                        result.AddRange(RecursiveDownload(subEntries, DownloadFolder, CurrentPath + "/" + localItem.name));
                     }
                     else if (localItem.type == "file")
                     {
+                        if (localItem.name == "mod.json")
+                        {
+                            result.Add(DownloadFolder + CurrentPath);
+                        }
                         using (var wc = new WebClient())
                         {
-                            NewMain.inst.Log("Downloading " + CurrentPath + @"/" + localItem.name, Color.Green);
-                            string filepath = DownloadFolder + CurrentPath + @"/" + localItem.name;
+                            NewMain.inst.Log("Downloading " + CurrentPath + "/" + localItem.name, Color.Green);
+                            string filepath = DownloadFolder + CurrentPath + "/" + localItem.name;
                             if (System.IO.File.Exists(filepath))
+                            {
+                                while (true)
+                                {
+                                    try
+                                    {
+                                        System.IO.File.Delete(filepath);
+                                        break;
+                                    }
+                                    catch (Exception E)
+                                    {
+                                        NewMain.inst.Log("File is occupied!\n" + E.Message, Color.Red);
+                                        System.Threading.Thread.Sleep(10000);
+                                    }
+                                }
+                            }
+                            while (true)
                             {
                                 try
                                 {
-                                    System.IO.File.Delete(filepath);
+                                    wc.DownloadFile(localItem.download_url, filepath);
+                                    break;
                                 }
-                                catch
+                                catch (Exception E)
                                 {
-                                    NewMain.inst.Log("Could not remove existing file!", Color.Red);
+                                    NewMain.inst.Log("Could not download " + localItem.name + "!\n" + E.Message, Color.Red);
+
+                                    System.Threading.Thread.Sleep(30000);
                                 }
-                            }
-                            try
-                            {
-                                wc.DownloadFile(localItem.download_url, filepath);
-                            }
-                            catch (Exception E)
-                            {
-                                NewMain.inst.Log("Could not download " + localItem.name + "!\n" + E.Message + "\nTo " + filepath + "\nFrom " + localItem.download_url, Color.Red);
                             }
                         }
                     }
@@ -158,7 +182,7 @@ namespace TerraTechModManager.Downloader
             {
                 NewMain.inst.Log(ex.Message, Color.Red);
             }
-            return outFolders.ToArray();
+            return result;
         }
 
         private class GithubItem

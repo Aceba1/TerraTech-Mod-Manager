@@ -296,12 +296,12 @@ namespace TerraTechModManager
             File.WriteAllText(modjson, JsonConvert.SerializeObject(json, Formatting.Indented));
         }
 
-        internal void SetLocalModDisabled(ref string path, bool Disable)
-        {
-            string newPath = RootFolder + @"/QMods" + (Disable ? @"-Disabled/" : @"/") + new DirectoryInfo(path).Name;
-            Directory.Move(path, newPath);
-            path = newPath;
-        }
+        //internal void SetLocalModDisabled(ref string path, bool Disable)
+        //{
+        //    string newPath = RootFolder + @"/QMods" + (Disable ? @"-Disabled/" : @"/") + new DirectoryInfo(path).Name;
+        //    Directory.Move(path, newPath);
+        //    path = newPath;
+        //}
 
 
         #region Get Local Mods
@@ -340,7 +340,7 @@ namespace TerraTechModManager
                 }
         }
 
-        internal void GetLocalMod_Internal(string path, bool IsDisabled = false, bool ImmediatelyFromCloud = false)
+        internal void GetLocalMod_Internal(string path,/* bool IsDisabled = false,*/ bool ImmediatelyFromCloud = false)
         {
             string modjson = path + @"/mod.json";
             string ttmmjson = path + @"/ttmm.json";
@@ -358,7 +358,7 @@ namespace TerraTechModManager
                 }
                 if (modInfo != null)
                 {
-                    modInfo.State = IsDisabled ? ModInfo.ModState.Disabled : (Convert.ToBoolean(json["Enable"]) ? ModInfo.ModState.Enabled : ModInfo.ModState.Inactive);
+                    modInfo.State = /*IsDisabled ? ModInfo.ModState.Disabled : */(Convert.ToBoolean(json["Enable"]) ? ModInfo.ModState.Enabled : ModInfo.ModState.Inactive);
                     modInfo.FilePath = path;
                     modInfo.CloudName = modInfo.CloudName[0] == '/' ? modInfo.CloudName.Substring(1) : modInfo.CloudName;
                 }
@@ -368,7 +368,7 @@ namespace TerraTechModManager
                     {
                         Name = json["DisplayName"] as string,
                         Author = json["Author"] as string,
-                        State = IsDisabled ? ModInfo.ModState.Disabled : (Convert.ToBoolean(json["Enable"]) ? ModInfo.ModState.Enabled : ModInfo.ModState.Inactive),
+                        State = /*IsDisabled ? ModInfo.ModState.Disabled : */(Convert.ToBoolean(json["Enable"]) ? ModInfo.ModState.Enabled : ModInfo.ModState.Inactive),
                         FilePath = path,
                         InlineDescription = json["Id"] as string
                     };
@@ -382,14 +382,14 @@ namespace TerraTechModManager
                 }
 
                 ListViewItem item;
-                if (IsDisabled)
-                {
-                    item = modInfo.GetListViewItem(listViewCompactMods.Groups[0], true, false);
-                }
-                else
-                {
+                //if (IsDisabled)
+                //{
+                //    item = modInfo.GetListViewItem(listViewCompactMods.Groups[0], true, false);
+                //}
+                //else
+                //{
                     item = modInfo.GetListViewItem(listViewCompactMods.Groups[0], true);
-                }
+                //}
 
                 LocalMods[modInfo.Name] = modInfo;
                 modInfo.Visible = listViewCompactMods.Items.Add(item);
@@ -593,17 +593,17 @@ namespace TerraTechModManager
                     listViewCompactMods.Items[e.Index].Selected = true;
                     return;
                 }
-                if (modInfo.State != ModInfo.ModState.Disabled)
-                {
+                //if (modInfo.State != ModInfo.ModState.Disabled)
+                //{
                     if (listViewCompactMods.SelectedItems.Count != 0 && e.Index == listViewCompactMods.SelectedItems[0].Index)
                         comboBoxModState.SelectedIndex = e.NewValue == CheckState.Checked ? 0 : 1;
                     else
                         ChangeLocalModState(modInfo, e.NewValue == CheckState.Checked ? ModInfo.ModState.Enabled : ModInfo.ModState.Inactive);
-                }
-                else if (modInfo.State == ModInfo.ModState.Disabled && e.NewValue == CheckState.Checked)
-                {
-                    ChangeLocalModState(modInfo, e.NewValue == CheckState.Checked ? ModInfo.ModState.Enabled : ModInfo.ModState.Inactive);
-                }
+                //}
+                //else if (modInfo.State == ModInfo.ModState.Disabled && e.NewValue == CheckState.Checked)
+                //{
+                //    ChangeLocalModState(modInfo, e.NewValue == CheckState.Checked ? ModInfo.ModState.Enabled : ModInfo.ModState.Inactive);
+                //}
             }
             catch
             {
@@ -709,18 +709,18 @@ namespace TerraTechModManager
         {
             if (newState == modInfo.State)
                 return;
-            if (newState == ModInfo.ModState.Disabled)
-            {
-                SetLocalModDisabled(ref modInfo.FilePath, true);
-                Log("Relocated " + modInfo.Name, Color.DarkOliveGreen);
-            }
-            else
-            {
-                if (modInfo.State == ModInfo.ModState.Disabled)
-                {
-                    SetLocalModDisabled(ref modInfo.FilePath, false);
-                    Log("Returned " + modInfo.Name, Color.DarkOliveGreen);
-                }
+            //if (newState == ModInfo.ModState.Disabled)
+            //{
+            //    SetLocalModDisabled(ref modInfo.FilePath, true);
+            //    Log("Relocated " + modInfo.Name, Color.DarkOliveGreen);
+            //}
+            //else
+            //{
+            //    if (modInfo.State == ModInfo.ModState.Disabled)
+            //    {
+            //        SetLocalModDisabled(ref modInfo.FilePath, false);
+            //        Log("Returned " + modInfo.Name, Color.DarkOliveGreen);
+            //    }
                 SetLocalModState(modInfo.FilePath, newState);
                 Log("Set " + modInfo.Name + " to " + newState.ToString(), Color.DarkSeaGreen);
                 if (newState == ModInfo.ModState.Enabled && modInfo.RequiredModNames != null)
@@ -738,7 +738,7 @@ namespace TerraTechModManager
                             }
                         }
                     }
-            }
+            //}
             modInfo.State = newState;
         }
 
@@ -822,11 +822,11 @@ namespace TerraTechModManager
                 {
                     if (localMod.Value.CurrentVersion == modInfo.CurrentVersion) continue;
 
-                    if (localMod.Value.State == ModInfo.ModState.Disabled)
-                    {
-                        Log("Can't update a disabled mod! (" + localMod.Value.Name + ")", Color.OrangeRed);
-                        continue;
-                    }
+                    //if (localMod.Value.State == ModInfo.ModState.Disabled)
+                    //{
+                    //    Log("Can't update a disabled mod! (" + localMod.Value.Name + ")", Color.OrangeRed);
+                    //    continue;
+                    //}
                     if (AddModDownload(modInfo))
                     {
                         localMod.Value.Visible.SubItems[2].Text = "Updating...";
@@ -848,11 +848,11 @@ namespace TerraTechModManager
             if (modInfo.FoundLocal)
             {
                 var localMod = LocalMods[modInfo.Name];
-                if (localMod.State == ModInfo.ModState.Disabled)
-                {
-                    MessageBox.Show("Can't update a disabled mod!", "Download Mod", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                //if (localMod.State == ModInfo.ModState.Disabled)
+                //{
+                //    MessageBox.Show("Can't update a disabled mod!", "Download Mod", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //    return;
+                //}
                 if (AddModDownload(modInfo))
                 {
                     localMod.Visible.SubItems[2].Text = "Updating...";
@@ -861,11 +861,11 @@ namespace TerraTechModManager
             }
             if (modInfo.CloudName != null && modInfo.CloudName.Length > 0 && FoundServerMods.TryGetValue(modInfo.CloudName, out ModInfo cloudModInfo))
             {
-                if (modInfo.State == ModInfo.ModState.Disabled)
-                {
-                    MessageBox.Show("Can't update a disabled mod!", "Download Mod", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                //if (modInfo.State == ModInfo.ModState.Disabled)
+                //{
+                //    MessageBox.Show("Can't update a disabled mod!", "Download Mod", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //    return;
+                //}
                 if (AddModDownload(cloudModInfo))
                 {
                     modInfo.Visible.SubItems[2].Text = "Updating...";
@@ -922,9 +922,10 @@ namespace TerraTechModManager
         {
             var param = Params as string[];
             Log("Downloading " + param[1], Color.LawnGreen);
+            string Folder = null;
             try
             {
-                string newFolder = TerraTechModManager.Downloader.DownloadFolder.Download(param[0], param[1], RootFolder + @"/QMods")[0];
+                Folder = TerraTechModManager.Downloader.DownloadFolder.Download(param[0], param[1], RootFolder + @"/QMods").First();
                 if (KillDownload)
                 {
                     KillDownload = false;
@@ -946,8 +947,32 @@ namespace TerraTechModManager
                 //serverMod.GetVersionTagFromCloud();
                 if (serverMod.Description == null)
                 if (serverMod.GetDescription != "") Log("Downloaded description", Color.LawnGreen);
-                File.WriteAllText(RootFolder + @"/QMods/" + newFolder + @"/ttmm.json", JsonConvert.SerializeObject(serverMod));
-                GetLocalMod_Internal(RootFolder + @"/QMods/" + newFolder, false, true);
+                if (LocalMods.TryGetValue(serverMod.Name, out ModInfo existingMod) && existingMod.FilePath != Folder)
+                {
+                    try
+                    {
+                        foreach (var file in new DirectoryInfo(existingMod.FilePath).GetFiles("*", System.IO.SearchOption.AllDirectories))
+                        {
+                            string newPath = Path.Combine(Folder, file.FullName.Substring(existingMod.FilePath.Length + 1));
+                            Console.WriteLine(newPath);
+                            if (!File.Exists(newPath))
+                            {
+                                File.Move(file.FullName, newPath);
+                            }
+                            else
+                            {
+                                File.Delete(file.FullName);
+                            }
+                        }
+                        Directory.Delete(existingMod.FilePath);
+                    }
+                    catch (Exception E)
+                    {
+                        Log("Could not overlap existing mod folder with downloaded folder!\n" + E.Message, Color.Red);
+                    }
+                }
+                File.WriteAllText(RootFolder + @"/QMods/" + Folder + @"/ttmm.json", JsonConvert.SerializeObject(serverMod));
+                GetLocalMod_Internal(RootFolder + @"/QMods/" + Folder, /*false,*/ true);
             }
             catch (Exception e)
             {
@@ -1246,10 +1271,10 @@ namespace TerraTechModManager
 
         public enum ModState : byte
         {
-            Enabled,
-            Inactive,
-            Disabled,
-            Server
+            Enabled = 0,
+            Inactive = 1,
+//            Disabled = 2,
+            Server = 3
         }
     }
 
@@ -1311,6 +1336,12 @@ namespace TerraTechModManager
 
         private static void HandlePatcher(object sender, DataReceivedEventArgs e)
         {
+            if (e == null)
+            {
+                MMWindow.Log("Communication with patcher is lost!", Color.Red);
+                return;
+            }
+            if (string.IsNullOrEmpty(e.Data)) return;
             if (e.Data.EndsWith("exit..."))
             {
                 EXE.CancelOutputRead();
