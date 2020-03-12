@@ -87,7 +87,7 @@ namespace TerraTechModManager
                         }
                     if (flag)
                     {
-                        if (CheckPiracy())
+                        if (false)
                         {
                             ConfigHandler.ResetConfig();
                             this.Close();

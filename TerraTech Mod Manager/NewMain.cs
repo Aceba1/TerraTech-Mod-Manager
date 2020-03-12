@@ -461,7 +461,11 @@ namespace TerraTechModManager
                 count = repos.Length;
                 foreach (var repo in repos)
                 {
-                    updatecount += GithubModFromRepo(repo);
+                    try
+                    {
+                        updatecount += GithubModFromRepo(repo);
+                    }
+                    catch { count--; }
                 }
                 ShowLoadMoreModsButton(Downloader.GetRepos.MorePagesAvailable, "Load more");
             }
@@ -484,7 +488,11 @@ namespace TerraTechModManager
                 count = repos.Length;
                 foreach (var repo in repos)
                 {
-                    updatecount += GithubModFromRepo(repo);
+                    try
+                    {
+                        updatecount += GithubModFromRepo(repo);
+                    }
+                    catch { count--; }
                 }
                 ShowLoadMoreModsButton(Downloader.GetRepos.MorePagesAvailable, "Load more");
             }
