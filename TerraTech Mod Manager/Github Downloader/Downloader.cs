@@ -83,11 +83,6 @@ namespace TerraTechModManager.Downloader
         }
     }
 
-    //https://api.github.com/search/repositories?q=topic:ttqmm
-    //https://api.github.com/search/repositories?q=topic:ttqmm&page:0
-
-
-
     public static class DownloadFolder
     {
         public static IEnumerable<string> Download(string RepositoryPath, string CloudName, string DownloadPath)
@@ -173,7 +168,7 @@ namespace TerraTechModManager.Downloader
                                 catch (Exception E)
                                 {
                                     NewMain.inst.Log("Could not download " + localItem.name + "!\n" + E.Message, Color.Red);
-
+                                    NewMain.inst.Log(localItem.download_url, Color.DarkRed);
                                     System.Threading.Thread.Sleep(30000);
                                 }
                             }

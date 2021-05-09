@@ -468,6 +468,7 @@
             // 
             // githubTokenToolStripMenuItem
             // 
+            this.githubTokenToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.githubTokenToolStripMenuItem.Name = "githubTokenToolStripMenuItem";
             this.githubTokenToolStripMenuItem.Size = new System.Drawing.Size(180, 23);
             this.githubTokenToolStripMenuItem.Text = "Github Token";
